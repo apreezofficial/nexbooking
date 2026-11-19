@@ -8,7 +8,9 @@ on:
       - 'App.tsx'
       - 'app.json'
       - 'assets/**'
+      - 'android/**'
       - 'src/**'
+      - 'index.ts'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/android-apk.yml'
@@ -35,10 +37,8 @@ jobs:
           packages: platform-tools
       - name: Install dependencies
         run: npm ci
-      - name: Check TypeScript and Expo packages
+      - name: Check TypeScript
         run: npm run check
-      - name: Generate Android project
-        run: npx expo prebuild --platform android --clean --non-interactive
       - name: Build installable test APK
         working-directory: android
         run: ./gradlew assembleRelease --no-daemon
