@@ -45,3 +45,5 @@ Initial verification: TypeScript and dependency checks passed, Expo Doctor passe
 The initial Expo dependency tree reports three moderate npm audit entries arising from `@expo/fingerprint` → `minimatch`. npm currently proposes downgrading Expo to SDK 52; that breaking downgrade has not been applied. Recheck upstream releases before production delivery.
 
 App icons are scaffold placeholders. Store signing, bundle identifiers, deployment credentials, and production services should be configured when those details are available.
+
+Sample photography is bundled in `assets/photos`; see `assets/photos/SOURCES.md` for sources and licensing. The photos are illustrative and should be replaced with authorized business portfolio images before launch.

@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { CalendarDays, Clock3, Compass, Home, LockKeyhole, MessageCircle, UserRound, Video, type LucideIcon } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors, radii } from '../theme';
@@ -38,12 +38,12 @@ export function SpotlightTile({ initials, name, seen = false, sponsored = false,
   </Pressable>;
 }
 
-export function FeedCard({ saved, onSave, onBook }: { saved: boolean; onSave: () => void; onBook: () => void }) {
+export function FeedCard({ saved, onSave, onBook, photo = require('../../assets/photos/salon-styling.jpg') }: { saved: boolean; onSave: () => void; onBook: () => void; photo?: number }) {
   return <Card>
-    <LinearGradient colors={[colors.goldTint, colors.crayolaGold, colors.gold]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.feedArt}>
+    <View style={styles.feedArt}><Image source={photo} resizeMode='cover' style={StyleSheet.absoluteFill} />
       <View style={styles.rowBetween}><Badge label="Hair & Beauty" /><IconButton icon={Bookmark} label={saved ? 'Remove saved studio' : 'Save studio'} selected={saved} onPress={onSave} /></View>
-      <View style={styles.photoLabel}><Text variant="caption" color={colors.pearl}>Tenant work photo · 1/4</Text></View>
-    </LinearGradient>
+      <View style={styles.photoLabel}><Text variant="caption" color={colors.pearl}>Studio photo · 1/4</Text></View>
+    </View>
     <View style={{ padding: 16, gap: 20 }}>
       <View style={styles.rowBetween}>
         <View style={[styles.row, { flex: 1 }]}>
