@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 import { CalendarDays, Clock3, Compass, Home, LockKeyhole, MessageCircle, UserRound, Video, type LucideIcon } from 'lucide-react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors, radii } from '../theme';
@@ -41,11 +41,12 @@ export function SpotlightTile({ initials, name, seen = false, sponsored = false,
 
 export function FeedCard({ saved, onSave, onBook, photo = require('../../assets/photos/salon-styling.jpg') }: { saved: boolean; onSave: () => void; onBook: () => void; photo?: number }) {
   return <Card>
-    <View style={styles.feedArt}><Image source={photo} resizeMode='cover' style={StyleSheet.absoluteFill} />
+    <ImageBackground source={photo} resizeMode="cover" style={styles.feedArt} imageStyle={styles.feedImage}>
+      <View style={styles.feedScrim} />
       <View style={styles.rowBetween}><Badge label="Hair & Beauty" /><IconButton icon={Bookmark} label={saved ? 'Remove saved studio' : 'Save studio'} selected={saved} onPress={onSave} /></View>
       <View style={styles.photoLabel}><Text variant="caption" color={colors.pearl}>Studio photo · 1/4</Text></View>
-    </View>
-    <View style={{ padding: 16, gap: 20 }}>
+    </ImageBackground>
+    <View style={{ padding: 16, gap: 14 }}>
       <View style={styles.rowBetween}>
         <View style={[styles.row, { flex: 1 }]}>
           <BusinessLogo name='Glow Studio' size={44} />
@@ -91,7 +92,9 @@ const styles = StyleSheet.create({
   spotlight: { width: 88, borderWidth: 2, borderRadius: radii.tile, overflow: 'hidden' },
   spotlightArt: { height: 76, alignItems: 'center', justifyContent: 'center' },
   ad: { position: 'absolute', right: 4, top: 4 },
-  feedArt: { height: 232, padding: 12, justifyContent: 'space-between' },
+  feedArt: { height: 220, padding: 12, justifyContent: 'space-between', overflow: 'hidden' },
+  feedImage: { borderTopLeftRadius: radii.card, borderTopRightRadius: radii.card },
+  feedScrim: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: 'rgba(28, 26, 20, 0.08)' },
   photoLabel: { backgroundColor: colors.ink900, borderRadius: radii.chip, alignSelf: 'flex-start', paddingHorizontal: 12, paddingVertical: 8 },
   avatar: { width: 44, height: 44, borderRadius: radii.input, borderWidth: 2, borderColor: colors.gold, backgroundColor: colors.crayolaGold, alignItems: 'center', justifyContent: 'center' },
   date: { width: 56, paddingVertical: 8, backgroundColor: colors.goldTint, borderRadius: radii.input, alignItems: 'center' },

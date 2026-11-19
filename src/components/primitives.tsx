@@ -10,7 +10,7 @@ import { colors, layout, radii, typography } from '../theme';
 export function Text({ variant = 'body', color = colors.ink900, style, ...props }: TextProps & {
   variant?: keyof typeof typography; color?: string;
 }) {
-  return <NativeText {...props} style={[typography[variant], { color }, style]} />;
+  return <NativeText {...props} allowFontScaling={false} style={[typography[variant], { color }, style]} />;
 }
 
 type ButtonProps = Omit<PressableProps, 'style' | 'children'> & {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   button: { borderRadius: radii.button, borderColor: colors.line, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, alignSelf: 'flex-start' },
   iconButton: { width: 44, height: 44, borderRadius: radii.input, borderWidth: 1, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
   notificationDot: { position: 'absolute', right: 7, top: 7, width: 8, height: 8, backgroundColor: colors.gold, borderRadius: 4 },
-  chip: { minHeight: 44, borderRadius: radii.chip, borderWidth: 1, paddingHorizontal: 18, justifyContent: 'center', alignItems: 'center' },
+  chip: { minHeight: 44, borderRadius: radii.chip, borderWidth: 1, paddingHorizontal: 12, justifyContent: 'center', alignItems: 'center' },
   verified: { width: 14, height: 14, borderRadius: 7, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center' },
   inputGroup: { gap: 8 },
   inputFrame: { minHeight: 52, paddingHorizontal: 16, borderRadius: radii.input, backgroundColor: colors.daisy, flexDirection: 'row', alignItems: 'center', gap: 12 },
