@@ -40,7 +40,7 @@ export function Button({ label, variant = 'primary', size = 'default', loading =
 export function IconButton({ icon: Icon, label, dot, selected, ...props }: Omit<ButtonProps, 'label' | 'icon'> & { icon: LucideIcon; label: string; dot?: boolean; selected?: boolean }) {
   return <Pressable {...props} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: !!props.disabled, selected }}
     style={({ pressed }) => [styles.iconButton, { opacity: props.disabled ? 0.4 : pressed ? 0.65 : 1, backgroundColor: selected ? colors.goldTint : colors.daisy }, props.style]}>
-    <Icon size={24} color={colors.ink900} strokeWidth={1.8} />
+    <Icon size={24} color={colors.ink900} strokeWidth={1.8} fill={selected && label.toLowerCase().includes('saved') ? colors.gold : 'none'} />
     {dot && <View style={styles.notificationDot} />}
   </Pressable>;
 }
