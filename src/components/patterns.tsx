@@ -1,6 +1,6 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { CalendarDays, Clock3, Compass, Home, LockKeyhole, MessageCircle, UserRound, Video, type LucideIcon } from 'lucide-react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import { colors, radii } from '../theme';
 import { Badge, Button, Card, IconButton, Text, VerifiedMark } from './primitives';
 import { Bookmark } from 'lucide-react-native';

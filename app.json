@@ -1,37 +1,4 @@
 {
-  "expo": {
-    "name": "NEX Booking",
-    "slug": "nexbooking",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#FBFCF8",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      },
-      "predictiveBackGestureEnabled": false,
-      "package": "com.apreezofficial.nexbooking"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-font",
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#FBFCF8"
-        }
-      ]
-    ],
-    "backgroundColor": "#FBFCF8",
-    "scheme": "nexbooking"
-  }
+  "name": "NEXBooking",
+  "displayName": "NEX Booking"
 }
