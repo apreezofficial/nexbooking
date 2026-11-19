@@ -47,3 +47,7 @@ The initial Expo dependency tree reports three moderate npm audit entries arisin
 App icons are scaffold placeholders. Store signing, bundle identifiers, deployment credentials, and production services should be configured when those details are available.
 
 Sample photography is bundled in `assets/photos`; see `assets/photos/SOURCES.md` for sources and licensing. The photos are illustrative and should be replaced with authorized business portfolio images before launch.
+
+## Android APK
+
+GitHub Actions builds a debug APK on pushes to `main` that change app code, assets, or the workflow, and on manual runs. Open the **Android APK** workflow run in the GitHub Actions tab and download the `nexbooking-debug-apk-*` artifact. Unzip it to get `app-debug.apk`, which can be installed on an Android device for testing. This is a debug build; publishing to the Play Store will require a signed release build.
