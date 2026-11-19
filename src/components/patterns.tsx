@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { colors, radii } from '../theme';
 import { Badge, Button, Card, IconButton, Text, VerifiedMark } from './primitives';
 import { Bookmark } from 'lucide-react-native';
+import { BusinessLogo } from './BusinessLogo';
 
 export const tabs = [
   { label: 'Home', icon: Home }, { label: 'Explore', icon: Compass },
@@ -32,7 +33,7 @@ export function SpotlightTile({ initials, name, seen = false, sponsored = false,
     style={({ pressed }) => [styles.spotlight, { borderColor: seen ? colors.line : colors.gold, opacity: pressed ? 0.7 : 1 }]}>
     <View style={[styles.spotlightArt, { backgroundColor: initials === 'GS' ? colors.crayolaGold : colors.ink900 }]}>
       {sponsored && <View style={styles.ad}><Badge label="Ad" small /></View>}
-      <Text variant="h2" color={initials === 'GS' ? colors.ink900 : colors.gold}>{initials}</Text>
+      <BusinessLogo name={name as 'Zara Nails' | 'Glow Studio' | 'Kemi Cuts' | 'Lagos Lens'} size={58} />
     </View>
     <View style={{ backgroundColor: seen ? colors.daisy : colors.goldTint, paddingVertical: 6, alignItems: 'center' }}><Text variant="overline" numberOfLines={1}>{name}</Text></View>
   </Pressable>;
@@ -47,7 +48,7 @@ export function FeedCard({ saved, onSave, onBook, photo = require('../../assets/
     <View style={{ padding: 16, gap: 20 }}>
       <View style={styles.rowBetween}>
         <View style={[styles.row, { flex: 1 }]}>
-          <View style={styles.avatar}><Text variant="button">GS</Text></View>
+          <BusinessLogo name='Glow Studio' size={44} />
           <View style={{ flex: 1 }}><View style={[styles.row, { gap: 4, flexWrap: 'wrap' }]}><Text variant="h3">Glow Studio</Text><VerifiedMark /></View><Text variant="caption" color={colors.muted}>Lekki · 1.2 km away</Text></View>
         </View>
         <Badge label="★ 4.9" />
