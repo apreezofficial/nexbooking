@@ -30,7 +30,7 @@ export default function LegalPage({ doc, eyebrow, title, description, image, upd
   const others = (Object.keys(documents) as LegalKey[]).filter((key) => key !== doc);
 
   return (
-    <RouteShell>
+    <RouteShell crumb={{ name: documents[doc].label, path: documents[doc].href }}>
       <RouteHero compact hideCta eyebrow={eyebrow} title={title} description={description} image={image} />
       <section className="route-content legal-content">
         <div className="legal-layout">

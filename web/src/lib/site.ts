@@ -18,18 +18,18 @@ function resolveSiteUrl(): string {
 
 export const siteUrl = resolveSiteUrl();
 
-/** Every public page, used by the sitemap. */
+/** Every public page. The sitemap and llms.txt are both built from this list. */
 export const publicRoutes = [
-  { path: "/", priority: 1, changeFrequency: "weekly" },
-  { path: "/features", priority: 0.8, changeFrequency: "monthly" },
-  { path: "/discover", priority: 0.8, changeFrequency: "weekly" },
-  { path: "/business", priority: 0.8, changeFrequency: "monthly" },
-  { path: "/booking", priority: 0.8, changeFrequency: "weekly" },
-  { path: "/faq", priority: 0.6, changeFrequency: "monthly" },
-  { path: "/contact", priority: 0.5, changeFrequency: "yearly" },
-  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
-  { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
-  { path: "/cookies", priority: 0.3, changeFrequency: "yearly" },
+  { path: "/", label: "Home", group: "main", priority: 1, changeFrequency: "weekly", summary: "Overview of EdeBooking: discover businesses, book services and run your own business space." },
+  { path: "/features", label: "Features", group: "main", priority: 0.8, changeFrequency: "monthly", summary: "Appointments, payments, daily notes and tasks, proforma invoices, receipts and portfolios." },
+  { path: "/discover", label: "Discover", group: "main", priority: 0.8, changeFrequency: "weekly", summary: "Browse local businesses by category and explore their work before booking." },
+  { path: "/business", label: "For business", group: "main", priority: 0.8, changeFrequency: "monthly", summary: "How a business gets its own space: profile, portfolio, bookings, notes and records." },
+  { path: "/booking", label: "Booking", group: "main", priority: 0.8, changeFrequency: "weekly", summary: "Search services, consultations, appointments, events, classes and rentals." },
+  { path: "/faq", label: "FAQ", group: "main", priority: 0.6, changeFrequency: "monthly", summary: "Answers to common questions about bookings, payments, invoices and notes." },
+  { path: "/contact", label: "Contact", group: "main", priority: 0.5, changeFrequency: "yearly", summary: "Get in touch about bookings, your business space or the app." },
+  { path: "/privacy", label: "Privacy Policy", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "How information is collected, used, shared and protected." },
+  { path: "/terms", label: "Terms of Service", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "The terms for customers and businesses using the platform." },
+  { path: "/cookies", label: "Cookie Policy", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "What is stored in the browser and how to control it." },
 ] as const;
 
 /**

@@ -10,12 +10,15 @@ export const currencies = [
   { code: "IDR", name: "Indonesian Rupiah", flag: "🇮🇩" },
 ];
 
+import { readConsent } from "@/lib/cookie-consent";
+
 const STORAGE_KEY = "nexbooking-currency";
 const DEFAULT_CODE = "NGN";
 
 // The viewer's saved choice lives in localStorage. Storage can be blocked, so every access is guarded.
 function readSaved(): string {
   try {
+    if (readConsent() !== true) return DEFAULT_CODE;
     const saved = window.localStorage.getItem(STORAGE_KEY);
     if (saved && currencies.some((c) => c.code === saved)) return saved;
   } catch {
@@ -60,7 +63,7 @@ export default function CurrencySelect() {
     setChosen(code);
     setOpen(false);
     try {
-      window.localStorage.setItem(STORAGE_KEY, code);
+      if (readConsent() === true) window.localStorage.setItem(STORAGE_KEY, code);
     } catch {
       /* storage unavailable */
     }

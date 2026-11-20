@@ -82,7 +82,7 @@ export default function Home(){return <main className="page">
   </div>
   <div className="feature-row notes-row">
    <div className="feature-picture notes-picture"><Art file="feature-notes-scene.png" className="feature-scene"/>
-    <div className="note-mock mock-card" data-reveal><span className="pill"><Icon name="mic"/> YOUR DAY, ORGANISED</span><h3>A little less admin.<br/>A lot more doing.</h3><p className="mock-date"><Icon name="calendar"/> Today’s business tasks</p><ul>{['Confirm Ada’s consultation','Send invoice to Amara','Plan tomorrow’s appointments'].map((t,i)=><li key={t}><span className={i<2?'task-done':''}>{i<2?'✓':''}</span>{t}</li>)}</ul><div className="voice-wave"><Icon name="mic"/><span>{Array.from({length:20},(_,i)=><i key={i} style={{'--bar':`${8+(i*7%21)}px`,'--d':`${i*70}ms`} as CSSProperties}/>)}</span><small>Just say what’s on your mind</small></div></div>
+    <div className="note-mock mock-card" data-reveal><span className="pill"><Icon name="mic"/> YOUR DAY, ORGANISED</span><p className="mock-title">A little less admin.<br/>A lot more doing.</p><p className="mock-date"><Icon name="calendar"/> Today’s business tasks</p><ul>{['Confirm Ada’s consultation','Send invoice to Amara','Plan tomorrow’s appointments'].map((t,i)=><li key={t}><span className={i<2?'task-done':''}>{i<2?'✓':''}</span>{t}</li>)}</ul><div className="voice-wave"><Icon name="mic"/><span>{Array.from({length:20},(_,i)=><i key={i} style={{'--bar':`${8+(i*7%21)}px`,'--d':`${i*70}ms`} as CSSProperties}/>)}</span><small>Just say what’s on your mind</small></div></div>
     <Mascot className="notes-mascot"/>
     <div className="floating-chip" data-reveal><Icon name="check"/> Task added to your day</div>
    </div>
@@ -95,7 +95,7 @@ export default function Home(){return <main className="page">
      <Art file="discover-salon.png" className="service-preview-art"/>
      <div className="service-preview-copy">
       <small>Service preview</small>
-      <h3>Salon &amp; wellness consultation</h3>
+      <p className="mock-title">Salon &amp; wellness consultation</p>
       <p>Meet your stylist, discuss what you’re looking for, and choose the right service.</p>
      </div>
     </article>
@@ -107,7 +107,7 @@ export default function Home(){return <main className="page">
     <Art file="feature-booking-scene.png" className="feature-scene"/>
     <div className="mock-card direct-card" data-reveal>
      <p className="mock-date"><Icon name="calendar"/> Your booking</p>
-     <h3>Salon &amp; wellness consultation</h3>
+     <p className="mock-title">Salon &amp; wellness consultation</p>
      <div className="mini-summary"><strong>Service · Payment · Receipt</strong></div>
      <a href="#booking" className="btn btn-gradient">Browse appointments</a>
     </div>

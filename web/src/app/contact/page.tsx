@@ -21,7 +21,7 @@ const shortcuts = [
 
 export default function ContactPage() {
   return (
-    <RouteShell>
+    <RouteShell crumb={{ name: "Contact", path: "/contact" }}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "ContactPage", name: `Contact ${siteName}`, url: `${siteUrl}/contact`, isPartOf: { "@type": "WebSite", name: siteName, url: siteUrl } }} />
       <RouteHero
         eyebrow="WE’RE HERE TO HELP"

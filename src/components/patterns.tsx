@@ -86,9 +86,9 @@ export function Banner({ premium = false, onUpgrade }: { premium?: boolean; onUp
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
-  tabBar: { minHeight: 64, backgroundColor: 'transparent', borderRadius: radii.pill, flexDirection: 'row', alignItems: 'center', padding: 8, gap: 2 },
-  tab: { minWidth: 44, minHeight: 48, flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, borderRadius: radii.pill },
-  activeTab: { backgroundColor: colors.gold, flexGrow: 2, paddingHorizontal: 10 },
+  tabBar: { minHeight: 64, backgroundColor: 'transparent', borderRadius: radii.pill, flexDirection: 'row', alignItems: 'center', padding: 8, gap: 4 },
+  tab: { minWidth: 40, minHeight: 48, flex: 1, flexShrink: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, borderRadius: radii.pill },
+  activeTab: { backgroundColor: colors.gold, flexGrow: 2.3, flexShrink: 0, minWidth: 104, paddingHorizontal: 10 },
   spotlight: { width: 88, borderWidth: 2, borderRadius: radii.tile, overflow: 'hidden' },
   spotlightArt: { height: 76, alignItems: 'center', justifyContent: 'center' },
   ad: { position: 'absolute', right: 4, top: 4 },

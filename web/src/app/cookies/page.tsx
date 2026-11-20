@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Cookie Policy",
-  description: "What EdeBooking stores in your browser, why it does so, and how you can block or clear it.",
+  description: "What EdeBooking stores in your browser, such as your cookie choice and preferred currency, why it does so, and how you can change, block or clear it.",
   path: "/cookies",
 });
 
@@ -22,8 +22,8 @@ const sections: LegalSection[] = [
       "We keep this to a minimum:",
       {
         list: [
-          "Essential: technologies the site needs in order to work. We use them only for that purpose.",
-          "Preferences: your chosen currency is saved in your browser’s local storage so it is remembered next time. It stays on your device.",
+          "Essential: we save your cookie preference so we can respect your choice on future visits.",
+          "Preferences: if you allow preference storage, your chosen currency is saved in your browser’s local storage so it is remembered next time. It stays on your device.",
           "Analytics and advertising: we do not currently use analytics or advertising cookies. If that changes, we will update this page and ask for your consent where the law requires it.",
         ],
       },
@@ -40,7 +40,7 @@ const sections: LegalSection[] = [
     id: "your-controls",
     title: "Managing cookies",
     body: [
-      "You can block or delete cookies and clear local storage in your browser settings. Doing so may reset your preferences, such as your currency, and some features may not work as expected. Your browser’s help pages explain how.",
+      "Use the Cookie settings button at the bottom of any page to change your choice. Choosing Essential only also removes your saved currency. You can block or delete cookies and clear local storage in your browser settings. Doing so may reset your preferences, such as your currency, and some features may not work as expected. Your browser’s help pages explain how.",
     ],
   },
   {

@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Terms of Service",
-  description: "The terms that apply when you use EdeBooking to book services, make payments or run a business space on the platform.",
+  description: "The terms that apply when you use EdeBooking to book services, make payments or run a business space, including accounts, bookings, payments and content.",
   path: "/terms",
 });
 
