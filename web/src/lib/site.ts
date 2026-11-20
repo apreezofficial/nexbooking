@@ -26,6 +26,7 @@ export const publicRoutes = [
   { path: "/business", label: "For business", group: "main", priority: 0.8, changeFrequency: "monthly", summary: "How a business gets its own space: profile, portfolio, bookings, notes and records." },
   { path: "/booking", label: "Booking", group: "main", priority: 0.8, changeFrequency: "weekly", summary: "Search services, consultations, appointments, events, classes and rentals." },
   { path: "/faq", label: "FAQ", group: "main", priority: 0.6, changeFrequency: "monthly", summary: "Answers to common questions about bookings, payments, invoices and notes." },
+  { path: "/brand", label: "Brand", group: "main", priority: 0.4, changeFrequency: "yearly", summary: "Logo, mascot and assistant bot files, colours, typography, usage rules and a press boilerplate." },
   { path: "/contact", label: "Contact", group: "main", priority: 0.5, changeFrequency: "yearly", summary: "Get in touch about bookings, your business space or the app." },
   { path: "/privacy", label: "Privacy Policy", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "How information is collected, used, shared and protected." },
   { path: "/terms", label: "Terms of Service", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "The terms for customers and businesses using the platform." },

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { ScrollView, View, Pressable, TextInput, Image, StyleSheet, StatusBar } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, ScrollView, View, Pressable, TextInput, Image, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Bell, Search, MapPin, ChevronRight, MessageCircle, Plus, Check, Mic, Send, Eye, EyeOff, Clock3, Star, Compass, UserRound, CreditCard, LockKeyhole, Heart, Settings, CircleHelp, LogOut } from 'lucide-react-native';
 import { Badge, Banner, Button, Card, Chip, FeedCard, IconButton, Input, SpotlightTile, TabBar, Text, VerifiedMark, BusinessLogo, type TabName } from '../components';
@@ -15,6 +15,8 @@ const box={backgroundColor:colors.daisy,borderWidth:1,borderColor:colors.line,bo
 export function ProductScreen(){
  const [page,setPage]=useState<Page>('Splash'),[history,setHistory]=useState<Page[]>([]),[tab,setTab]=useState<TabName>('Home'),[selected,setSelected]=useState('Silk press & trim'),[staff,setStaff]=useState('Amaka'),[day,setDay]=useState(18),[time,setTime]=useState('13:00'),[filter,setFilter]=useState('All'),[saved,setSaved]=useState<Record<number,boolean>>({}),[query,setQuery]=useState(''),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[name,setName]=useState(''),[phone,setPhone]=useState(''),[note,setNote]=useState(''),[message,setMessage]=useState(''),[messages,setMessages]=useState<string[]>([]),[notice,setNotice]=useState(''),[reason,setReason]=useState('Change of plans'),[showPassword,setShowPassword]=useState(false),[termsAccepted,setTermsAccepted]=useState(true);
  const [paymentMethod,setPaymentMethod]=useState('Debit / credit card'),[cardholder,setCardholder]=useState(''),[cardNumber,setCardNumber]=useState(''),[cardExpiry,setCardExpiry]=useState(''),[cardCvc,setCardCvc]=useState('');
+ const fade=useRef(new Animated.Value(1)).current;
+ useEffect(()=>{fade.setValue(0.96);Animated.timing(fade,{toValue:1,duration:220,useNativeDriver:true}).start()},[page]);
  useEffect(()=>{if(page!=='Splash')return;const timeout=setTimeout(()=>setPage('Onboarding'),1800);return()=>clearTimeout(timeout)},[page]);
  const go=(next:Page)=>{setHistory(v=>[...v,page]);setPage(next);setNotice('')},back=()=>{setPage(history.at(-1)??'Home');setHistory(v=>v.slice(0,-1))};
  const amount=services.find(s=>s[0]===selected)?.[2]??'₦25,000';
@@ -76,7 +78,7 @@ export function ProductScreen(){
  case 'Consultation':body=<>{header('Consultation')}<Text variant="display">Amaka</Text><Text color={colors.muted}>Glow Studio · Silk press consult</Text><Button label="End call" variant="dark" onPress={()=>go('Booking detail')}/></>;break;
  }
  const showNav = page==='Home'||page==='Explore'||page==='Schedule'||page==='Inbox'||page==='Profile';
- return <SafeAreaView style={{flex:1,backgroundColor:page==='Splash'?colors.ink900:colors.pearl}}><StatusBar barStyle={page==='Splash'?'light-content':'dark-content'}/><ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{width:'100%',maxWidth:560,alignSelf:'center',paddingHorizontal:16,paddingTop:page==='Splash'?0:page==='Sign up'?0:page==='Login'?18:24,paddingBottom:page==='Splash'?0:page==='Onboarding'?45:showNav?132:48,gap:page==='Sign up'?4:page==='Login'?10:18,flexGrow:page==='Splash'||page==='Onboarding'?1:undefined}}>{body}{!!notice&&<Card style={{padding:12,backgroundColor:colors.goldTint}}><Text variant="caption">{notice}</Text></Card>}</ScrollView>{showNav&&<View style={{position:'absolute',left:16,right:16,bottom:16,maxWidth:528,alignSelf:'center',borderRadius:32,overflow:'hidden',backgroundColor:colors.ink900,borderWidth:1,borderColor:'rgba(255,255,255,0.14)',zIndex:20,elevation:20}}>{nav()}</View>}</SafeAreaView>;
+ return <SafeAreaView style={{flex:1,backgroundColor:page==='Splash'?colors.ink900:colors.pearl}}><StatusBar barStyle={page==='Splash'?'light-content':'dark-content'}/><Animated.View style={{flex:1,opacity:fade}}><ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{width:'100%',maxWidth:560,alignSelf:'center',paddingHorizontal:16,paddingTop:page==='Splash'?0:page==='Sign up'?0:page==='Login'?18:24,paddingBottom:page==='Splash'?0:page==='Onboarding'?45:showNav?132:48,gap:page==='Sign up'?4:page==='Login'?10:18,flexGrow:page==='Splash'||page==='Onboarding'?1:undefined}}>{body}{!!notice&&<Card style={{padding:12,backgroundColor:colors.goldTint}}><Text variant="caption">{notice}</Text></Card>}</ScrollView></Animated.View>{showNav&&<View style={{position:'absolute',left:16,right:16,bottom:16,maxWidth:528,alignSelf:'center',borderRadius:32,overflow:'hidden',backgroundColor:colors.ink900,borderWidth:1,borderColor:'rgba(255,255,255,0.14)',zIndex:20,elevation:20}}>{nav()}</View>}</SafeAreaView>;
 }
 
 function SplashScreen(){

@@ -41,6 +41,9 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
           <DistortionWave
             revealed={complete}
             source={submitButton}
+            palette="#D4AF37"
+            prewarm={false}
+            resolution={1}
             revealedContent={<div className="auth-demo-success" role="status">
               <span className="auth-success-mark" aria-hidden="true">✓</span>
               <h1>{signup ? "You’re all set" : "Welcome back"}</h1>
