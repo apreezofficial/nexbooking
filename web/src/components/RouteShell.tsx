@@ -4,7 +4,7 @@ import SiteNav from "@/components/SiteNav";
 
 export type MarketingPage = "Features" | "Discover" | "For business" | "Booking" | "FAQ";
 
-export default function RouteShell({ current, children }: { current: MarketingPage; children: ReactNode }) {
+export default function RouteShell({ current, children }: { current?: MarketingPage; children: ReactNode }) {
   return (
     <main className="page route-page">
       <div className="page-outline" aria-hidden="true" />

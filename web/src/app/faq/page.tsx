@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import LandingControls from "@/components/LandingControls";
 import RouteHero from "@/components/RouteHero";
 import RouteShell from "@/components/RouteShell";
@@ -16,6 +17,8 @@ const questions = [
 export default function FaqPage() {
   return <RouteShell current="FAQ">
     <RouteHero eyebrow="HERE TO HELP" title="Questions? We’ve got you." description="A few answers to help you get to know NexBooking and what you can do here." image="discover-landscape.png" cta="Explore the features" href="/features"/>
-    <section className="route-content route-faq"><div className="route-section-heading"><p className="eyebrow">A FEW THINGS YOU MIGHT ASK</p><h2 className="section-title">How can we help?</h2><p className="section-sub">Choose a topic or browse the most common questions.</p></div><LandingControls mode="faq" questions={questions}/></section>
+    <section className="route-content route-faq"><div className="route-section-heading"><p className="eyebrow">A FEW THINGS YOU MIGHT ASK</p><h2 className="section-title">How can we help?</h2><p className="section-sub">Choose a topic or browse the most common questions.</p></div><LandingControls mode="faq" questions={questions}/>
+      <div className="route-callout"><div><p className="eyebrow">STILL WONDERING?</p><h2>Can’t find what you’re looking for?</h2></div><Link className="btn btn-gradient" href="/contact">Contact us</Link></div>
+    </section>
   </RouteShell>;
 }
