@@ -8,7 +8,7 @@ import { BusinessLogo } from './BusinessLogo';
 
 export const tabs = [
   { label: 'Home', icon: Home }, { label: 'Explore', icon: Compass },
-  { label: 'Bookings', icon: CalendarDays }, { label: 'Messages', icon: MessageCircle },
+  { label: 'Schedule', icon: CalendarDays }, { label: 'Inbox', icon: MessageCircle },
   { label: 'Profile', icon: UserRound },
 ] as const;
 export type TabName = typeof tabs[number]['label'];
@@ -86,7 +86,7 @@ export function Banner({ premium = false, onUpgrade }: { premium?: boolean; onUp
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
-  tabBar: { minHeight: 64, backgroundColor: colors.ink900, borderRadius: radii.pill, flexDirection: 'row', alignItems: 'center', padding: 8, gap: 2, boxShadow: '0px 8px 24px rgba(28, 26, 20, 0.18)' },
+  tabBar: { minHeight: 64, backgroundColor: 'transparent', borderRadius: radii.pill, flexDirection: 'row', alignItems: 'center', padding: 8, gap: 2 },
   tab: { minWidth: 44, minHeight: 48, flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, borderRadius: radii.pill },
   activeTab: { backgroundColor: colors.gold, flexGrow: 2, paddingHorizontal: 10 },
   spotlight: { width: 88, borderWidth: 2, borderRadius: radii.tile, overflow: 'hidden' },
