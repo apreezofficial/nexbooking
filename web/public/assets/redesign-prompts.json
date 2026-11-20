@@ -1,0 +1,50 @@
+{
+  "generator": "built-in image_gen",
+  "style": "Flat editorial vector-like illustration, bold clean silhouettes, soft paper grain, no typography or watermarks",
+  "assets": [
+    {
+      "file": "discover-salon.png",
+      "prompt": "Close-up pink salon chair, round mirror, hair scissors and hairdryer; bold blush pink and burgundy palette. No people."
+    },
+    {
+      "file": "discover-clinic.png",
+      "prompt": "A friendly Black doctor with stethoscope, mint medical office, prominent green medical cross. Mint and white palette."
+    },
+    {
+      "file": "discover-studio.png",
+      "prompt": "A bold creative workspace, large orange desk, laptop with colourful geometric design, paints. Terracotta and orange palette."
+    },
+    {
+      "file": "discover-hotel.png",
+      "prompt": "A boutique hotel facade with blue swimming pool and white umbrellas, midnight blue and aqua palette."
+    },
+    {
+      "file": "discover-tutor.png",
+      "prompt": "A Black tutor pointing to a chalkboard with geometric drawings, stack of yellow books. Golden yellow and forest green palette."
+    },
+    {
+      "file": "discover-photography.png",
+      "prompt": "Extreme close-up of a professional black camera with large lens against coral orange backdrop, no landscape."
+    },
+    {
+      "file": "discover-fitness.png",
+      "prompt": "Purple kettlebell and orange dumbbells beside a rolled yoga mat in a minimal gym. Violet and orange palette."
+    },
+    {
+      "file": "discover-events.png",
+      "prompt": "A glowing outdoor concert stage with magenta curtains, strings of golden lights and audience silhouettes at dusk. Magenta and indigo palette."
+    },
+    {
+      "file": "feature-notes-scene.png",
+      "prompt": "An expansive whimsical countryside with turquoise sky, rolling lime green hills, distant layered blue mountains, sun rays, small bushes and a large umbrella shaped tree on the right. Leave the center relatively open for floating UI cards. Wide 3:2 landscape."
+    },
+    {
+      "file": "feature-booking-scene.png",
+      "prompt": "A flat illustrated river with a charming orange passenger boat, green riverbanks, blue mountains and pink sunburst sky, flowers in foreground. Wide 3:2 landscape."
+    },
+    {
+      "file": "discover-landscape.png",
+      "prompt": "A panoramic whimsical landscape for the backdrop of a discovery section: very pale blue sky covering top TWO THIRDS left mostly open for overlay circles, clouds and small birds at the edges; bottom third lush rolling green hills, layered blue mountains, cypress trees, winding ochre path beside vivid blue lake. Flat vector-like illustration, crisp large shapes, not photorealistic, no buildings. Wide landscape 3:2 composition."
+    }
+  ]
+}

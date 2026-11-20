@@ -1,0 +1,66 @@
+{
+  "generator": "Built-in image_gen",
+  "sharedPrompt": "Style: polished flat vector-like raster illustration, crisp organic shapes, subtle soft shadows, bright greens, turquoise and cornflower blue with navy and lavender accents, friendly coastal aesthetic. No watermark, logos, typography or borders.",
+  "assets": [
+    {
+      "file": "booking-card.png",
+      "subject": "A phone with a green booking confirmation tick, calendar and small map pin. Centered portrait composition, no readable text.",
+      "transparent": true
+    },
+    {
+      "file": "deal-invoice.png",
+      "subject": "A proforma invoice becoming a paid receipt, a green check stamp and coins, dynamic compact composition. No letters or numbers.",
+      "transparent": true
+    },
+    {
+      "file": "discover-bg.png",
+      "subject": "A wide panoramic strip of rolling green coastal hills, turquoise sea, palms and a small village along the bottom. Landscape 3:1 composition. Pale lavender sky, no text.",
+      "transparent": false
+    },
+    {
+      "file": "mascot-suitcase.png",
+      "subject": "A friendly blue rolling suitcase character with sunglasses, waving, a small green landscape at its feet. Centered full character, no text.",
+      "transparent": true
+    },
+    {
+      "file": "business-salon.png",
+      "subject": "A stylish salon chair and hair dryer in a bright welcoming salon, centered subject, square illustration suitable for circular crop.",
+      "transparent": false
+    },
+    {
+      "file": "business-clinic.png",
+      "subject": "A welcoming doctor's clinic with a stethoscope, examination chair and green medical cross, centered square illustration suitable for circular crop.",
+      "transparent": false
+    },
+    {
+      "file": "business-studio.png",
+      "subject": "A creative design studio with a desk, laptop, colourful art and camera, centered square illustration suitable for circular crop.",
+      "transparent": false
+    },
+    {
+      "file": "business-hotel.png",
+      "subject": "A charming small boutique hotel with palms and welcoming entrance, centered square illustration suitable for circular crop, no text.",
+      "transparent": false
+    },
+    {
+      "file": "business-tutor.png",
+      "subject": "A friendly tutor beside a whiteboard with abstract shapes, books on a desk, centered square illustration suitable for circular crop, no letters.",
+      "transparent": false
+    },
+    {
+      "file": "business-photography.png",
+      "subject": "A professional camera on a tripod overlooking a warm coastal sunset, centered square illustration suitable for circular crop.",
+      "transparent": false
+    },
+    {
+      "file": "business-fitness.png",
+      "subject": "Dumbbells and a rolled yoga mat in a bright gym with plants, centered square illustration suitable for circular crop.",
+      "transparent": false
+    },
+    {
+      "file": "business-events.png",
+      "subject": "A small outdoor stage, string lights and a celebratory crowd, centered square illustration suitable for circular crop.",
+      "transparent": false
+    }
+  ]
+}
