@@ -9,7 +9,7 @@ import SiteFooter from "@/components/SiteFooter";
 import JsonLd from "@/components/JsonLd";
 import { pageMetadata, siteDescription, siteName, siteTagline, siteUrl } from "@/lib/site";
 
-// The home page title is the brand and tagline on their own, without the " | NexBooking" suffix.
+// The home page title is the brand and tagline on their own, without the " | EdeBooking" suffix.
 export const metadata = pageMetadata({
   title: siteTagline,
   absoluteTitle: `${siteName} | ${siteTagline}`,
@@ -47,8 +47,8 @@ const businesses = [
  {name:"Events",x:81,y:45,s:12,color:"#db92c4"},
 ];
 const faqs=[
- ["What can I do with NexBooking?","Discover businesses, book services, arrange consultations and manage payments. Business owners can also organise notes, daily tasks, invoices and their portfolio."],
- ["Does every business get its own space?","Yes. Each business has its own profile, team, services, bookings and records on the shared NexBooking platform."],
+ ["What can I do with EdeBooking?","Discover businesses, book services, arrange consultations and manage payments. Business owners can also organise notes, daily tasks, invoices and their portfolio."],
+ ["Does every business get its own space?","Yes. Each business has its own profile, team, services, bookings and records on the shared EdeBooking platform."],
  ["Can I create invoices and receipts?","The accounts module is designed for proforma invoices, payment records and receipts, keeping your business paperwork together."],
  ["How will voice notes work?","Voice notes and audio translation are planned to help turn spoken tasks into written lists. Availability will be shared when these features launch."],
  ["Can I showcase my work?","Yes. Your profile brings your work and services together in a familiar visual feed, so customers can explore before booking."],
@@ -151,9 +151,9 @@ export default function Home(){return <main className="page">
   <article className="featured-article" data-reveal>
    <Art file="discover-studio.png" className="featured-article-image"/>
    <div><Eyebrow>FEATURED GUIDE</Eyebrow><h3>Build a business profile customers can book from</h3><p>Show what you do, list your services and give customers a clear way to make an appointment.</p><a href="#business" className="text-link">Explore business profiles</a></div>
-  </article><div className="journal-grid">{[{file:'discover-studio.png',tag:'YOUR BUSINESS',title:'Let your work do the talking.',body:'A visual profile gives customers a feel for what makes you, you.'},{file:'discover-tutor.png',tag:'YOUR EVERYDAY',title:'Make room for a calmer day.',body:'Keep the little things together, from today’s tasks to tomorrow’s appointments.'},{file:'discover-events.png',tag:'YOUR COMMUNITY',title:'Great connections start here.',body:'Discover businesses and follow the people behind the work.'}].map((a,i)=><article key={a.title} data-reveal style={delay(i)}><Art file={a.file} className="journal-image"/><div><small>{a.tag}</small><h3>{a.title}</h3><p>{a.body}</p><a href="#features" className="text-link">Explore NexBooking</a></div></article>)}</div></section>
+  </article><div className="journal-grid">{[{file:'discover-studio.png',tag:'YOUR BUSINESS',title:'Let your work do the talking.',body:'A visual profile gives customers a feel for what makes you, you.'},{file:'discover-tutor.png',tag:'YOUR EVERYDAY',title:'Make room for a calmer day.',body:'Keep the little things together, from today’s tasks to tomorrow’s appointments.'},{file:'discover-events.png',tag:'YOUR COMMUNITY',title:'Great connections start here.',body:'Discover businesses and follow the people behind the work.'}].map((a,i)=><article key={a.title} data-reveal style={delay(i)}><Art file={a.file} className="journal-image"/><div><small>{a.tag}</small><h3>{a.title}</h3><p>{a.body}</p><a href="#features" className="text-link">Explore EdeBooking</a></div></article>)}</div></section>
 
- <section className="app-banner" id="download"><Art file="feature-booking-scene.png" className="app-background"/><div className="app-rays"/><div className="app-copy" data-reveal><Eyebrow icon="phone">ONE APP. SO MANY POSSIBILITIES.</Eyebrow><h2>Your business. Your people.<br/>Your NexBooking.</h2><p>Make a little more room for what you love.</p><div className="store-badges"><a href="#features" className="store-badge"><Icon name="phone"/><span><small>Built for your day</small><strong>Explore the features</strong></span></a><a href="#business" className="store-badge"><Icon name="shop"/><span><small>Made for your business</small><strong>Explore your space</strong></span></a></div></div><Mascot className="app-mascot"/></section>
+ <section className="app-banner" id="download"><Art file="feature-booking-scene.png" className="app-background"/><div className="app-rays"/><div className="app-copy" data-reveal><Eyebrow icon="phone">ONE APP. SO MANY POSSIBILITIES.</Eyebrow><h2>Your business. Your people.<br/>Your EdeBooking.</h2><p>Make a little more room for what you love.</p><div className="store-badges"><a href="#features" className="store-badge"><Icon name="phone"/><span><small>Built for your day</small><strong>Explore the features</strong></span></a><a href="#business" className="store-badge"><Icon name="shop"/><span><small>Made for your business</small><strong>Explore your space</strong></span></a></div></div><Mascot className="app-mascot"/></section>
 
  <SiteFooter/>
  </main>}

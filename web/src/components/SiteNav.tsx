@@ -13,7 +13,7 @@ export default function SiteNav({ current }: { current?: (typeof items)[number][
   return (
     <header className="nav-wrap">
       <nav className="nav" aria-label="Main navigation">
-        <Link className="logo" href="/">NexBooking</Link>
+        <Link className="logo" href="/">EdeBooking</Link>
         <div className="nav-links">
           {items.map(([label, href], index) => (
             <Link
@@ -29,8 +29,8 @@ export default function SiteNav({ current }: { current?: (typeof items)[number][
         </div>
         <div className="nav-actions">
           <CurrencySelect />
-          <Link className="btn btn-ghost" href="/#download">Sign up</Link>
-          <Link className="btn btn-dark" href="/#download">Login</Link>
+          <Link className="btn btn-ghost" href="/signup">Sign up</Link>
+          <Link className="btn btn-dark" href="/login">Login</Link>
         </div>
       </nav>
     </header>

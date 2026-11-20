@@ -9,13 +9,13 @@ import { pageMetadata, siteName, siteUrl } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Contact us",
-  description: "Questions about a booking, your business space or the NexBooking app? Send us a note and we'll point you in the right direction.",
+  description: "Questions about a booking, your business space or the EdeBooking app? Send us a note and we'll point you in the right direction.",
   path: "/contact",
 });
 
 const shortcuts = [
   { icon: "book", title: "Browse the FAQ", text: "Quick answers about bookings, payments and business tools.", href: "/faq" },
-  { icon: "shop", title: "Run a business?", text: "See how a NexBooking space brings your work and customers together.", href: "/business" },
+  { icon: "shop", title: "Run a business?", text: "See how a EdeBooking space brings your work and customers together.", href: "/business" },
   { icon: "spark", title: "Explore the features", text: "Notes, bookings, payments and records, working as one.", href: "/features" },
 ] as const;
 
@@ -26,7 +26,7 @@ export default function ContactPage() {
       <RouteHero
         eyebrow="WE’RE HERE TO HELP"
         title="Let’s talk."
-        description="Questions about a booking, your business space or the NexBooking app? Send us a note and we’ll point you in the right direction."
+        description="Questions about a booking, your business space or the EdeBooking app? Send us a note and we’ll point you in the right direction."
         image="discover-landscape.png"
         cta="Browse the FAQ"
         href="/faq"

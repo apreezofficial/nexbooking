@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Cookie Policy",
-  description: "What NexBooking stores in your browser, why it does so, and how you can block or clear it.",
+  description: "What EdeBooking stores in your browser, why it does so, and how you can block or clear it.",
   path: "/cookies",
 });
 
@@ -17,7 +17,7 @@ const sections: LegalSection[] = [
   },
   {
     id: "what-we-use",
-    title: "What NexBooking uses",
+    title: "What EdeBooking uses",
     body: [
       "We keep this to a minimum:",
       {
@@ -58,7 +58,7 @@ export default function CookiesPage() {
       doc="cookies"
       eyebrow="WHAT WE STORE"
       title="Cookie Policy"
-      description="A short guide to what your browser keeps for NexBooking, and how to stay in control of it."
+      description="A short guide to what your browser keeps for EdeBooking, and how to stay in control of it."
       image="feature-notes-scene.png"
       updated="20 November 2026"
       sections={sections}

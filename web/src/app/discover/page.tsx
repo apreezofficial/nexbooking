@@ -22,7 +22,7 @@ const categories = [
 export default function DiscoverPage() {
   return <RouteShell current="Discover">
     <RouteHero eyebrow="A WORLD OF GOOD BUSINESSES" title="Find your next favourite." description="A fresh cut, a bright idea or a moment for you. Meet local businesses and explore their work before you book." image="discover-landscape.png" cta="Find a service"/>
-    <section className="route-content"><div className="route-section-heading"><p className="eyebrow">EXPLORE YOUR NEIGHBOURHOOD</p><h2 className="section-title">A good match is closer than you think.</h2><p className="section-sub">Browse the kinds of places and people you can discover on NexBooking.</p></div>
+    <section className="route-content"><div className="route-section-heading"><p className="eyebrow">EXPLORE YOUR NEIGHBOURHOOD</p><h2 className="section-title">A good match is closer than you think.</h2><p className="section-sub">Browse the kinds of places and people you can discover on EdeBooking.</p></div>
       <div className="route-category-grid">{categories.map(([name, image, text]) => <Link className="route-category-card" href="/booking" key={name}><SiteArt file={image} className="route-category-image" alt=""/><div><h3>{name}</h3><p>{text}</p><span>Explore businesses ↗</span></div></Link>)}</div>
     </section>
   </RouteShell>;

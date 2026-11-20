@@ -21,7 +21,7 @@ export default function FeaturesPage() {
     <RouteHero eyebrow="A LITTLE MORE ROOM IN YOUR DAY" title="The everyday tools that keep things moving." description="Discover, book and manage the details of work and life in one thoughtful place." image="feature-notes-scene.png" cta="See how booking works"/>
     <section className="route-content"><div className="route-section-heading"><p className="eyebrow">MADE TO WORK TOGETHER</p><h2 className="section-title">One place for the details.</h2><p className="section-sub">From the first search to the last receipt, the pieces stay connected.</p></div>
       <div className="route-feature-grid">{features.map((feature) => <article className="route-feature-card" key={feature.title}><SiteArt file={feature.image} className="route-feature-image" alt=""/><div><small>{feature.label}</small><h3>{feature.title}</h3><p>{feature.text}</p></div></article>)}</div>
-      <div className="route-callout"><div><p className="eyebrow">BUILT AROUND YOUR ROUTINE</p><h2>Less switching.<br/>More getting on with it.</h2></div><Link className="btn btn-gradient" href="/discover">Explore NexBooking</Link></div>
+      <div className="route-callout"><div><p className="eyebrow">BUILT AROUND YOUR ROUTINE</p><h2>Less switching.<br/>More getting on with it.</h2></div><Link className="btn btn-gradient" href="/discover">Explore EdeBooking</Link></div>
     </section>
   </RouteShell>;
 }

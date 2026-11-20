@@ -50,7 +50,7 @@ export default function ContactForm() {
         <span className="form-success-icon"><Icon name="check" /></span>
         <h2>Thanks, {firstName}.</h2>
         <p>
-          Your note about “{sentTo.topic.toLowerCase()}” is ready. Direct messaging opens when NexBooking launches,
+          Your note about “{sentTo.topic.toLowerCase()}” is ready. Direct messaging opens when EdeBooking launches,
           so for now the FAQ covers the questions we hear most.
         </p>
         <div className="form-success-actions">

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
-export const siteName = "NexBooking";
+export const siteName = "EdeBooking";
 export const siteTagline = "Book, pay and manage your business in one place";
 export const siteDescription =
-  "Discover local businesses, book services and consultations, pay securely and run your own business space with notes, invoices and receipts in one place.";
+  "EdeBooking brings appointments, consultations, payments and business tools together. Discover services and manage bookings, notes, invoices and receipts.";
 
 /**
  * The public origin used for canonical links, Open Graph URLs, the sitemap and structured data.
- * Set NEXT_PUBLIC_SITE_URL (for example https://nexbooking.com) in production. On Vercel the
+ * Set NEXT_PUBLIC_SITE_URL (for example your registered production domain) in production. On Vercel the
  * production domain is picked up automatically; locally it falls back to localhost.
  */
 function resolveSiteUrl(): string {
@@ -33,14 +33,14 @@ export const publicRoutes = [
 ] as const;
 
 /**
- * Per-page metadata: title (the root layout adds " | NexBooking"), description, canonical URL,
+ * Per-page metadata: title (the root layout adds " | EdeBooking"), description, canonical URL,
  * Open Graph and Twitter cards. The share image comes from the app-level opengraph-image.
  */
 export function pageMetadata({ title, description, path, absoluteTitle }: {
   title: string;
   description: string;
   path: string;
-  /** Use as the whole title, without the " | NexBooking" suffix (for the home page). */
+  /** Use as the whole title, without the " | EdeBooking" suffix (for the home page). */
   absoluteTitle?: string;
 }): Metadata {
   const fullTitle = absoluteTitle ?? `${title} | ${siteName}`;

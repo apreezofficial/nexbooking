@@ -3,6 +3,7 @@ import { DM_Serif_Display, Kalam, Plus_Jakarta_Sans } from "next/font/google";
 import RevealObserver from "@/components/RevealObserver";
 import { siteDescription, siteName, siteTagline, siteUrl } from "@/lib/site";
 import "./globals.css";
+import "./brand-theme.css";
 
 const sans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -21,6 +22,7 @@ const serif = DM_Serif_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: siteName,
+  icons: { icon: [{ url: "/icon", type: "image/png", sizes: "64x64" }], shortcut: "/icon", apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }] },
   title: { default: `${siteName} | ${siteTagline}`, template: `%s | ${siteName}` },
   description: siteDescription,
   keywords: ["online booking", "appointment booking", "business payments", "invoices and receipts", "consultations", "business notes"],
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#080d32",
+  themeColor: "#1c1a14",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

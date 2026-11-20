@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
-  description: "How NexBooking collects, uses, shares and protects your information, and the choices and rights you have as a customer or a business.",
+  description: "How EdeBooking collects, uses, shares and protects your information, and the choices and rights you have as a customer or a business.",
   path: "/privacy",
 });
 
@@ -12,8 +12,8 @@ const sections: LegalSection[] = [
     id: "overview",
     title: "Overview",
     body: [
-      "NexBooking helps people discover businesses, book services and keep track of payments, and it helps businesses manage their profiles, appointments, notes and records. This policy explains what information we collect, how we use it and the choices you have. It covers the NexBooking website and app, which we call the “Service”.",
-      "NexBooking is a multi-tenant platform: many businesses share one platform, each with its own space. When you book with a business, that business also receives and uses your booking information to deliver its service.",
+      "EdeBooking helps people discover businesses, book services and keep track of payments, and it helps businesses manage their profiles, appointments, notes and records. This policy explains what information we collect, how we use it and the choices you have. It covers the EdeBooking website and app, which we call the “Service”.",
+      "EdeBooking is a multi-tenant platform: many businesses share one platform, each with its own space. When you book with a business, that business also receives and uses your booking information to deliver its service.",
     ],
   },
   {
@@ -24,7 +24,7 @@ const sections: LegalSection[] = [
       {
         list: [
           "Information you give us, such as your name, contact details, account credentials, booking requests, messages to us, and anything you add to a profile, like services, photos and portfolio items.",
-          "Records created as you use NexBooking, including bookings, consultations, payment records, proforma invoices and receipts, plus the notes and tasks you create.",
+          "Records created as you use EdeBooking, including bookings, consultations, payment records, proforma invoices and receipts, plus the notes and tasks you create.",
           "Technical information, such as your device and browser type, the pages you visit, basic diagnostic data and the preferences you set, for example your chosen currency.",
         ],
       },
@@ -50,10 +50,10 @@ const sections: LegalSection[] = [
   },
   {
     id: "business-spaces",
-    title: "Businesses on NexBooking",
+    title: "Businesses on EdeBooking",
     body: [
       "Businesses decide which services, prices and policies they offer. When you book, the business can see the details it needs to deliver the service, such as your name, contact information and your booking history with that business.",
-      "Each business is responsible for how it uses the information it receives from its own customers, so please read its own privacy information where it provides one. Information on public business profiles, such as services and portfolio items, may be visible to anyone using NexBooking.",
+      "Each business is responsible for how it uses the information it receives from its own customers, so please read its own privacy information where it provides one. Information on public business profiles, such as services and portfolio items, may be visible to anyone using EdeBooking.",
     ],
   },
   {
@@ -64,7 +64,7 @@ const sections: LegalSection[] = [
       {
         list: [
           "With the business you book or contact, so it can provide its service.",
-          "With service providers that help us run NexBooking, for example hosting, payment processing, messaging and customer support, under appropriate safeguards.",
+          "With service providers that help us run EdeBooking, for example hosting, payment processing, messaging and customer support, under appropriate safeguards.",
           "When the law requires it, or to protect the rights, safety and integrity of people and the Service.",
           "As part of a business change such as a merger or sale, with notice where required.",
         ],
@@ -97,14 +97,14 @@ const sections: LegalSection[] = [
     id: "children",
     title: "Children",
     body: [
-      "NexBooking is not intended for anyone under 18, and we do not knowingly collect personal information from children. If you believe a child has given us information, please contact us and we will take appropriate steps.",
+      "EdeBooking is not intended for anyone under 18, and we do not knowingly collect personal information from children. If you believe a child has given us information, please contact us and we will take appropriate steps.",
     ],
   },
   {
     id: "changes",
     title: "Changes to this policy",
     body: [
-      "We may update this policy as NexBooking grows. When we make a significant change we will update the date at the top of this page and, where appropriate, let you know in the app or by email.",
+      "We may update this policy as EdeBooking grows. When we make a significant change we will update the date at the top of this page and, where appropriate, let you know in the app or by email.",
     ],
   },
 ];

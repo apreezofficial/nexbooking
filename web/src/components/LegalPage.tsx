@@ -14,7 +14,7 @@ type LegalKey = "privacy" | "terms" | "cookies";
 
 const documents: Record<LegalKey, { label: string; href: string; summary: string }> = {
   privacy: { label: "Privacy Policy", href: "/privacy", summary: "How we handle your information." },
-  terms: { label: "Terms of Service", href: "/terms", summary: "The rules for using NexBooking." },
+  terms: { label: "Terms of Service", href: "/terms", summary: "The rules for using EdeBooking." },
   cookies: { label: "Cookie Policy", href: "/cookies", summary: "What your browser stores, and why." },
 };
 
