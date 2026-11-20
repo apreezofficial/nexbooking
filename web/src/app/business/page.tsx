@@ -1,10 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import RouteHero from "@/components/RouteHero";
 import RouteShell from "@/components/RouteShell";
 import SiteArt from "@/components/SiteArt";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { title: "For business | NexBooking", description: "Showcase your work, manage appointments and keep everyday business details together." };
+export const metadata = pageMetadata({
+  title: "Business profiles and booking tools",
+  description: "Give your business its own NexBooking space: a profile and portfolio, appointment bookings, notes and tasks, invoices and receipts in one flow.",
+  path: "/business",
+});
 
 const tools = [
   ["A profile that feels like you", "Bring your services, team and portfolio into one welcoming business space.", "business-studio.png"],

@@ -1,10 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import RouteHero from "@/components/RouteHero";
 import RouteShell from "@/components/RouteShell";
 import SiteArt from "@/components/SiteArt";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Discover | NexBooking", description: "Find local salons, studios, fitness services, clinics, tutors and more." };
+export const metadata = pageMetadata({
+  title: "Discover local businesses",
+  description: "Browse salons, creative studios, fitness, tutors, photographers and event services. Explore each business's work, then book with confidence.",
+  path: "/discover",
+});
 
 const categories = [
   ["Beauty & wellness", "discover-salon.png", "Salons, spas and the people who help you feel like you."],

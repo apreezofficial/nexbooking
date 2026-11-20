@@ -1,9 +1,13 @@
-import type { Metadata } from "next";
 import BookingSearch from "@/components/BookingSearch";
 import RouteShell from "@/components/RouteShell";
 import SiteArt from "@/components/SiteArt";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Booking | NexBooking", description: "Search services, consultations, appointments, events, classes and spaces." };
+export const metadata = pageMetadata({
+  title: "Book services and appointments",
+  description: "Search services, consultations, appointments, events, classes and rentals, choose a time that suits you and keep payments and receipts together.",
+  path: "/booking",
+});
 
 export default function BookingPage() {
   return <RouteShell current="Booking">

@@ -1,10 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import RouteHero from "@/components/RouteHero";
 import RouteShell from "@/components/RouteShell";
 import SiteArt from "@/components/SiteArt";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Features | NexBooking", description: "Explore the tools that bring bookings, payments, notes and business portfolios together." };
+export const metadata = pageMetadata({
+  title: "Features for bookings, payments and notes",
+  description: "Explore the tools that keep work moving: appointments, payments, daily notes and tasks, proforma invoices, receipts and business portfolios.",
+  path: "/features",
+});
 
 const features = [
   { title: "Stay on top of your day", text: "Capture notes, plan tasks and keep the next thing you need to do close at hand.", image: "feature-notes-scene.png", label: "NOTES & TASKS" },

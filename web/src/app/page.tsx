@@ -6,6 +6,35 @@ import LandingControls from "@/components/LandingControls";
 import Icon from "@/components/Icon";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
+import { pageMetadata, siteDescription, siteName, siteTagline, siteUrl } from "@/lib/site";
+
+// The home page title is the brand and tagline on their own, without the " | NexBooking" suffix.
+export const metadata = pageMetadata({
+  title: siteTagline,
+  absoluteTitle: `${siteName} | ${siteTagline}`,
+  description: siteDescription,
+  path: "/",
+});
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteName,
+    url: siteUrl,
+    logo: `${siteUrl}/assets/mascot-suitcase.png`,
+    description: siteDescription,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteName,
+    url: siteUrl,
+    description: siteDescription,
+    inLanguage: "en",
+  },
+];
 
 const businesses = [
  {name:"Salon",x:5,y:4,s:15,color:"#f5aab5"},
@@ -33,6 +62,7 @@ function Checks({items}:{items:string[]}) {return <ul className="check-list">{it
 function Mascot({className=""}:{className?:string}) {return <Art file="mascot-suitcase.png" className={`mascot ${className}`}/>}
 
 export default function Home(){return <main className="page">
+ {structuredData.map((data) => <JsonLd key={data["@type"]} data={data} />)}
  <div className="page-outline" aria-hidden="true"/>
   <SiteNav/>
  <section className="hero">

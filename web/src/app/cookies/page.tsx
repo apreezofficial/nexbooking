@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Cookie Policy | NexBooking",
-  description: "What NexBooking stores in your browser and how you can control it.",
-};
+export const metadata = pageMetadata({
+  title: "Cookie Policy",
+  description: "What NexBooking stores in your browser, why it does so, and how you can block or clear it.",
+  path: "/cookies",
+});
 
 const sections: LegalSection[] = [
   {

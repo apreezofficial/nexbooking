@@ -15,7 +15,7 @@ export default function RouteHero({ eyebrow, title, description, image, cta = "E
         <p className="route-hero-description">{description}</p>
         {hideCta ? null : <Link className="btn btn-dark" href={href}>{cta}</Link>}
       </div>
-      <SiteArt file={image} className="route-hero-art" alt="" />
+      <SiteArt file={image} className="route-hero-art" alt="" priority />
     </section>
   );
 }

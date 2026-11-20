@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Terms of Service | NexBooking",
-  description: "The terms that apply when you use NexBooking as a customer or a business.",
-};
+export const metadata = pageMetadata({
+  title: "Terms of Service",
+  description: "The terms that apply when you use NexBooking to book services, make payments or run a business space on the platform.",
+  path: "/terms",
+});
 
 const sections: LegalSection[] = [
   {
