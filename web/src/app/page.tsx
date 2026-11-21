@@ -1,3 +1,4 @@
+import { HeroServices } from "@/components/ServicesExperience";
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import BookingSearch from "@/components/BookingSearch";
@@ -69,7 +70,7 @@ export default function Home(){return <main className="page">
   <Art file="hero-scene.png" className="hero-scene" priority/>
   <div className="hero-sky"/>
 
-  <div className="hero-copy"><h1 className="hero-title anim-up">Book, pay and manage{" "}<br/>your business in one place</h1><p className="hero-sub anim-up">Your favourite businesses. Your next booking. All together.</p></div>
+  <HeroServices/> 
   <HeroMotion/>
   <BookingSearch/>
  </section>
@@ -153,7 +154,7 @@ export default function Home(){return <main className="page">
    <div><Eyebrow>FEATURED GUIDE</Eyebrow><h3>Build a business profile customers can book from</h3><p>Show what you do, list your services and give customers a clear way to make an appointment.</p><a href="#business" className="text-link">Explore business profiles</a></div>
   </article><div className="journal-grid">{[{file:'discover-studio.png',tag:'YOUR BUSINESS',title:'Let your work do the talking.',body:'A visual profile gives customers a feel for what makes you, you.'},{file:'discover-tutor.png',tag:'YOUR EVERYDAY',title:'Make room for a calmer day.',body:'Keep the little things together, from today’s tasks to tomorrow’s appointments.'},{file:'discover-events.png',tag:'YOUR COMMUNITY',title:'Great connections start here.',body:'Discover businesses and follow the people behind the work.'}].map((a,i)=><article key={a.title} data-reveal style={delay(i)}><Art file={a.file} className="journal-image"/><div><small>{a.tag}</small><h3>{a.title}</h3><p>{a.body}</p><a href="#features" className="text-link">Explore EdeBooking</a></div></article>)}</div></section>
 
- <section className="app-banner" id="download"><Art file="feature-booking-scene.png" className="app-background"/><div className="app-rays"/><div className="app-copy" data-reveal><Eyebrow icon="phone">ONE APP. SO MANY POSSIBILITIES.</Eyebrow><h2>Your business. Your people.<br/>Your EdeBooking.</h2><p>Make a little more room for what you love.</p><div className="store-badges"><a href="#features" className="store-badge"><Icon name="phone"/><span><small>Built for your day</small><strong>Explore the features</strong></span></a><a href="#business" className="store-badge"><Icon name="shop"/><span><small>Made for your business</small><strong>Explore your space</strong></span></a></div></div><Mascot className="app-mascot"/></section>
+ <section className="app-banner" id="download"><Art file="feature-booking-scene.png" className="app-background"/><div className="app-rays"/><div className="app-copy" data-reveal><Eyebrow icon="phone">ONE APP. SO MANY POSSIBILITIES.</Eyebrow><h2>Your business. Your people.<br/>Your EdeBooking.</h2><p>Make a little more room for what you love.</p></div><Mascot className="app-mascot"/></section>
 
  <SiteFooter/>
  </main>}

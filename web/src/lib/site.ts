@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const siteName = "EdeBooking";
-export const siteTagline = "Book, pay and manage your business in one place";
+export const siteTagline = "Your services a click away";
 export const siteDescription =
   "EdeBooking brings appointments, consultations, payments and business tools together. Discover services and manage bookings, notes, invoices and receipts.";
 
@@ -18,10 +18,21 @@ function resolveSiteUrl(): string {
 
 export const siteUrl = resolveSiteUrl();
 
+/**
+ * Store listings for the mobile app. Set these in the environment once the app is published:
+ * NEXT_PUBLIC_APP_STORE_URL (Apple App Store) and NEXT_PUBLIC_PLAY_STORE_URL (Google Play).
+ * Until a link is set, its badge shows as "Coming soon" instead of linking anywhere.
+ */
+export const appLinks = {
+  appStore: process.env.NEXT_PUBLIC_APP_STORE_URL || "",
+  playStore: process.env.NEXT_PUBLIC_PLAY_STORE_URL || "",
+};
+
 /** Every public page. The sitemap and llms.txt are both built from this list. */
 export const publicRoutes = [
   { path: "/", label: "Home", group: "main", priority: 1, changeFrequency: "weekly", summary: "Overview of EdeBooking: discover businesses, book services and run your own business space." },
   { path: "/features", label: "Features", group: "main", priority: 0.8, changeFrequency: "monthly", summary: "Appointments, payments, daily notes and tasks, proforma invoices, receipts and portfolios." },
+  { path: "/services", label: "Services", group: "main", summary: "Explore spa, wellness and other services in a visual feed.", priority: 0.8, changeFrequency: "weekly" },
   { path: "/discover", label: "Discover", group: "main", priority: 0.8, changeFrequency: "weekly", summary: "Browse local businesses by category and explore their work before booking." },
   { path: "/business", label: "For business", group: "main", priority: 0.8, changeFrequency: "monthly", summary: "How a business gets its own space: profile, portfolio, bookings, notes and records." },
   { path: "/booking", label: "Booking", group: "main", priority: 0.8, changeFrequency: "weekly", summary: "Search services, consultations, appointments, events, classes and rentals." },

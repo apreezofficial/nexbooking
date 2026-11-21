@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { LanguageSelect } from "./ServicesExperience";
 import CurrencySelect from "@/components/CurrencySelect";
 
 const items = [
   ["Features", "/features"],
+  ["Services", "/services"],
   ["Discover", "/discover"],
   ["For business", "/business"],
   ["Booking", "/booking"],
@@ -28,6 +30,7 @@ export default function SiteNav({ current }: { current?: (typeof items)[number][
           ))}
         </div>
         <div className="nav-actions">
+          <LanguageSelect />
           <CurrencySelect />
           <Link className="btn btn-ghost" href="/signup">Sign up</Link>
           <Link className="btn btn-dark" href="/login">Login</Link>

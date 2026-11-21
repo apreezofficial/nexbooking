@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import AssistantAvatar, { type AssistantState } from "@/components/assistant/AssistantAvatar";
+import AssistantAvatar, { type AssistantFinish, type AssistantShape, type AssistantState } from "@/components/assistant/AssistantAvatar";
 import CopyButton from "@/components/CopyButton";
 import CopySwatch from "@/components/CopySwatch";
 import RouteHero from "@/components/RouteHero";
@@ -53,6 +53,19 @@ const botStates: { state: AssistantState; title: string; note: string; file: str
   { state: "idle", title: "Ready", note: "A soft smile. Waiting to help.", file: "edebooking-bot-idle.png" },
   { state: "working", title: "Thinking", note: "A wide smile. Handling a request.", file: "edebooking-bot-working.png" },
   { state: "sleeping", title: "Resting", note: "Eyes closed. Between tasks.", file: "edebooking-bot-sleeping.png" },
+];
+
+const botShapes: { shape: AssistantShape; name: string }[] = [
+  "clover", "flower", "triangle", "square", "blob", "ghost", "circle", "drop", "star",
+  "droid", "mech", "alien", "hexagon", "cat", "cloud", "pill", "pebble", "puddle",
+].map((shape) => ({ shape: shape as AssistantShape, name: shape[0].toUpperCase() + shape.slice(1) }));
+
+const botFinishes: { finish: AssistantFinish; file: string; name: string; note: string }[] = [
+  { finish: "fabric", file: "plush", name: "Plush", note: "Soft fur. Our default." },
+  { finish: "plastic", file: "plastic", name: "Plastic", note: "Glossy and smooth." },
+  { finish: "crisp", file: "crisp", name: "Crisp", note: "A clean, lit edge." },
+  { finish: "smooth", file: "smooth", name: "Smooth", note: "Soft light, no edge." },
+  { finish: "flat", file: "flat", name: "Flat", note: "Depth without lighting." },
 ];
 
 const dos = [
@@ -180,6 +193,36 @@ export default function BrandPage() {
                 ))}
               </div>
               <p>Use the PNG files from this page in print and press. The live, moving bot is for the app and the web. Each file is 413 × 419 px with a transparent background.</p>
+              <div className="brand-head bot-subhead">
+                <h3>Shapes</h3>
+                <a className="btn btn-soft" href="/brand/edebooking-bot-family.zip" download>Download the whole family</a>
+              </div>
+              <p>The assistant is the square, but the bot comes in eighteen shapes, from the star and the clover to the cat and the cloud. They share one face and one gold. Click a shape to download it.</p>
+              <div className="variant-grid">
+                {botShapes.map(({ shape, name }) => (
+                  <a className="variant-card" key={shape} href={`/brand/bot/shapes/edebooking-bot-${shape}.png`} download aria-label={`Download the ${name.toLowerCase()} bot`}>
+                    <span className="variant-stage"><Image src={`/brand/bot/shapes/edebooking-bot-${shape}.png`} alt="" fill sizes="150px" /></span>
+                    <strong>{name}</strong>
+                    {shape === "square" ? <small>The assistant</small> : <small>Download</small>}
+                  </a>
+                ))}
+              </div>
+
+              <div className="brand-head bot-subhead">
+                <h3>Finishes</h3>
+              </div>
+              <p>Plush fur is our default. The same bot also comes in plastic, crisp, smooth and flat finishes, for when you need a cleaner or lighter look. Shown here on the square.</p>
+              <div className="variant-grid variant-grid-finishes">
+                {botFinishes.map(({ finish, file, name, note }) => (
+                  <a className="variant-card" key={finish} href={`/brand/bot/finishes/edebooking-bot-square-${file}.png`} download aria-label={`Download the ${name.toLowerCase()} finish`}>
+                    <span className="variant-stage"><Image src={`/brand/bot/finishes/edebooking-bot-square-${file}.png`} alt="" fill sizes="170px" /></span>
+                    <strong>{name}</strong>
+                    <small>{note}</small>
+                  </a>
+                ))}
+              </div>
+              <p>Shape and finish files are trimmed to the bot, roughly 250 to 330 px wide, with transparent backgrounds.</p>
+
               <div className="mascot-card">
                 <SiteArt file="mascot-suitcase.png" className="mascot brand-mascot" alt={`The ${siteName} suitcase mascot`} />
                 <div>

@@ -535,3 +535,42 @@ html { scroll-padding-top: 105px; }
   .bot-grid { grid-template-columns: 1fr; }
   .mascot-card { flex-direction: column; align-items: flex-start; }
 }
+
+/* Bot shapes and finishes gallery. */
+.bot-subhead { margin-top: 34px; }
+.bot-subhead h3 { font-size: 16px; }
+.variant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 12px; margin: 16px 0 6px; }
+.variant-card { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 0 8px 14px; overflow: hidden; border: 1px solid var(--line, #e8e6da); border-radius: 18px; background: #fff; text-align: center; transition: transform .2s var(--ease, ease), box-shadow .2s, border-color .2s; }
+.variant-card:hover { transform: translateY(-3px); border-color: var(--gold-500, #d4af37); box-shadow: 0 12px 28px rgb(28 26 20 / 12%); }
+.variant-stage { position: relative; display: block; width: calc(100% + 16px); height: 112px; margin: 0 -8px 8px; background: var(--gold-100, #fafad2); }
+.variant-stage img { object-fit: contain; padding: 22px 20px; }
+.variant-card strong { font-size: 13px; }
+.variant-card small { color: var(--muted, #6b6757); font-size: 11px; }
+.variant-grid-finishes { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+.variant-grid-finishes { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 900px) { .variant-grid-finishes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .variant-grid, .variant-grid-finishes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Nav links: a rounded pill appears on hover and keyboard focus. */
+.nav .nav-links { gap: 2px; }
+.nav .nav-links a { padding: 9px 15px; border-radius: 999px; transition: background-color .2s var(--ease, ease), color .2s var(--ease, ease); }
+.nav .nav-links a:hover, .nav .nav-links a:focus-visible { background-color: var(--gold-100, #fafad2); color: var(--gold-deep, #7a5f0a); }
+@media (max-width: 1100px) { .nav .nav-links a { padding: 8px 11px; } }
+
+/* Footer app panel and our own store buttons. */
+.footer-app { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 22px 32px; margin: 0 0 34px; padding: 24px 28px; border: 1px solid rgb(255 255 255 / 14%); border-radius: 24px; background: linear-gradient(120deg, rgb(212 175 55 / 16%), rgb(212 175 55 / 4%)); }
+.footer-app h3 { margin-bottom: 6px; color: #fff; font-size: 18px; letter-spacing: -.3px; }
+.footer-app p { max-width: 360px; color: #cbd0dc; font-size: 13px; line-height: 1.6; }
+.app-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+.app-button { display: flex; align-items: center; gap: 12px; min-width: 200px; padding: 10px 16px 10px 10px; border: 1px solid rgb(255 255 255 / 20%); border-radius: 18px; background: rgb(255 255 255 / 7%); color: #fff; text-align: left; transition: transform .25s var(--ease, ease), background-color .25s, border-color .25s, box-shadow .25s; }
+a.app-button:hover { transform: translateY(-3px); border-color: var(--gold-500, #d4af37); background: rgb(212 175 55 / 16%); box-shadow: 0 12px 28px rgb(0 0 0 / 28%); }
+.app-button-icon { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; border-radius: 14px; background: linear-gradient(135deg, var(--gold-500, #d4af37), var(--gold-secondary, #e6be8a)); color: var(--ink-900, #1c1a14); }
+.app-button-icon .icon { width: 22px; height: 22px; }
+.app-button-text { display: flex; flex: 1; flex-direction: column; gap: 3px; }
+.app-button-text small { color: #cbd0dc; font-size: 10px; }
+.app-button-text strong { font-size: 16px; letter-spacing: -.3px; }
+.app-button-arrow { color: var(--gold-500, #d4af37); font-size: 18px; transition: transform .25s; }
+a.app-button:hover .app-button-arrow { transform: translate(2px, -2px); }
+.app-button-soon { padding: 4px 10px; border-radius: 99px; background: rgb(212 175 55 / 22%); color: var(--gold-500, #d4af37); font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.app-button-pending { cursor: default; }
+@media (max-width: 600px) { .footer-app { padding: 22px 20px; } .app-buttons, .app-button { width: 100%; } }
