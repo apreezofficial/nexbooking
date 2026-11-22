@@ -3,7 +3,9 @@ import { DM_Serif_Display, Kalam, Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
 import CookieConsent from "@/components/CookieConsent";
 import DomTranslationGuard from "@/components/DomTranslationGuard";
+import LocationPrompt from "@/components/LocationPrompt";
 import NavigationScrollHandler from "@/components/NavigationScrollHandler";
+import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import RevealObserver from "@/components/RevealObserver";
 import { siteDescription, siteName, siteTagline, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -60,6 +62,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <NavigationScrollHandler />
         </Suspense>
         {children}
+        <LocationPrompt />
+        <PwaInstallPrompt />
         <CookieConsent />
       </body>
     </html>

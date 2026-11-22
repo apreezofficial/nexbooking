@@ -8,7 +8,12 @@ export default function manifest(): MetadataRoute.Manifest {
     description: siteDescription,
     start_url: "/",
     display: "standalone",
-    icons: [{ src: "/icon", sizes: "64x64", type: "image/png" }, { src: "/apple-icon", sizes: "180x180", type: "image/png" }],
+    icons: [
+      { src: "/icon", sizes: "64x64", type: "image/png" },
+      { src: "/apple-icon", sizes: "180x180", type: "image/png" },
+      { src: "/apple-icon", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/apple-icon", sizes: "512x512", type: "image/png", purpose: "any" },
+    ],
     background_color: "#fbfcf8",
     theme_color: "#1c1a14",
   };

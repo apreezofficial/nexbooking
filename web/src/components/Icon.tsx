@@ -31,6 +31,10 @@ const paths: Record<string, string> = {
   save: "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2M17 21v-8H7v8M7 3v5h8",
   timer: "M10 2h4m-2 12 3-3M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16",
   heart: "M20 4c-3-3-6-1-8 1-2-2-5-4-8-1-6 6 8 17 8 17S26 10 20 4",
+  close: "M18 6 6 18M6 6l12 12",
+  download: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5m-5 5V3",
+  share: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8m-4-6-6-6-6 6m6-6v12",
+  plus: "M12 5v14m-7-7h14",
 };
 export default function Icon({name, className = "", style}: {name:string;className?:string;style?:CSSProperties}) {
  return <svg className={`icon ${className}`} style={style} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name] ?? paths.spark}/></svg>;
