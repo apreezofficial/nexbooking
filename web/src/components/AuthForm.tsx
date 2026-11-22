@@ -4,6 +4,7 @@ import Link from "next/link";
 import SocialIcon from "./SocialIcon";
 import { useState, useRef, useEffect, type FormEvent } from "react";
 import { DistortionWave } from "distortion-waves";
+import { signIn } from "@/lib/session";
 
 export default function AuthForm({ signup = false }: { signup?: boolean }) {
   const [visible, setVisible] = useState(false);
@@ -11,6 +12,7 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
   const [notice, setNotice] = useState("");
   const [pending, setPending] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [next, setNext] = useState("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const submitButton = useRef<HTMLButtonElement>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
@@ -19,9 +21,14 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (pending) return;
+    const data = new FormData(event.currentTarget);
+    const email = String(data.get("email") || "");
+    const name = String(data.get("name") || "") || email.split("@")[0];
     setPending(true);
     setNotice("");
     timer.current = setTimeout(() => {
+      signIn({ name, email });
+      setNext(new URLSearchParams(window.location.search).get("next") || "");
       setPending(false);
       setComplete(true);
       setPassword("");
@@ -48,7 +55,7 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
               <span className="auth-success-mark" aria-hidden="true">✓</span>
               <h1>{signup ? "You’re all set" : "Welcome back"}</h1>
               <p className="auth-description">Demo {signup ? "signup" : "login"} completed. Explore EdeBooking while account services are being connected.</p>
-              <Link href="/booking" className="btn btn-gradient auth-submit">Explore bookings</Link>
+              <Link href={next.startsWith("/") ? next : "/dashboard"} className="btn btn-gradient auth-submit">{next.startsWith("/") ? "Continue your booking" : "Go to your dashboard"}</Link>
               <button className="auth-custom-reset" type="button" onClick={() => setComplete(false)}>Try again</button>
             </div>}
           ><>

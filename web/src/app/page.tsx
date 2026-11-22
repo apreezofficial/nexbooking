@@ -2,6 +2,7 @@ import { HeroServices } from "@/components/ServicesExperience";
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import BookingSearch from "@/components/BookingSearch";
+import BusinessCarousel from "@/components/BusinessCarousel";
 import HeroMotion from "@/components/HeroMotion";
 import LandingControls from "@/components/LandingControls";
 import Icon from "@/components/Icon";
@@ -124,9 +125,10 @@ export default function Home(){return <main className="page">
  </section>
 
  <section className="recommendations content-section" id="business">
-  <Eyebrow>YOUR BUSINESS, YOUR SPACE</Eyebrow><h2 className="section-title">Big ideas. A space of your own.</h2><p className="section-sub">Whatever you do, bring your work and your customers together.</p>
-  <div className="business-cards" id="business-cards">{[{name:'Beauty, on your schedule',file:'discover-salon.png',tag:'BEAUTY & WELLNESS',text:'Your work gets noticed. Your next client gets booked.'},{name:'Make room for your craft',file:'discover-studio.png',tag:'CREATIVES & PROFESSIONALS',text:'Show your portfolio and turn interest into a conversation.'},{name:'A better way to connect',file:'discover-clinic.png',tag:'CONSULTATIONS & SERVICES',text:'A welcoming space for appointments and ongoing care.'},{name:'Train on your terms',file:'discover-fitness.png',tag:'FITNESS',text:'Find a class or make time for a personal training session.'},{name:'Plan your next event',file:'discover-events.png',tag:'EVENTS',text:'Discover spaces and services for your next gathering.'}].map((c,i)=><article className="business-card" key={c.name} data-reveal style={delay(i)}><Art file={c.file} className="business-cover"/><span className="card-category">{c.tag}</span><h3>{c.name}</h3><p>{c.text}</p><a href="#booking" className="btn btn-gradient">Explore services</a></article>)}</div>
-  <LandingControls mode="carousel"/>
+  <Eyebrow>YOUR BUSINESS, YOUR SPACE</Eyebrow>
+  <h2 className="section-title">Big ideas. A space of your own.</h2>
+  <p className="section-sub">Whatever you do, bring your work and your customers together.</p>
+  <BusinessCarousel />
  </section>
 
  <section className="deals content-section">

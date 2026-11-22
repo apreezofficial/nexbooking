@@ -18,10 +18,10 @@ const tools = [
 
 export default function BusinessPage() {
   return <RouteShell current="For business">
-    <RouteHero eyebrow="YOUR BUSINESS, YOUR SPACE" title="Make room for the work you love." description="Showcase your craft, connect with customers and keep the everyday details of your business together." image="business-studio.png" cta="Explore the features" href="/features"/>
+    <RouteHero eyebrow="YOUR BUSINESS, YOUR SPACE" title="Make room for the work you love." description="Showcase your craft, connect with customers and keep the everyday details of your business together." image="business-studio.png" cta="Register your business" href="/business/register"/>
     <section className="route-content"><div className="route-section-heading"><p className="eyebrow">MADE FOR YOUR BUSINESS</p><h2 className="section-title">A welcoming space to grow from.</h2><p className="section-sub">EdeBooking gives customers a clear way to discover what you do and gives you one place to manage the details.</p></div>
       <div className="route-feature-grid">{tools.map(([title, text, image]) => <article className="route-feature-card" key={title}><SiteArt file={image} className="route-feature-image" alt=""/><div><small>YOUR NEXBOOKING SPACE</small><h3>{title}</h3><p>{text}</p></div></article>)}</div>
-      <div className="route-callout"><div><p className="eyebrow">KEEP THE DETAILS CLOSE</p><h2>Appointments, notes and records in one flow.</h2></div><Link className="btn btn-gradient" href="/features">Explore features</Link></div>
+      <div className="route-callout"><div><p className="eyebrow">KEEP THE DETAILS CLOSE</p><h2>Appointments, notes and records in one flow.</h2></div><Link className="btn btn-gradient" href="/business/register">Register your business</Link></div>
     </section>
   </RouteShell>;
 }

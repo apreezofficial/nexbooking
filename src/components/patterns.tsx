@@ -9,7 +9,7 @@ import { BusinessLogo } from './BusinessLogo';
 export const tabs = [
   { label: 'Home', icon: Home }, { label: 'Explore', icon: Compass },
   { label: 'Schedule', icon: CalendarDays }, { label: 'Inbox', icon: MessageCircle },
-  { label: 'Profile', icon: UserRound },
+  { label: 'Account', icon: UserRound },
 ] as const;
 export type TabName = typeof tabs[number]['label'];
 

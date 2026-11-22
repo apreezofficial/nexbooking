@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Serif_Display, Kalam, Plus_Jakarta_Sans } from "next/font/google";
+import { Suspense } from "react";
 import CookieConsent from "@/components/CookieConsent";
+import DomTranslationGuard from "@/components/DomTranslationGuard";
+import NavigationScrollHandler from "@/components/NavigationScrollHandler";
 import RevealObserver from "@/components/RevealObserver";
 import { siteDescription, siteName, siteTagline, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -44,9 +47,18 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} ${logoFont.variable}`}>
-      <body>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${sans.variable} ${serif.variable} ${logoFont.variable}`}
+    >
+      <body suppressHydrationWarning>
+        <DomTranslationGuard />
         <RevealObserver />
+        <Suspense fallback={null}>
+          <NavigationScrollHandler />
+        </Suspense>
         {children}
         <CookieConsent />
       </body>

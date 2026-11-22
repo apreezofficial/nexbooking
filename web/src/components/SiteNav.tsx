@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { LanguageSelect } from "./ServicesExperience";
-import CurrencySelect from "@/components/CurrencySelect";
+import NavActions from "./NavActions";
 
 const items = [
   ["Features", "/features"],
@@ -15,7 +14,7 @@ export default function SiteNav({ current }: { current?: (typeof items)[number][
   return (
     <header className="nav-wrap">
       <nav className="nav" aria-label="Main navigation">
-        <Link className="logo" href="/">EdeBooking</Link>
+        <Link className="logo" href="/" translate="no">EdeBooking</Link>
         <div className="nav-links">
           {items.map(([label, href], index) => (
             <Link
@@ -29,12 +28,7 @@ export default function SiteNav({ current }: { current?: (typeof items)[number][
             </Link>
           ))}
         </div>
-        <div className="nav-actions">
-          <LanguageSelect />
-          <CurrencySelect />
-          <Link className="btn btn-ghost" href="/signup">Sign up</Link>
-          <Link className="btn btn-dark" href="/login">Login</Link>
-        </div>
+        <NavActions />
       </nav>
     </header>
   );

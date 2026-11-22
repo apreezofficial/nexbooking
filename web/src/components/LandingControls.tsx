@@ -1,20 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "./Icon";
 
 type Props =
   | { mode: "carousel" }
   | { mode: "faq"; questions: string[][] };
 
 const topics = [
-  { name: "General", questions: [0, 1, 2, 3, 4] },
-  { name: "Business", questions: [1, 4] },
-  { name: "Payments", questions: [2] },
-  { name: "Notes", questions: [3] },
+  { name: "All", icon: "spark", questions: [0, 1, 2, 3, 4] },
+  { name: "General", icon: "info", questions: [0, 1] },
+  { name: "Bookings & Reschedules", icon: "calendar", questions: [1, 4] },
+  { name: "Payments & Invoices", icon: "card", questions: [2] },
+  { name: "Daily Tools", icon: "mic", questions: [3] },
 ];
 
 export default function LandingControls(props: Props) {
   const [topic, setTopic] = useState(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   if (props.mode === "carousel") {
     function move(direction: number) {
@@ -27,32 +30,77 @@ export default function LandingControls(props: Props) {
 
     return (
       <div className="carousel-controls">
-        <button type="button" aria-label="Previous recommendation" onClick={() => move(-1)}>‹</button>
-        <button type="button" aria-label="Next recommendation" onClick={() => move(1)}>›</button>
+        <button type="button" aria-label="Previous recommendation" onClick={() => move(-1)}>
+          ‹
+        </button>
+        <button type="button" aria-label="Next recommendation" onClick={() => move(1)}>
+          ›
+        </button>
       </div>
     );
   }
 
+  const currentQuestions = topics[topic].questions;
+
   return (
-    <>
-      <div className="faq-topics" aria-label="Filter questions">
+    <div className="modern-faq-container">
+      {/* Aceternity pill topic filter bar */}
+      <div className="modern-faq-tabs" role="tablist" aria-label="Filter questions">
         {topics.map((item, index) => (
-          <button key={item.name} type="button" aria-pressed={topic === index} onClick={() => setTopic(index)}>
-            {item.name}
+          <button
+            key={item.name}
+            type="button"
+            role="tab"
+            aria-selected={topic === index}
+            className={`modern-faq-tab ${topic === index ? "active" : ""}`}
+            onClick={() => {
+              setTopic(index);
+              setOpenIndex(0); // open first question of newly selected topic
+            }}
+          >
+            <Icon name={item.icon} />
+            <span>{item.name}</span>
           </button>
         ))}
       </div>
-      <div className="faq-list" key={topic}>
-        {topics[topic].questions.map((questionIndex, index) => {
-          const [question, answer] = props.questions[questionIndex];
+
+      {/* Accordion List with Card Hover & Expansion Animation */}
+      <div className="modern-faq-accordion" key={topic}>
+        {currentQuestions.map((qIdx, index) => {
+          const [question, answer] = props.questions[qIdx];
+          const isOpen = openIndex === index;
+
           return (
-            <details key={question} open={index === 0} name="landing-faq">
-              <summary>{question}<span aria-hidden="true">⌄</span></summary>
-              <p>{answer}</p>
-            </details>
+            <div
+              key={question}
+              className={`modern-faq-item ${isOpen ? "is-expanded" : ""}`}
+            >
+              <button
+                type="button"
+                className="modern-faq-trigger"
+                aria-expanded={isOpen}
+                onClick={() => setOpenIndex(isOpen ? null : index)}
+              >
+                <span className="faq-question-text">{question}</span>
+                <span className="faq-icon-bubble" aria-hidden="true">
+                  <Icon name="chevron" className={`faq-chevron ${isOpen ? "rotate" : ""}`} />
+                </span>
+              </button>
+              <div
+                className="modern-faq-collapse"
+                style={{
+                  maxHeight: isOpen ? "300px" : "0px",
+                  opacity: isOpen ? 1 : 0,
+                }}
+              >
+                <div className="faq-answer-inner">
+                  <p>{answer}</p>
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
