@@ -323,7 +323,7 @@ function HomePage({ onNotifications, onCreate, onBlock, onBooking, onEarnings }:
     <Gold>
       <View style={styles.rowBetween}>
         <Text variant="caption" color={colors.line}>Today's revenue</Text>
-        <Segmented options={['Day', 'Week']} value={range} onChange={setRange} />
+        <View style={{ width: 150 }}><Segmented options={['Day', 'Week']} value={range} onChange={setRange} /></View>
       </View>
       <Text variant="display" color={colors.gold} style={{ fontSize: 34, lineHeight: 42 }}>₦84,500</Text>
       <View style={styles.trend}><Text variant="caption" color={colors.ink900}>↗ 12% vs last Tue</Text></View>
