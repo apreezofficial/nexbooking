@@ -3184,3 +3184,14 @@ fieldset.payment-cards-grid legend { margin-bottom: 10px; }
     bottom: 66px;
   }
 }
+
+/* EdeBooking logo lockup: mark badge and name */
+.brand-lockup { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-serif), Georgia, serif; font-size: 22px; line-height: 1; letter-spacing: 0; color: var(--gold-deep); white-space: nowrap; }
+.brand-lockup-mark { width: 28px; height: 36px; flex: none; }
+.footer .brand-lockup, .auth-scene .brand-lockup { color: var(--gold-500); }
+.auth-scene .brand-lockup { font-size: 26px; }
+.footer .brand-lockup { font-size: 26px; }
+.brand-lockup.auth-mobile-logo { display: none; }
+@media (max-width: 600px) { .brand-lockup-mark { width: 24px; height: 31px; } .brand-lockup { font-size: 19px; } }
+@media (max-width: 760px) { .brand-lockup.auth-mobile-logo { display: inline-flex; margin: 0 0 32px; font-size: 22px; } }
+.prompt-logo-img { width: 100%; height: 100%; border-radius: inherit; display: block; object-fit: cover; }

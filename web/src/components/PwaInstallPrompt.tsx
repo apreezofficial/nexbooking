@@ -168,7 +168,7 @@ export default function PwaInstallPrompt() {
         <section className="prompt-card prompt-pwa" aria-labelledby="pwa-prompt-heading">
           <div className="prompt-header">
             <div className="prompt-badge prompt-pwa-badge">
-              <span className="prompt-logo-letter">E</span>
+              <img src="/brand/edebooking-badge.png" alt="" width={44} height={44} className="prompt-logo-img" />
             </div>
             <div className="prompt-title-wrap">
               <span className="prompt-kicker">FASTER & OFFLINE</span>

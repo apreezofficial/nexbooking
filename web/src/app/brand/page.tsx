@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
   path: "/brand",
 });
 
-const logoSize = { width: 1117, height: 322 };
+const logoSize = { width: 1200, height: 1007 };
 
 // Keep these in step with the tokens in src/app/brand-theme.css.
 const colourGroups = [
@@ -71,8 +71,8 @@ const botFinishes: { finish: AssistantFinish; file: string; name: string; note: 
 const dos = [
   "Use the logo file from this page, unaltered.",
   "Use the bot file that matches what the message is saying: ready, thinking or resting.",
-  "Use the deep gold logo on light surfaces and the bright gold one on dark surfaces.",
-  "Leave clear space around the logo, at least the height of the “B”.",
+  "Use the dark-surface logo on dark backgrounds and the light-surface logo on light ones.",
+  "Leave clear space around the logo, at least the height of the “B” mark.",
   "Use our colours from the palette above.",
 ];
 
@@ -149,25 +149,25 @@ export default function BrandPage() {
                 <SectionHeading id="logo" />
                 <a className="btn btn-gradient" href="/brand/edebooking-logo-assets.zip" download>Download assets</a>
               </div>
-              <p>The {siteName} logo is the name written by hand in a flowing script. On light surfaces it is set in deep gold, and on dark ones in bright gold.</p>
+              <p>The {siteName} logo is a bold “B” with a location pin at its heart, in gold and champagne, with the name set beneath it. It comes in two transparent versions: one for dark surfaces and one, with the cream parts in ink and the name in deep gold, for light ones.</p>
               <p>It is how we sign our work across the app, the web and print. Use the artwork from this page and keep its geometry intact.</p>
               <div className="brand-plates">
                 <figure className="brand-plate brand-plate-light">
                   <div className="brand-plate-stage">
-                    <Image src="/brand/edebooking-logo-gold.png" alt={`${siteName} logo in deep gold`} {...logoSize} />
+                    <Image src="/brand/edebooking-logo-light.png" alt={`${siteName} logo for light surfaces`} {...logoSize} />
                   </div>
                   <figcaption>
                     <span>For light surfaces</span>
-                    <a href="/brand/edebooking-logo-gold.png" download>Download PNG</a>
+                    <a href="/brand/edebooking-logo-light.png" download>Download PNG</a>
                   </figcaption>
                 </figure>
                 <figure className="brand-plate brand-plate-dark">
                   <div className="brand-plate-stage">
-                    <Image src="/brand/edebooking-logo-light.png" alt={`${siteName} logo in bright gold`} {...logoSize} />
+                    <Image src="/brand/edebooking-logo.png" alt={`${siteName} logo for dark surfaces`} {...logoSize} />
                   </div>
                   <figcaption>
                     <span>For dark surfaces</span>
-                    <a href="/brand/edebooking-logo-light.png" download>Download PNG</a>
+                    <a href="/brand/edebooking-logo.png" download>Download PNG</a>
                   </figcaption>
                 </figure>
               </div>
@@ -250,7 +250,7 @@ export default function BrandPage() {
 
             <section id="type">
               <SectionHeading id="type" />
-              <p>On the web we set text in Plus Jakarta Sans and headlines in DM Serif Display. The logo is hand lettering set in Kalam Bold, so use the logo files from this page rather than retyping it.</p>
+              <p>On the web we set text in Plus Jakarta Sans and headlines in DM Serif Display. The logo wordmark is set in a classic serif and drawn into the artwork, so use the logo files from this page rather than retyping it.</p>
               <div className="type-grid">
                 <div className="type-card">
                   <span className="type-aa type-aa-sans" aria-hidden="true">Aa</span>

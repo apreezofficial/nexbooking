@@ -1,5 +1,6 @@
 import Link from "next/link";
 import NavActions from "./NavActions";
+import BrandLogo from "./BrandLogo";
 
 const items = [
   ["Features", "/features"],
@@ -14,7 +15,7 @@ export default function SiteNav({ current }: { current?: (typeof items)[number][
   return (
     <header className="nav-wrap">
       <nav className="nav" aria-label="Main navigation">
-        <Link className="logo" href="/" translate="no">EdeBooking</Link>
+        <BrandLogo />
         <div className="nav-links">
           {items.map(([label, href], index) => (
             <Link

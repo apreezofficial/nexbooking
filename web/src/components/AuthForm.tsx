@@ -5,6 +5,7 @@ import SocialIcon from "./SocialIcon";
 import { useState, useRef, useEffect, type FormEvent } from "react";
 import { DistortionWave } from "distortion-waves";
 import { signIn } from "@/lib/session";
+import BrandLogo from "./BrandLogo";
 
 export default function AuthForm({ signup = false }: { signup?: boolean }) {
   const [visible, setVisible] = useState(false);
@@ -38,12 +39,12 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
   return (
     <main className="auth-page">
       <aside className="auth-scene">
-        <Link href="/" className="logo">EdeBooking</Link>
+        <BrandLogo tone="dark" />
         <div><p className="eyebrow">YOUR EVERYDAY, TOGETHER</p><h2>More time for<br />what matters.</h2><p>Book, pay and manage appointments in one place.</p></div>
         <Link href="/" className="auth-back">Back to the website</Link>
       </aside>
       <section className="auth-panel">
-        <Link href="/" className="logo auth-mobile-logo">EdeBooking</Link>
+        <BrandLogo className="auth-mobile-logo" />
         <div className="auth-form-wrap">
           <DistortionWave
             revealed={complete}

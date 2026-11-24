@@ -1,11 +1,12 @@
 import Link from "next/link";
 import StoreBadges from "@/components/StoreBadges";
+import BrandLogo from "./BrandLogo";
 
 export default function SiteFooter() {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <Link className="logo" href="/">EdeBooking</Link>
+        <BrandLogo tone="dark" />
         <div className="footer-columns">
           <div><h3>Services</h3><Link href="/booking">Appointments</Link><Link href="/booking">Consultations</Link><Link href="/discover">Discover businesses</Link></div>
           <div><h3>For businesses</h3><Link href="/business">Business profiles</Link><Link href="/features">Daily tasks</Link><Link href="/features">Payments and receipts</Link></div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import BrandLogo from "./BrandLogo";
 
 export default function ForgotPasswordForm() {
   const [pending, setPending] = useState(false);
@@ -22,12 +23,12 @@ export default function ForgotPasswordForm() {
   return (
     <main className="auth-page">
       <aside className="auth-scene">
-        <Link href="/" className="logo">EdeBooking</Link>
+        <BrandLogo tone="dark" />
         <div><p className="eyebrow">LET’S GET YOU BACK</p><h2>A fresh start.<br />All yours.</h2><p>Get back to your bookings and everything you’re planning.</p></div>
         <Link href="/" className="auth-back">Back to the website</Link>
       </aside>
       <section className="auth-panel">
-        <Link href="/" className="logo auth-mobile-logo">EdeBooking</Link>
+        <BrandLogo className="auth-mobile-logo" />
         <div className="auth-form-wrap">
           {complete ? (
             <div role="status">
