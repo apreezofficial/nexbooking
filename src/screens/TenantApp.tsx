@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Animated, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -9,6 +9,7 @@ import {
   Sparkles, type LucideIcon,
 } from 'lucide-react-native';
 import { Badge, Button, Card, Chip, Input, Text, type Status } from '../components/primitives';
+import { ThinkingOrbs } from '../components/ThinkingOrbs';
 import { colors, radii, spacing } from '../theme';
 
 /* ---------- Navigation ---------- */
@@ -129,11 +130,30 @@ function BottomNav({ value, onChange }: { value: Tab | null; onChange: (tab: Tab
     { tab: 'Earnings', icon: Wallet, label: 'Earnings' },
     { tab: 'Plans', icon: Store, label: 'Plans' },
   ];
+  // The gold pill slides between tabs: each tab reports its x and width, and the pill animates to the active one.
+  const [layouts, setLayouts] = useState<Partial<Record<Tab, { x: number; width: number }>>>({});
+  const pillX = useRef(new Animated.Value(0)).current;
+  const pillWidth = useRef(new Animated.Value(0)).current;
+  const activeLayout = value ? layouts[value] : undefined;
+
+  useEffect(() => {
+    if (!activeLayout) return;
+    Animated.parallel([
+      Animated.timing(pillX, { toValue: activeLayout.x, duration: 260, useNativeDriver: false }),
+      Animated.timing(pillWidth, { toValue: activeLayout.width, duration: 260, useNativeDriver: false }),
+    ]).start();
+  }, [activeLayout?.x, activeLayout?.width]);
+
   return <View style={styles.nav} accessibilityRole="tablist">
+    {activeLayout && <Animated.View pointerEvents="none" style={[styles.pill, { left: pillX, width: pillWidth }]} />}
     {items.map(({ tab, icon: Icon, label }) => {
       const active = value === tab;
       return <Pressable key={tab} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active }}
-        onPress={() => onChange(tab)} style={[styles.navItem, active && { backgroundColor: colors.gold }]}>
+        onLayout={event => {
+          const { x, width } = event.nativeEvent.layout;
+          setLayouts(previous => ({ ...previous, [tab]: { x, width } }));
+        }}
+        onPress={() => onChange(tab)} style={styles.navItem}>
         <Icon size={22} strokeWidth={1.8} color={active ? colors.ink900 : colors.pearl} />
         {active && <Text variant="button">{label}</Text>}
       </Pressable>;
@@ -638,6 +658,10 @@ function ChatPage({ onBack, onCall, onBooking }: { onBack: () => void; onCall: (
       <Text variant="button">Silk press & trim · Amaka</Text><Text variant="caption" color={colors.muted}>Tue 17 Nov · 10:00 AM · Paid  ›</Text>
     </Pressable>
     <Bubble side="left">Can I bring a reference photo? It's a new style.</Bubble>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+      <ThinkingOrbs size={6} label="Ada is typing" />
+      <Text variant="caption" color={colors.muted}>Ada is typing</Text>
+    </View>
     <Bubble side="right">Of course, send it here.</Bubble>
     <LinearGradient colors={[colors.goldTint, colors.crayolaGold, colors.gold]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.photo} />
     <Bubble side="right">Lovely, we can match that. See you at 10:00.</Bubble>
@@ -839,7 +863,9 @@ function PayoutsPage({ onBack, onRequest, onChange }: { onBack: () => void; onRe
     {history.map(h => <Card key={h.sub} style={styles.txRow}>
       <View style={styles.txIcon}><Landmark size={18} color={colors.ink900} /></View>
       <View style={{ flex: 1 }}><Text variant="h3">{h.amount}</Text><Text variant="caption" color={colors.muted}>{h.sub}</Text></View>
-      <Tone label={h.status} tone={h.tone} />
+      {h.status === 'Processing'
+        ? <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}><ThinkingOrbs size={5} label="Processing" /><Tone label={h.status} tone={h.tone} /></View>
+        : <Tone label={h.status} tone={h.tone} />}
     </Card>)}
     <View style={{ flex: 1 }} />
     <Button label="Request payout" size="large" style={styles.full} onPress={onRequest} />
@@ -894,7 +920,8 @@ const styles = StyleSheet.create({
   gridTile: { width: '31%', minHeight: 110, borderRadius: radii.card, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.daisy, alignItems: 'center', justifyContent: 'center', gap: spacing.sm, padding: spacing.sm },
   gridIcon: { width: 44, height: 44, borderRadius: radii.input, backgroundColor: colors.goldTint, alignItems: 'center', justifyContent: 'center' },
   navWrap: { position: 'absolute', left: 16, right: 16, bottom: 16, alignItems: 'center' },
-  nav: { flexDirection: 'row', backgroundColor: colors.ink900, borderRadius: radii.pill, padding: 8, gap: 4, width: '100%', maxWidth: 528, justifyContent: 'space-between' },
+  nav: { flexDirection: 'row', backgroundColor: colors.ink900, borderRadius: radii.pill, padding: 8, gap: 4, width: '100%', maxWidth: 528, justifyContent: 'space-between', position: 'relative' },
+  pill: { position: 'absolute', top: 8, bottom: 8, borderRadius: radii.pill, backgroundColor: colors.gold },
   navItem: { minHeight: 44, minWidth: 44, borderRadius: radii.pill, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   goldDark: { backgroundColor: colors.ink900, borderRadius: radii.card, padding: spacing.lg, gap: spacing.sm },
   trend: { alignSelf: 'flex-start', backgroundColor: colors.goldTint, borderRadius: radii.chip, paddingHorizontal: 12, paddingVertical: 6 },
