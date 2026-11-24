@@ -2920,3 +2920,267 @@ fieldset.payment-cards-grid legend { margin-bottom: 10px; }
     padding: 7px 11px;
   }
 }
+
+/* ==========================================================================
+   Halftone 404 Page (Spiral 1:1 WebGL2 Halftone & 4-Mode Glitch Overlay)
+   ========================================================================== */
+
+@property --spiral-ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spiral-ring-spin {
+  to {
+    --spiral-ring-angle: 360deg;
+  }
+}
+
+.nf-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding-top: 72px;
+  background: #fcfcf9;
+  color: #171716;
+  overflow-x: clip;
+}
+
+.nf-page .nav-wrap {
+  top: 14px;
+}
+
+.nf-stage {
+  position: relative;
+  width: 100%;
+  min-height: calc(100dvh - 72px);
+  flex: 1;
+  overflow: hidden;
+  background: #fcfcf9;
+}
+
+.nf-clip-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.nf-clipped-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.nf-fade-canvas {
+  transition: opacity 700ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.nf-live-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.nf-glitch-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.nf-glitch-canvas {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.nf-backdrop-trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.nf-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nf-overlay {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 5%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.nf-message {
+  margin: 0;
+  max-width: 22.5rem;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: #3c3c3a;
+}
+
+.nf-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nf-pill {
+  position: relative;
+  pointer-events: auto;
+  display: inline-flex;
+  width: fit-content;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 20px;
+  border-radius: 9999px;
+  background: #fcfcf9;
+  color: #171716;
+  border: 1px solid rgba(223, 223, 221, 0.6);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px #00000014;
+  transition: box-shadow 200ms ease, border-color 200ms ease, opacity 700ms ease-out;
+}
+
+.nf-pill:hover {
+  box-shadow: 0 8px 24px #1d0fed24;
+  transform: none;
+}
+
+.nf-pill:focus-visible {
+  outline: 2px solid #1d0fed;
+  outline-offset: 2px;
+  border-color: #bebebb;
+}
+
+.spiral-ring {
+  position: relative;
+}
+
+.spiral-ring::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: conic-gradient(
+    from var(--spiral-ring-angle),
+    rgb(29 15 237 / 0) 0deg,
+    rgb(29 15 237 / 0.08) 22deg,
+    rgb(29 15 237 / 0.3) 40deg,
+    rgb(29 15 237 / 0.7) 55deg,
+    rgb(29 15 237) 65deg,
+    rgb(29 15 237 / 0.7) 75deg,
+    rgb(29 15 237 / 0.3) 90deg,
+    rgb(29 15 237 / 0.08) 108deg,
+    rgb(29 15 237 / 0) 130deg,
+    rgb(29 15 237 / 0) 180deg,
+    rgb(29 15 237 / 0.08) 202deg,
+    rgb(29 15 237 / 0.3) 220deg,
+    rgb(29 15 237 / 0.7) 235deg,
+    rgb(29 15 237) 245deg,
+    rgb(29 15 237 / 0.7) 255deg,
+    rgb(29 15 237 / 0.3) 270deg,
+    rgb(29 15 237 / 0.08) 288deg,
+    rgb(29 15 237 / 0) 310deg,
+    rgb(29 15 237 / 0) 360deg
+  );
+  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  -webkit-mask-clip: content-box, border-box;
+  mask-clip: content-box, border-box;
+  -webkit-mask-origin: content-box, border-box;
+  mask-origin: content-box, border-box;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spiral-ring-spin 2.4s linear infinite;
+  animation-play-state: paused;
+  transition: opacity 0.2s ease;
+}
+
+.spiral-ring:hover::before,
+.spiral-ring:focus-visible::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.nf-arrow-flip {
+  display: inline-flex;
+  flex-shrink: 0;
+  transform: scaleY(-1) rotate(180deg);
+}
+
+.nf-icon-sm {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.nf-icon-cam {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-block: -1px;
+}
+
+.nf-label-stack {
+  display: inline-grid;
+  justify-items: center;
+}
+
+.nf-label-stack > span {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.nf-label-hidden {
+  visibility: hidden;
+}
+
+.nf-caption {
+  margin: 0;
+  max-width: 22.5rem;
+  font-size: 0.75rem;
+  font-weight: 300;
+  line-height: 1.2;
+  color: #3c3c3a;
+  transition: opacity 700ms ease-out;
+}
+
+@media (max-width: 640px) {
+  .nf-overlay {
+    bottom: 66px;
+  }
+}

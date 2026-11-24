@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Icon from "./Icon";
 
 export interface UserLocation {
@@ -25,11 +25,10 @@ const POPULAR_CITIES = [
   "Remote",
 ];
 
-function readSavedLocation(): UserLocation | null {
+function readSavedLocationRaw(): string | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as UserLocation) : null;
+    return localStorage.getItem(STORAGE_KEY);
   } catch {
     return null;
   }
@@ -46,7 +45,15 @@ function subscribeLocation(callback: () => void) {
 }
 
 export default function LocationPrompt() {
-  const savedLocation = useSyncExternalStore(subscribeLocation, readSavedLocation, () => null);
+  const savedLocationRaw = useSyncExternalStore(subscribeLocation, readSavedLocationRaw, () => null);
+  const savedLocation = useMemo<UserLocation | null>(() => {
+    if (!savedLocationRaw) return null;
+    try {
+      return JSON.parse(savedLocationRaw) as UserLocation;
+    } catch {
+      return null;
+    }
+  }, [savedLocationRaw]);
   const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState<"prompt" | "locating" | "success" | "manual" | "denied">("prompt");
   const [customCity, setCustomCity] = useState("");
