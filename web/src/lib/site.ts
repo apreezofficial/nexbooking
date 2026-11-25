@@ -8,11 +8,11 @@ export const siteDescription =
 /**
  * The public origin used for canonical links, Open Graph URLs, the sitemap and structured data.
  * Set NEXT_PUBLIC_SITE_URL (for example your registered production domain) in production. On Vercel the
- * production domain is picked up automatically; locally it falls back to localhost.
+ * production domain is picked up automatically; outside Vercel a production build uses https://edebooking.com, and local development uses localhost.
  */
 function resolveSiteUrl(): string {
   const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || (vercel ? `https://${vercel}` : "http://localhost:3000");
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || (vercel ? `https://${vercel}` : process.env.NODE_ENV === "production" ? "https://edebooking.com" : "http://localhost:3000");
   return origin.replace(/\/+$/, "");
 }
 
@@ -37,7 +37,6 @@ export const publicRoutes = [
   { path: "/business", label: "For business", group: "main", priority: 0.8, changeFrequency: "monthly", summary: "How a business gets its own space: profile, portfolio, bookings, notes and records." },
   { path: "/booking", label: "Booking", group: "main", priority: 0.8, changeFrequency: "weekly", summary: "Search services, consultations, appointments, events, classes and rentals." },
   { path: "/faq", label: "FAQ", group: "main", priority: 0.6, changeFrequency: "monthly", summary: "Answers to common questions about bookings, payments, invoices and notes." },
-  { path: "/brand", label: "Brand", group: "main", priority: 0.4, changeFrequency: "yearly", summary: "Logo, mascot and assistant bot files, colours, typography, usage rules and a press boilerplate." },
   { path: "/contact", label: "Contact", group: "main", priority: 0.5, changeFrequency: "yearly", summary: "Get in touch about bookings, your business space or the app." },
   { path: "/privacy", label: "Privacy Policy", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "How information is collected, used, shared and protected." },
   { path: "/terms", label: "Terms of Service", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "The terms for customers and businesses using the platform." },

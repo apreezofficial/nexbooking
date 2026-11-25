@@ -130,7 +130,7 @@ function BookingFlow({ service, provider, price, today, session, draft }: Props 
 
               <div className="availability-legend-bar" aria-label="Legend">
                 <span className="legend-item"><i className="legend-dot dot-booked" />Booked</span>
-                <span className="legend-item"><i className="legend-dot dot-closed" />Vendor closed</span>
+                <span className="legend-item"><i className="legend-dot dot-closed" />Unavailable</span>
                 <span className="legend-item"><i className="legend-dot dot-filling" />Nearly full</span>
               </div>
 
@@ -150,7 +150,7 @@ function BookingFlow({ service, provider, price, today, session, draft }: Props 
                     const past = k < today;
                     const st = dayStatus(i + 1, k);
                     const off = past || st === "closed" || st === "booked";
-                    const label = past ? "Past date" : st === "closed" ? "Vendor closed" : st === "booked" ? "Fully booked" : st === "filling" ? "Nearly full" : "Available";
+                    const label = past ? "Past date" : st === "closed" ? "Unavailable" : st === "booked" ? "Fully booked" : st === "filling" ? "Nearly full" : "Available";
                     return (
                       <button key={k} type="button" disabled={off} title={`${i + 1} ${monthName}: ${label}`} aria-label={`${i + 1} ${monthName}, ${label}`} aria-pressed={date === k}
                         className={`day-btn ${date === k ? "selected" : ""} ${past ? "day-past" : ""} ${!past ? `day-${st}` : ""}`}

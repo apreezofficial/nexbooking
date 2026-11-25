@@ -82,7 +82,7 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
             <button ref={submitButton} className="btn btn-gradient auth-submit" type="submit" disabled={pending}>{pending && <span className="auth-spinner" aria-hidden="true" />}{pending ? (signup ? "Creating account…" : "Logging in…") : (signup ? "Create account" : "Log in")}</button>
           </fieldset></form>
           <div className="auth-divider"><span />or continue with<span /></div>
-          <div className="auth-socials">{(["Google", "Apple", "Facebook"] as const).map(provider => <button key={provider} type="button" aria-label={`Continue with ${provider}`} onClick={() => setNotice(`${provider} sign-in will be available when its authentication provider is connected.`)}><SocialIcon provider={provider} /><span>{provider}</span></button>)}</div>
+          <div className="auth-socials">{(["Google", "Apple"] as const).map(provider => <button key={provider} type="button" aria-label={`Continue with ${provider}`} onClick={() => setNotice(`${provider} sign-in will be available when its authentication provider is connected.`)}><SocialIcon provider={provider} /><span>{provider}</span></button>)}</div>
           <p role="status" className="auth-notice">{notice}</p>
           <p className="auth-other">{signup ? "Already have an account?" : "New here?"} <Link href={signup ? "/login" : "/signup"}>{signup ? "Log in" : "Create an account"}</Link></p>
           {!signup && <p className="auth-policy">By continuing you agree to the <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.</p>}

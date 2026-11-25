@@ -3195,3 +3195,5 @@ fieldset.payment-cards-grid legend { margin-bottom: 10px; }
 @media (max-width: 600px) { .brand-lockup-mark { width: 24px; height: 31px; } .brand-lockup { font-size: 19px; } }
 @media (max-width: 760px) { .brand-lockup.auth-mobile-logo { display: inline-flex; margin: 0 0 32px; font-size: 22px; } }
 .prompt-logo-img { width: 100%; height: 100%; border-radius: inherit; display: block; object-fit: cover; }
+/* The logo wordmark is set in capitals */
+.brand-lockup-text { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.78em; }

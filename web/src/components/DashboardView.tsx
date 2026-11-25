@@ -269,7 +269,7 @@ export default function DashboardView() {
                     const past = Boolean(today && k < today);
                     const st = dayStatus(i + 1, k);
                     const off = past || st === "closed" || st === "booked";
-                    const label = past ? "Past date" : st === "closed" ? "Vendor closed" : st === "booked" ? "Fully booked" : st === "filling" ? "Nearly full" : "Available";
+                    const label = past ? "Past date" : st === "closed" ? "Unavailable" : st === "booked" ? "Fully booked" : st === "filling" ? "Nearly full" : "Available";
                     return (
                       <button
                         key={k}

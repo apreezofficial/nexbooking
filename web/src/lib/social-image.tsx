@@ -24,7 +24,7 @@ export function renderSocialImage() {
           <div style={{ display: "flex", alignItems: "center", fontSize: 40, fontWeight: 700, color: "#ffffff", letterSpacing: -1 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={markSrc} alt="" width={44} height={56} style={{ width: 44, height: 56, marginRight: 18 }} />
-            {siteName}
+            <div style={{ display: "flex", letterSpacing: 6, fontSize: 34 }}>{siteName.toUpperCase()}</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", fontSize: 72, fontWeight: 700, lineHeight: 1.08, color: "#ffffff", letterSpacing: -2 }}>{siteTagline}</div>

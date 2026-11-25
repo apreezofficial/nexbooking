@@ -484,7 +484,7 @@ export default function VendorRegistrationWizard() {
               ))}
             </div>
             <small style={{ color: "var(--muted)", marginTop: 6, display: "block" }}>
-              Unselected days will show as &ldquo;Vendor closed&rdquo; on your calendar.
+              Unselected days will show as &ldquo;Unavailable&rdquo; on your calendar.
             </small>
           </div>
 
