@@ -1,4 +1,4 @@
-# NEX Booking
+# EdeBooking
 
 Cross-platform app built with bare React Native 0.88.1, TypeScript, and native iOS and Android projects. Expo is not part of the runtime or build pipeline.
 

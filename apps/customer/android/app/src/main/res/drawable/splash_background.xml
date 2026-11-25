@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/splash_ink" />
+    <item
+        android:drawable="@drawable/splash_mark"
+        android:gravity="center"
+        android:width="240dp"
+        android:height="210dp" />
+</layer-list>

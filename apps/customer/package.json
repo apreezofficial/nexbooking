@@ -1,0 +1,12 @@
+{
+  "name": "nex-customer",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "react-native start",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android"
+  },
+  "dependencies": { "react": "19.3.0", "react-native": "0.88.1", "@react-native-community/blur": "^4.4.1", "lucide-react-native": "^1.75.0", "react-native-linear-gradient": "^2.8.3", "react-native-safe-area-context": "^5.11.1", "react-native-svg": "15.16.0" }
+}

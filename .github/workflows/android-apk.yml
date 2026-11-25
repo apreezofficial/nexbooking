@@ -1,19 +1,9 @@
-name: Android APK
+name: Android APK (customer)
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - 'App.tsx'
-      - 'app.json'
-      - 'assets/**'
-      - 'android/**'
-      - 'src/**'
-      - 'index.ts'
-      - 'package.json'
-      - 'package-lock.json'
-      - '.github/workflows/android-apk.yml'
 
 permissions:
   contents: read
@@ -32,20 +22,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
-        with:
-          packages: platform-tools
       - name: Install dependencies
         run: npm ci
       - name: Check TypeScript
         run: npm run check
-      - name: Build installable test APK
-        working-directory: android
+      - name: Build release APK
+        working-directory: apps/customer/android
         run: ./gradlew assembleRelease --no-daemon
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: nexbooking-test-apk-${{ github.run_number }}
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: nex-customer-apk-${{ github.run_number }}
+          path: apps/customer/android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
           retention-days: 30
