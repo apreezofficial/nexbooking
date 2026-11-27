@@ -2,9 +2,10 @@
 
 .d-app { --d-side: 268px; min-height: 100vh; background: var(--pearl); color: var(--ink-900); font-family: var(--font-sans), Arial, sans-serif; }
 .d-app * { box-sizing: border-box; }
-.d-app h1, .d-app h2, .d-app h3, .d-app p { margin: 0; }
-.d-app button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
-.d-app a { text-decoration: none; color: inherit; }
+/* :where keeps these resets at the lowest specificity, so component classes always win over them. */
+:where(.d-app) h1, :where(.d-app) h2, :where(.d-app) h3, :where(.d-app) p { margin: 0; }
+:where(.d-app) button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+:where(.d-app) a { text-decoration: none; color: inherit; }
 .d-boot { display: grid; place-items: center; min-height: 100vh; }
 
 /* ───────── Frame ───────── */
@@ -316,7 +317,7 @@ body:has(.d-app) .cookie-reopen { left: 18px; bottom: 96px; }
 .d-calendar { padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); }
 .d-cal-week, .d-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 .d-cal-week { margin: 14px 0 6px; color: var(--muted); font-size: 11px; font-weight: 700; text-align: center; }
-.d-cal-day { aspect-ratio: 1; min-height: 38px; border: 1px solid transparent; border-radius: 12px; background: var(--pearl); font-size: 14px; font-weight: 700; transition: background-color .2s, border-color .2s; }
+.d-cal-day { height: 44px; border: 1px solid transparent; border-radius: 12px; background: var(--pearl); font-size: 14px; font-weight: 700; transition: background-color .2s, border-color .2s; }
 .d-cal-day:hover:not(:disabled) { border-color: var(--gold-500); }
 .d-cal-day:disabled { background: transparent; color: var(--line); cursor: not-allowed; }
 .d-cal-day.is-filling { background: var(--warning-tint); }

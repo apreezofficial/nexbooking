@@ -6,7 +6,7 @@ import { api } from "@/lib/dashboard/api";
 import { studioById, threadName } from "@/lib/dashboard/data";
 import { useRun, useThreads } from "@/lib/dashboard/hooks";
 import { Page } from "../DashboardShell";
-import { Banner, BusinessLogo, IconButton, PageHeader } from "../ui";
+import { BusinessLogo, IconButton, PageHeader } from "../ui";
 
 export default function MessageScreen({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -30,7 +30,6 @@ export default function MessageScreen({ params }: { params: Promise<{ id: string
   return (
     <Page>
       <PageHeader title={name} back="/dashboard/inbox" action={id !== "support" ? <BusinessLogo monogram={studio.monogram} name={name} size={40} /> : undefined} />
-      {id !== "support" ? <Banner /> : null}
       <div className="d-chat" aria-live="polite">
         <small className="d-chat-day">Today</small>
         {thread.map((message) => (
