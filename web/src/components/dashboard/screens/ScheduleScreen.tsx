@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { api } from "@/lib/dashboard/api";
 import { formatDay, addDays } from "@/lib/dashboard/store";
 import { studioById } from "@/lib/dashboard/data";
@@ -11,8 +11,6 @@ import { useBookings, useNotes } from "@/lib/dashboard/hooks";
 import { useToday } from "@/lib/dashboard/store";
 import { Page } from "../DashboardShell";
 import { Badge, Button, Chips, Segmented, Skeleton, StateView, Title, Toggle } from "../ui";
-
-const weekday = (iso: string) => formatDay(iso, { weekday: "short" });
 
 export default function ScheduleScreen() {
   const today = useToday();
@@ -22,14 +20,18 @@ export default function ScheduleScreen() {
   const [when, setWhen] = useState("Upcoming");
   const [day, setDay] = useState("");
 
-  const days = useMemo(() => (today ? Array.from({ length: 10 }, (_, i) => addDays(today, i)) : []), [today]);
-  const bookedDays = new Set(bookings.filter((item) => item.status !== "Cancelled").map((item) => item.date));
+  const [monthOffset, setMonthOffset] = useState(0);
+  const base = today ? new Date(`${today}T12:00:00`) : new Date(2000, 0, 1);
+  const month = new Date(base.getFullYear(), base.getMonth() + monthOffset, 1);
+  const first = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}-01`;
+  const dayCount = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+  const bookedDays = new Set(bookings.filter(item => when === "Cancelled" ? item.status === "Cancelled" : item.status !== "Cancelled").map(item => item.date));
 
   const shown = bookings
     .filter((item) => {
+      if (day && item.date !== day) return false;
       if (when === "Cancelled") return item.status === "Cancelled";
       if (item.status === "Cancelled") return false;
-      if (day && item.date !== day) return false;
       return when === "Past" ? Boolean(today) && item.date < today : !today || item.date >= today;
     })
     .sort((a, b) => (when === "Past" ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date)));
@@ -46,24 +48,35 @@ export default function ScheduleScreen() {
 
       {view === "Bookings" ? (
         <>
-          <div className="d-daystrip" role="list" aria-label="Next ten days">
-            <button type="button" role="listitem" className={`d-dayitem${day === "" ? " is-active" : ""}`} onClick={() => setDay("")}>
-              <small>All</small><b>{shown.length}</b>
-            </button>
-            {days.map((iso) => (
-              <button key={iso} type="button" role="listitem" className={`d-dayitem${day === iso ? " is-active" : ""}`} onClick={() => setDay(day === iso ? "" : iso)} aria-current={day === iso ? "date" : undefined}>
-                <small>{weekday(iso)}</small>
-                <b>{new Date(`${iso}T12:00:00`).getDate()}</b>
-                {bookedDays.has(iso) ? <i className="d-dot-on" aria-label="Has a booking" /> : null}
-              </button>
-            ))}
-          </div>
-
-          <Chips items={["Upcoming", "Past", "Cancelled"]} value={when} onChange={setWhen} />
+          <Chips items={["Upcoming", "Past", "Cancelled"]} value={when} onChange={value => { setWhen(value); setDay(""); setMonthOffset(0); }} />
+          {today && <section className="appointment-calendar d-schedule-calendar" aria-label="Booking calendar">
+            <div className="calendar-heading">
+              <strong aria-live="polite">{formatDay(first, { month: "long", year: "numeric" })}</strong>
+              <div>
+                <button type="button" aria-label="Previous month" onClick={() => setMonthOffset(value => value - 1)}>‹</button>
+                <button type="button" aria-label="Next month" onClick={() => setMonthOffset(value => value + 1)}>›</button>
+              </div>
+            </div>
+            <div className="calendar-grid">
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(name => <small key={name}>{name}</small>)}
+              {Array.from({ length: month.getDay() }, (_, i) => <span key={i} />)}
+              {Array.from({ length: dayCount }, (_, i) => {
+                const iso = addDays(first, i);
+                const hasBooking = bookedDays.has(iso);
+                return <button key={iso} type="button" aria-current={iso === today ? "date" : undefined}
+                  aria-label={`${formatDay(iso, { dateStyle: "full" })}${hasBooking ? ", has bookings" : ""}`}
+                  disabled={when === "Upcoming" ? iso < today : when === "Past" && iso >= today}
+                  aria-pressed={iso === day} onClick={() => setDay(iso === day ? "" : iso)}>
+                  {i + 1}{hasBooking && <span className="d-calendar-dot" aria-hidden="true" />}
+                </button>;
+              })}
+            </div>
+            {day && <Button variant="text" onClick={() => setDay("")}>Show all dates</Button>}
+          </section>}
 
           {!today ? <Skeleton height={140} /> : null}
           {today && shown.length === 0 ? (
-            <StateView icon={CalendarDays} title={when === "Upcoming" ? "Nothing booked yet" : `No ${when.toLowerCase()} bookings`} body="When you book a studio it lands here, on the right day." primary={{ label: "Explore studios", href: "/dashboard/explore" }} />
+            <StateView icon={CalendarDays} title={day ? "No bookings on this date" : when === "Upcoming" ? "Nothing booked yet" : `No ${when.toLowerCase()} bookings`} body="When you book a studio it lands here, on the right day." primary={{ label: "Explore studios", href: "/dashboard/explore" }} />
           ) : null}
 
           {Object.entries(grouped).map(([iso, items]) => (

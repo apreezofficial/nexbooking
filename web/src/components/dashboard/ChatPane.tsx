@@ -15,7 +15,9 @@ export default function ChatPane({ id, compact = false }: { id: string; compact?
   const name = threadName(id);
   const studio = studioById(id);
 
-  useEffect(() => end.current?.scrollIntoView({ block: "end" }), [thread.length, id]);
+  useEffect(() => {
+    end.current?.scrollIntoView({ block: "end" });
+  }, [thread.length, id]);
 
   const send = async (event: FormEvent) => {
     event.preventDefault();

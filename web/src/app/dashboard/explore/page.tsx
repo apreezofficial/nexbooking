@@ -1,8 +1,5 @@
-import type { Metadata } from "next";
-import ExploreScreen from "@/components/dashboard/screens/ExploreScreen";
-
-export const metadata: Metadata = { title: "Explore" };
+import { ServicesFeed } from "@/components/ServicesExperience";
 
 export default function Page() {
-  return <ExploreScreen />;
+  return <ServicesFeed dashboard />;
 }

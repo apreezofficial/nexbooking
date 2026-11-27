@@ -3,6 +3,9 @@ import { Suspense, type ReactNode } from "react";
 import DashboardShell from "@/components/dashboard/DashboardShell";
 import "./dashboard.css";
 
+// The browser session gate intentionally withholds child pages during prerendering.
+export const instant = false;
+
 // The dashboard is for logged in customers: keep it out of search results.
 export const metadata: Metadata = {
   title: { default: "Dashboard", template: "%s | EdeBooking" },

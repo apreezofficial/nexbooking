@@ -9,7 +9,7 @@ import { addBooking, clearDraft, parseDraft, parseSession, saveDraft, useDraftRa
 
 type ServiceItem = (typeof servicePreviews)[number];
 type Provider = { id: string; name: string; business: string; category: string; image: string; avatar: string; bio: string };
-type Props = { service: ServiceItem; provider: Provider; price: number };
+type Props = { service: ServiceItem; provider: Provider; price: number; dashboard?: boolean };
 type Step = "customize" | "checkout" | "confirmed";
 type Method = "card" | "transfer" | "in_person";
 
@@ -43,7 +43,7 @@ export default function SinglePageBooking(props: Props) {
   return <BookingFlow {...props} today={today} session={parseSession(sessionRaw)} draft={draft && draft.serviceId === props.service.id ? draft : null} />;
 }
 
-function BookingFlow({ service, provider, price, today, session, draft }: Props & { today: string; session: Session | null; draft: Draft | null }) {
+function BookingFlow({ service, provider, price, dashboard, today, session, draft }: Props & { today: string; session: Session | null; draft: Draft | null }) {
   const [step, setStep] = useState<Step>(draft && draft.date && draft.time && session ? "checkout" : "customize");
   const [monthOffset, setMonthOffset] = useState(0);
   const [date, setDate] = useState(draft?.date ?? "");
@@ -62,7 +62,8 @@ function BookingFlow({ service, provider, price, today, session, draft }: Props 
   const monthName = month.toLocaleDateString("en-US", { month: "long", year: "numeric" });
   const key = (d: number) => `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
   const total = naira(price * guests);
-  const nextPath = `/book/${service.id}`;
+  const nextPath = `${dashboard ? "/dashboard/book" : "/book"}/${service.id}`;
+  const cataloguePath = dashboard ? "/dashboard/explore" : "/services";
   const methodList = METHODS;
 
   const missing = [
@@ -95,7 +96,7 @@ function BookingFlow({ service, provider, price, today, session, draft }: Props 
     setPending(true);
     setTimeout(() => {
       const c = `NB-${service.id.toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
-      addBooking({ code: c, title: service.title, provider: provider.business, date, time, guests: String(guests), total });
+      addBooking({ code: c, serviceId: service.id, title: service.title, provider: provider.business, date, time, guests: String(guests), total });
       clearDraft();
       setCode(c);
       setPending(false);
@@ -110,7 +111,7 @@ function BookingFlow({ service, provider, price, today, session, draft }: Props 
   return (
     <div className="single-booking-container">
       <div className="booking-top-bar">
-        <Link href={`/services/${service.category}`} className="booking-back-link"><Icon name="back" />Back to {service.categoryName}</Link>
+        <Link href={dashboard ? `${cataloguePath}?category=${service.category}` : `${cataloguePath}/${service.category}`} className="booking-back-link"><Icon name="back" />Back to {service.categoryName}</Link>
         <div className="booking-provider-pill"><SiteArt file={provider.avatar} className="provider-pill-avatar" /><span>{provider.business}</span></div>
       </div>
 
@@ -257,8 +258,8 @@ function BookingFlow({ service, provider, price, today, session, draft }: Props 
                 </div>
               </div>
               <div className="confirmed-actions">
-                <Link href="/dashboard" className="btn btn-gradient"><Icon name="grid" />Go to dashboard</Link>
-                <Link href="/services" className="btn btn-ghost">Explore more</Link>
+                <Link href={dashboard ? `/dashboard/bookings/${code}` : "/dashboard"} className="btn btn-gradient"><Icon name="grid" />{dashboard ? "View booking" : "Go to dashboard"}</Link>
+                <Link href={cataloguePath} className="btn btn-ghost">Explore more</Link>
               </div>
             </div>
           )}

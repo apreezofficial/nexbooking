@@ -5,6 +5,7 @@ export type Session = { name: string; email: string };
 export type Draft = { serviceId: string; date: string; time: string; guests: number; notes: string; method: string };
 export type BookingItem = {
   code: string;
+  serviceId?: string;
   title: string;
   provider: string;
   date: string;

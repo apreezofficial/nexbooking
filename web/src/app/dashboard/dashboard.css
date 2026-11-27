@@ -656,3 +656,58 @@ body:has(.d-app) .cookie-reopen { left: 18px; bottom: 96px; }
 .s-fields input[readonly] { color: var(--ink-800); }
 .s-card-head h2 { white-space: nowrap; }
 @media (max-width: 899px) { .s-card-head { flex-wrap: wrap; } }
+
+.services-feed.dashboard-services-feed,
+.booking-service-page-wrap.dashboard-service-booking {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 0 32px;
+}
+
+.dashboard-catalogue-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+.dashboard-catalogue-search label {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 600;
+}
+.dashboard-catalogue-search input[type="search"] {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: white;
+  color: var(--ink-900);
+  font-size: 16px;
+}
+
+.d-card-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(440px, calc(100% - 32px));
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--pearl);
+  color: var(--ink-900);
+}
+.d-card-dialog::backdrop { background: rgb(28 26 20 / 55%); }
+
+.d-schedule-calendar { width: min(100%, 420px); }
+.d-schedule-calendar .calendar-grid button { position: relative; }
+.d-calendar-dot {
+  position: absolute;
+  bottom: 5px;
+  left: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}

@@ -317,9 +317,17 @@ export const billing = {
   async paymentMethods() {
     return load<PaymentMethod[]>("payment-methods", seedPaymentMethods);
   },
-  /** POST /me/payment-methods  (tokenised by the payment provider, never raw card data) */
-  async addPaymentMethod(): Promise<never> {
-    throw new ApiError("New card setup is ready for payment-provider integration.");
+  addDemoCard(brand: "Visa" | "Mastercard") {
+    const methods = load<PaymentMethod[]>("payment-methods", seedPaymentMethods);
+    const id = `demo-${brand.toLowerCase()}`;
+    if (methods.some(method => method.id === id)) return;
+    const lastFour = brand === "Visa" ? "4242" : "4444";
+    save("payment-methods", [...methods, { id, label: `${brand} demo card`, detail: `•••• ${lastFour}`, isDefault: methods.length === 0 }]);
+  },
+  setDefaultPaymentMethod(id: string) {
+    const methods = load<PaymentMethod[]>("payment-methods", seedPaymentMethods);
+    if (!methods.some(method => method.id === id)) return;
+    save("payment-methods", methods.map(method => ({ ...method, isDefault: method.id === id })));
   },
 };
 

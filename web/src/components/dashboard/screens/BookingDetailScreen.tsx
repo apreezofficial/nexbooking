@@ -6,6 +6,7 @@ import { CalendarX, Check, Clock, MessageSquare, Star, Video } from "lucide-reac
 import { studioById } from "@/lib/dashboard/data";
 import { useBookings } from "@/lib/dashboard/hooks";
 import { formatDay } from "@/lib/dashboard/store";
+import { providerForService, servicePreviews } from "@/lib/services";
 import { Page } from "../DashboardShell";
 import { Badge, Button, PageHeader, StateView } from "../ui";
 
@@ -23,6 +24,8 @@ export default function BookingDetailScreen({ params }: { params: Promise<{ code
   }
 
   const studio = studioById(booking.studioId ?? "glow-studio");
+  const service = servicePreviews.find((item) => item.id === booking.serviceId);
+  const provider = service ? providerForService(service) : null;
   const cancelled = booking.status === "Cancelled";
   const rescheduling = booking.rescheduleStatus === "pending_vendor";
   const confirmed = !cancelled && booking.status !== "Pending";
@@ -39,7 +42,7 @@ export default function BookingDetailScreen({ params }: { params: Promise<{ code
       <PageHeader title="Booking" back="/dashboard/schedule" />
 
       <section className="d-bhero">
-        <Image src={studio.photo} alt="" fill priority sizes="(max-width: 1100px) 100vw, 900px" />
+        <Image src={service ? `/assets/${service.image}` : studio.photo} alt="" fill priority sizes="(max-width: 1100px) 100vw, 900px" />
         <div className="d-bhero-copy">
           <Badge status={cancelled ? "Cancelled" : rescheduling ? "Rescheduled" : booking.status === "Pending" ? "Pending" : "Confirmed"} label={cancelled ? "Cancelled" : rescheduling ? "Reschedule pending" : booking.status === "Pending" ? "Pending approval" : "Confirmed"} />
           <h1>{booking.title}</h1>
@@ -60,7 +63,7 @@ export default function BookingDetailScreen({ params }: { params: Promise<{ code
 
           <section className="d-fact-grid">
             <div className="d-fact"><Clock size={18} strokeWidth={1.8} aria-hidden="true" /><small>When</small><b>{when}</b><span>{booking.time}</span></div>
-            <div className="d-fact"><Star size={18} strokeWidth={1.8} aria-hidden="true" /><small>Venue</small><b>{booking.venue ?? "In person"}</b><span>{studio.area}</span></div>
+            <div className="d-fact"><Star size={18} strokeWidth={1.8} aria-hidden="true" /><small>Venue</small><b>{booking.venue ?? "In person"}</b><span>{provider ? booking.provider : studio.area}</span></div>
             <div className="d-fact"><Check size={18} strokeWidth={1.8} aria-hidden="true" /><small>Total</small><b>{booking.total}</b><span>{booking.paidWith ?? "Pay at the studio"}</span></div>
           </section>
 
@@ -75,7 +78,7 @@ export default function BookingDetailScreen({ params }: { params: Promise<{ code
             <>
               <Button size="large" block variant="dark" href={`/dashboard/bookings/${booking.code}/reschedule`}>Reschedule</Button>
               {consultation ? <Button size="large" block icon={Video} href={`/dashboard/consultation/${booking.code}`}>Join consultation</Button> : null}
-              <Button block variant="outline" icon={MessageSquare} href={`/dashboard/inbox/${booking.studioId ?? "glow-studio"}`}>Message studio</Button>
+              {provider ? <Button block variant="outline" href={`/providers/${provider.id}`}>View provider</Button> : <Button block variant="outline" icon={MessageSquare} href={`/dashboard/inbox/${booking.studioId ?? "glow-studio"}`}>Message studio</Button>}
               <Button block variant="text" href={`/dashboard/bookings/${booking.code}/cancel`}>Cancel booking</Button>
             </>
           ) : (

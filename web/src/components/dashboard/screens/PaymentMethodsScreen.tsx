@@ -1,28 +1,63 @@
 "use client";
 
-import { Check, CreditCard, Lock } from "lucide-react";
+import { useRef, useState } from "react";
+import { Check, CreditCard } from "lucide-react";
 import { api } from "@/lib/dashboard/api";
-import { usePaymentMethods, useRun } from "@/lib/dashboard/hooks";
+import { usePaymentMethods } from "@/lib/dashboard/hooks";
 import { Page } from "../DashboardShell";
-import { Button, Card, PageHeader } from "../ui";
+import { Button, PageHeader } from "../ui";
 
 export default function PaymentMethodsScreen() {
   const methods = usePaymentMethods();
-  const { run } = useRun();
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [brand, setBrand] = useState<"Visa" | "Mastercard">("Visa");
+  const [notice, setNotice] = useState("");
+  const hasCard = (name: string) => methods.some(method => method.id === `demo-${name.toLowerCase()}`);
+  const available = ["Visa", "Mastercard"].some(name => !hasCard(name));
 
   return (
     <Page>
       <PageHeader title="Payment methods" back="/dashboard/account" />
-      <p className="d-muted">Your saved payment options</p>
-      {methods.map((method) => (
-        <div key={method.id} className="d-box is-selected d-media" role="radio" aria-checked={method.isDefault} aria-label={`${method.label}, ${method.detail}`}>
-          <CreditCard size={24} strokeWidth={1.8} aria-hidden="true" />
-          <div><b>{method.label}</b><small>{method.detail}</small></div>
-          {method.isDefault ? <Check size={20} aria-hidden="true" /> : null}
-        </div>
-      ))}
-      <div><Button variant="text" onClick={() => void run(api.billing.addPaymentMethod())}>＋ Add a new card</Button></div>
-      <Card className="d-media"><Lock size={20} strokeWidth={1.8} aria-hidden="true" /><span className="d-muted">Your payment details are encrypted.</span></Card>
+      <p className="d-muted">Cards saved in this demo</p>
+      <div className="d-stack" role="group" aria-label="Default card">
+        {methods.map(method => (
+          <button key={method.id} type="button" className={`d-box d-media${method.isDefault ? " is-selected" : ""}`}
+            aria-pressed={method.isDefault} onClick={() => {
+              api.billing.setDefaultPaymentMethod(method.id);
+              setNotice(`${method.label} is now your default card.`);
+            }}>
+            <CreditCard size={24} aria-hidden="true" />
+            <span><b>{method.label}</b><small>{method.detail}</small></span>
+            {method.isDefault && <><Check size={18} aria-hidden="true" /><small>Default</small></>}
+          </button>
+        ))}
+      </div>
+      <div><Button disabled={!available} onClick={() => {
+        setBrand(hasCard("Visa") ? "Mastercard" : "Visa");
+        dialog.current?.showModal();
+      }}>＋ Add a new card</Button></div>
+      {!available && <p className="d-muted">Both sample cards are saved.</p>}
+      <p className="d-muted" role="status">{notice}</p>
+
+      <dialog ref={dialog} className="d-card-dialog" aria-labelledby="d-add-card-title">
+        <form className="d-stack provider-modal-form" onSubmit={event => {
+          event.preventDefault();
+          api.billing.addDemoCard(brand);
+          setNotice(`${brand} demo card added.`);
+          dialog.current?.close();
+        }}>
+          <h2 id="d-add-card-title">Add a demo card</h2>
+          <p className="d-muted">Choose a sample card to try saving a payment method.</p>
+          <label>Sample card
+            <select value={brand} onChange={event => setBrand(event.target.value === "Mastercard" ? "Mastercard" : "Visa")}>
+              <option disabled={hasCard("Visa")}>Visa</option>
+              <option disabled={hasCard("Mastercard")}>Mastercard</option>
+            </select>
+          </label>
+          <Button type="submit">Save demo card</Button>
+          <Button type="button" variant="outline" onClick={() => dialog.current?.close()}>Cancel</Button>
+        </form>
+      </dialog>
     </Page>
   );
 }

@@ -2,20 +2,14 @@
 
 import Link from "next/link";
 import { Bell, MapPin, Search } from "lucide-react";
-import { useState } from "react";
-import { api } from "@/lib/dashboard/api";
-import { homeCategories, servicesByStudio, studios } from "@/lib/dashboard/data";
-import { useNotifications, useProfile, useSaved } from "@/lib/dashboard/hooks";
+import { ServicesFeed } from "@/components/ServicesExperience";
+import { useNotifications, useProfile } from "@/lib/dashboard/hooks";
 import { Page } from "../DashboardShell";
-import { StudioBubbles } from "../Bubbles";
-import { Button, Chips, FeedCard, IconButton } from "../ui";
+import { Button, IconButton } from "../ui";
 
 export default function HomeScreen() {
   const profile = useProfile();
-  const saved = useSaved();
   const unread = useNotifications().some((item) => !item.read);
-  const [filter, setFilter] = useState("All");
-  const visible = studios.filter((studio) => filter === "All" || studio.category.toLowerCase().includes(filter.toLowerCase()));
 
   return (
     <Page wide>
@@ -37,30 +31,7 @@ export default function HomeScreen() {
         <span>Search studios, stylists, services</span>
       </Link>
 
-      <Chips scroll items={homeCategories} value={filter} onChange={setFilter} />
-
-      <div className="d-section-head"><h2 className="d-h2">Studios near you</h2><Link href="/dashboard/explore" className="d-seeall">See all</Link></div>
-      <StudioBubbles items={studios} hrefFor={(studio) => `/dashboard/studios/${studio.id}`} />
-
-      {visible.length === 0 ? (
-        <p className="d-muted">No studios in {filter} near you yet.</p>
-      ) : (
-        <div className="service-feed-grid">
-          {visible.slice(0, 6).map((studio) => {
-            const first = servicesByStudio[studio.id]?.[0];
-            return (
-              <FeedCard
-                key={studio.id}
-                studio={studio}
-                saved={Boolean(saved[studio.id])}
-                onSave={() => void api.studio.toggleSaved(studio.id)}
-                serviceName={first?.name}
-                detail={first ? first.detail.split(" · ")[0] : undefined}
-              />
-            );
-          })}
-        </div>
-      )}
+      <ServicesFeed dashboard />
     </Page>
   );
 }
