@@ -304,7 +304,7 @@
 					"-framework",
 					"AVFoundation",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nexbooking.customer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edebooking.customer;
 				PRODUCT_NAME = NEXCustomer;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -335,7 +335,7 @@
 					"-framework",
 					"AVFoundation",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nexbooking.customer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edebooking.customer;
 				PRODUCT_NAME = NEXCustomer;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;

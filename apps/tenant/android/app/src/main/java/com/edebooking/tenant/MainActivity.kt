@@ -1,4 +1,4 @@
-package com.nexbooking.tenant
+package com.edebooking.tenant
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

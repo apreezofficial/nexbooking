@@ -1,4 +1,4 @@
-package com.nexbooking.customer
+package com.edebooking.customer
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

@@ -78,9 +78,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.nexbooking.customer"
+    namespace "com.edebooking.customer"
     defaultConfig {
-        applicationId "com.nexbooking.customer"
+        applicationId "com.edebooking.customer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
