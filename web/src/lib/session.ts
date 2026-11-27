@@ -15,6 +15,15 @@ export type BookingItem = {
   rescheduleStatus?: "none" | "approved" | "pending_vendor" | "declined";
   rescheduleRequestedDate?: string;
   rescheduleRequestedTime?: string;
+  // Added for the customer dashboard (optional so earlier bookings still load).
+  status?: "Pending" | "Confirmed" | "Completed" | "Cancelled";
+  studioId?: string;
+  staff?: string;
+  venue?: string;
+  paidWith?: string;
+  receiptRef?: string;
+  cancelReason?: string;
+  refund?: string;
 };
 
 const SESSION_KEY = "edebooking-session";
@@ -64,3 +73,8 @@ export function updateBooking(code: string, updates: Partial<BookingItem>) {
   const updated = current.map(item => item.code === code ? { ...item, ...updates } : item);
   write(BOOKINGS_KEY, JSON.stringify(updated));
 }
+
+/** Sync read of the stored bookings, for request code that runs outside React. */
+export const readBookings = () => parseBookings(read(BOOKINGS_KEY));
+export const replaceBookings = (items: BookingItem[]) => write(BOOKINGS_KEY, JSON.stringify(items));
+export const readSession = () => parseSession(read(SESSION_KEY));

@@ -6,10 +6,13 @@ import {
   ArrowLeft, Ban, CalendarDays, Check, ChevronLeft, ChevronRight, CircleCheck, Clock3, Crown, Download, Eye, EyeOff,
   Home, Landmark, Mic, MessageCircle, Paperclip, Phone, Plus, Repeat, RefreshCw, Scissors, Send, ShieldCheck,
   SlidersHorizontal, Star, Store, Tag, Megaphone, TriangleAlert, UserRound, Video, Wallet, X, Bell, Info, PhoneOff,
-  Sparkles, type LucideIcon,
+  Sparkles, Settings, Image as ImageIcon, type LucideIcon,
 } from 'lucide-react-native';
 import { Badge, Button, Card, Chip, Input, Text, type Status } from '../../../src/components/primitives';
 import { ThinkingOrbs } from '../../../src/components/ThinkingOrbs';
+import { StateView } from '../../../src/components/StateView';
+import { BusinessHubPage, StorefrontEditPage, WorksPage, ServicesPage, EditServicePage, WorkingHoursPage, StaffPage, InviteStaffPage, StaffProfilePage, ReviewsPage, PromoCodesPage, NewPromoPage, AnalyticsPage, SubscriptionPage, UpgradeCheckoutPage, BillingPage, BoostPage, IntegrationsPage } from './BusinessScreens';
+import { SettingsPage, BusinessInfoPage, BookingPoliciesPage, NotificationSettingsPage, RolesPage, SecurityPage, LockedStaffPage, EmptyPage, OfflinePage, PayoutFailedPage, SubscriptionFailedPage, UploadFailedPage, BookingConflictPage, StripeLostPage } from './SettingsAndStates';
 import { VoiceAssistantCard } from '../../../src/components/VoiceAssistantCard';
 import { colors, radii, spacing } from '../../../src/theme';
 
@@ -19,12 +22,14 @@ type Page =
   | 'Signup' | 'Setup' | 'Plans'
   | 'Home' | 'Notifications' | 'Bookings' | 'BookingDetail' | 'NewBooking' | 'BlockTime'
   | 'Inbox' | 'Chat' | 'Consultation' | 'SessionNotes'
-  | 'Earnings' | 'Transactions' | 'TransactionDetail' | 'RequestPayout' | 'Payouts' | 'PayoutAccount';
+  | 'Earnings' | 'Transactions' | 'TransactionDetail' | 'RequestPayout' | 'Payouts' | 'PayoutAccount'
+  | 'Settings' | 'BusinessInfo' | 'BookingPolicies' | 'NotificationSettings' | 'Roles' | 'Security' | 'Staff'
+  | 'Works' | 'Reviews' | 'Services' | 'Subscription' | 'Business' | 'StorefrontEdit' | 'WorkingHours' | 'EditService' | 'InviteStaff' | 'StaffProfile' | 'PromoCodes' | 'NewPromo' | 'Analytics' | 'UpgradeCheckout' | 'Billing' | 'Boost' | 'Integrations' | 'StaffLocked' | 'Offline' | 'PayoutFailed' | 'SubscriptionFailed' | 'UploadFailed' | 'BookingConflict' | 'StripeLost';
 
-type Tab = 'Home' | 'Bookings' | 'Inbox' | 'Earnings' | 'Plans';
-const tabPages: Record<Tab, Page> = { Home: 'Home', Bookings: 'Bookings', Inbox: 'Inbox', Earnings: 'Earnings', Plans: 'Plans' };
+type Tab = 'Home' | 'Bookings' | 'Inbox' | 'Earnings' | 'Business';
+const tabPages: Record<Tab, Page> = { Home: 'Home', Bookings: 'Bookings', Inbox: 'Inbox', Earnings: 'Earnings', Business: 'Business' };
 const tabOf = (page: Page): Tab | null =>
-  (['Home', 'Bookings', 'Inbox', 'Earnings'] as Tab[]).find(tab => tabPages[tab] === page) ?? null;
+  (['Home', 'Bookings', 'Inbox', 'Earnings', 'Business'] as Tab[]).find(tab => tabPages[tab] === page) ?? null;
 
 /* ---------- Sample data (from the Figma frames) ---------- */
 
@@ -129,7 +134,7 @@ function BottomNav({ value, onChange }: { value: Tab | null; onChange: (tab: Tab
     { tab: 'Bookings', icon: CalendarDays, label: 'Bookings' },
     { tab: 'Inbox', icon: MessageCircle, label: 'Inbox' },
     { tab: 'Earnings', icon: Wallet, label: 'Earnings' },
-    { tab: 'Plans', icon: Store, label: 'Plans' },
+    { tab: 'Business', icon: Store, label: 'Business' },
   ];
   // The gold pill slides between tabs: each tab reports its x and width, and the pill animates to the active one.
   const [layouts, setLayouts] = useState<Partial<Record<Tab, { x: number; width: number }>>>({});
@@ -182,7 +187,7 @@ export function TenantApp() {
     case 'Signup': body = <SignupPage onNext={() => go('Setup')} />; break;
     case 'Setup': body = <SetupPage onNext={() => go('Plans')} onSkip={() => openTab('Home')} />; break;
     case 'Plans': body = <PlansPage onNext={() => openTab('Home')} onBack={history.length ? back : undefined} />; break;
-    case 'Home': body = <HomePage onNotifications={() => go('Notifications')} onCreate={() => setSheet('create')} onBlock={() => go('BlockTime')} onBooking={() => go('BookingDetail')} onEarnings={() => openTab('Earnings')} />; break;
+    case 'Home': body = <HomePage onNotifications={() => go('Notifications')} onSettings={() => go('Settings')} onCreate={() => setSheet('create')} onBlock={() => go('BlockTime')} onBooking={() => go('BookingDetail')} onEarnings={() => openTab('Earnings')} />; break;
     case 'Notifications': body = <NotificationsPage onBack={back} />; break;
     case 'Bookings': body = <BookingsPage tab={bookingTab} onTab={setBookingTab} onOpen={() => go('BookingDetail')} onDecline={() => setSheet('decline')} onAdd={() => go('NewBooking')} onVoice={() => setSheet('voice')} />; break;
     case 'BookingDetail': body = <BookingDetailPage onBack={back} onChat={() => go('Chat')} onNotes={() => go('SessionNotes')} onRoom={() => go('Consultation')} />; break;
@@ -197,6 +202,37 @@ export function TenantApp() {
     case 'TransactionDetail': body = <TransactionDetailPage onBack={back} />; break;
     case 'RequestPayout': body = <RequestPayoutPage onBack={back} amount={payoutAmount} onAmount={setPayoutAmount} onAccount={() => go('PayoutAccount')} />; break;
     case 'Payouts': body = <PayoutsPage onBack={back} onRequest={() => go('RequestPayout')} onChange={() => go('PayoutAccount')} />; break;
+    case 'Settings': body = <SettingsPage onBack={back} go={p => go(p as Page)} />; break;
+    case 'BusinessInfo': body = <BusinessInfoPage onBack={back} go={p => go(p as Page)} />; break;
+    case 'BookingPolicies': body = <BookingPoliciesPage onBack={back} />; break;
+    case 'NotificationSettings': body = <NotificationSettingsPage onBack={back} />; break;
+    case 'Roles': body = <RolesPage onBack={back} />; break;
+    case 'Security': body = <SecurityPage onBack={back} />; break;
+    case 'Staff': body = <StaffPage onBack={back} go={p => go(p as Page)} />; break;
+    case 'Works': body = <WorksPage onBack={back} go={p => go(p as Page)} />; break;
+    case 'Reviews': body = <ReviewsPage onBack={back} />; break;
+    case 'Services': body = <ServicesPage onBack={back} go={p => go(p as Page)} />; break;
+    case 'Subscription': body = <SubscriptionPage onBack={back} go={p => go(p as Page)} />; break;
+    case 'Offline': body = <OfflinePage onBack={back} />; break;
+    case 'PayoutFailed': body = <PayoutFailedPage onBack={back} onAccount={() => go('PayoutAccount')} />; break;
+    case 'SubscriptionFailed': body = <SubscriptionFailedPage onBack={back} />; break;
+    case 'UploadFailed': body = <UploadFailedPage onBack={back} />; break;
+    case 'BookingConflict': body = <BookingConflictPage onBack={back} />; break;
+    case 'StaffLocked': body = <LockedStaffPage onBack={back} />; break;
+    case 'Business': body = <BusinessHubPage go={p => go(p as Page)} />; break;
+    case 'StorefrontEdit': body = <StorefrontEditPage onBack={back} />; break;
+    case 'WorkingHours': body = <WorkingHoursPage onBack={back} />; break;
+    case 'EditService': body = <EditServicePage onBack={back} />; break;
+    case 'InviteStaff': body = <InviteStaffPage onBack={back} />; break;
+    case 'StaffProfile': body = <StaffProfilePage onBack={back} />; break;
+    case 'PromoCodes': body = <PromoCodesPage onBack={back} go={p => go(p as Page)} />; break;
+    case 'NewPromo': body = <NewPromoPage onBack={back} />; break;
+    case 'Analytics': body = <AnalyticsPage onBack={back} />; break;
+    case 'UpgradeCheckout': body = <UpgradeCheckoutPage onBack={back} />; break;
+    case 'Billing': body = <BillingPage onBack={back} />; break;
+    case 'Boost': body = <BoostPage onBack={back} />; break;
+    case 'Integrations': body = <IntegrationsPage onBack={back} />; break;
+    case 'StripeLost': body = <StripeLostPage onBack={back} />; break;
     case 'PayoutAccount': body = <PayoutAccountPage onBack={back} />; break;
   }
 
@@ -305,8 +341,8 @@ function PlansPage({ onNext, onBack }: { onNext: () => void; onBack?: () => void
 
 /* ---------- Home ---------- */
 
-function HomePage({ onNotifications, onCreate, onBlock, onBooking, onEarnings }: {
-  onNotifications: () => void; onCreate: () => void; onBlock: () => void; onBooking: () => void; onEarnings: () => void;
+function HomePage({ onNotifications, onSettings, onCreate, onBlock, onBooking, onEarnings }: {
+  onNotifications: () => void; onSettings: () => void; onCreate: () => void; onBlock: () => void; onBooking: () => void; onEarnings: () => void;
 }) {
   const [range, setRange] = useState('Day');
   return <View style={styles.page}>
@@ -318,7 +354,7 @@ function HomePage({ onNotifications, onCreate, onBlock, onBooking, onEarnings }:
           <Text variant="caption" color={colors.muted}>Glow Studio · Pro plan</Text>
         </View>
       </View>
-      <IconSquare icon={Bell} label="Notifications" dot onPress={onNotifications} />
+      <View style={{ flexDirection: 'row', gap: 8 }}><IconSquare icon={Settings} label="Settings" onPress={onSettings} /><IconSquare icon={Bell} label="Notifications" dot onPress={onNotifications} /></View>
     </View>
 
     <Gold>
@@ -430,6 +466,7 @@ function BookingsPage({ tab, onTab, onOpen, onDecline, onAdd, onVoice }: {
       </Card>
     </>}
 
+    {tab === 'Requests' && requests.length === 0 && <StateView icon={Check} title="No pending requests" body="New booking requests will show up here." />}
     {tab === 'Requests' && requests.map(r => <Card key={r.name} style={styles.requestCard}>
       <View style={styles.rowBetween}>
         <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center', flex: 1 }}>
@@ -619,6 +656,7 @@ function InboxPage({ onOpen }: { onOpen: () => void }) {
     <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
       {['All', 'Unread 2', 'Bookings', 'Enquiries'].map(f => <Chip key={f} label={f} selected={filter === f} onPress={() => setFilter(f)} />)}
     </View>
+    {inboxItems.length === 0 && <StateView icon={MessageCircle} title="No messages yet" body="Chat with a customer after you book, or ask a question from their page." />}
     {inboxItems.map(item => <Pressable key={item.name} onPress={onOpen} accessibilityRole="button" style={styles.inboxRow}>
       <Avatar initials={item.initials} size={48} />
       <View style={{ flex: 1, gap: 2 }}>
@@ -849,6 +887,7 @@ function PayoutsPage({ onBack, onRequest, onChange }: { onBack: () => void; onRe
       <Pressable onPress={onChange} accessibilityRole="button"><Text variant="button" color={colors.goldDeep}>Change</Text></Pressable>
     </View>
     <Text variant="h3">History</Text>
+    {history.length === 0 && <StateView icon={Landmark} title="No payouts yet" body="Your first payout will appear here after a completed booking." primary={{ label: 'Set up payout account', onPress: onChange }} />}
     {history.map(h => <Card key={h.sub} style={styles.txRow}>
       <View style={styles.txIcon}><Landmark size={18} color={colors.ink900} /></View>
       <View style={{ flex: 1 }}><Text variant="h3">{h.amount}</Text><Text variant="caption" color={colors.muted}>{h.sub}</Text></View>
