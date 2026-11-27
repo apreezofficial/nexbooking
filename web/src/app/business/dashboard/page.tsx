@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowDownToLine, ArrowUpRight, CalendarDays, Check, ChevronDown, CircleDollarSign, Clock3, Plus, Search, Settings2, Sparkles, X } from "lucide-react";
 import { parseSession, signOut, useSessionRaw } from "@/lib/session";
+import SideDrawer from "@/components/dashboard/SideDrawer";
 
 type Booking = { id: string; client: string; service: string; date: string; time: string; staff: string; amount: number; status: "Pending" | "Confirmed" | "Completed" | "Declined" };
 type Staff = { id: string; name: string; role: string; initials: string; color: string };
 type Service = { id: string; name: string; duration: string; price: number; live: boolean };
 type VendorData = { bookings: Booking[]; staff: Staff[]; services: Service[] };
-type View = "Overview" | "Bookings" | "Services" | "Team";
+type View = "Overview" | "Bookings" | "Services" | "Team" | "Payments" | "Insights";
 
 const DATA_KEY = "edebooking-vendor-workspace";
 const defaults: VendorData = {
@@ -55,10 +56,9 @@ export default function VendorDashboardPage() {
   const [view, setView] = useState<View>("Overview");
   const [filter, setFilter] = useState("All bookings");
   const [query, setQuery] = useState("");
-  const [addingStaff, setAddingStaff] = useState(false);
+  const [drawer, setDrawer] = useState<"staff" | "service" | null>(null);
   const [staffName, setStaffName] = useState("");
   const [staffRole, setStaffRole] = useState("");
-  const [addingService, setAddingService] = useState(false);
   const [serviceName, setServiceName] = useState("");
   const [servicePrice, setServicePrice] = useState("");
 
@@ -81,14 +81,14 @@ export default function VendorDashboardPage() {
     if (!name) return;
     const initials = name.split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase();
     setData(current => ({ ...current, staff: [...current.staff, { id: crypto.randomUUID(), name, role: staffRole.trim() || "Team member", initials, color: ["mint", "lilac", "peach"][current.staff.length % 3] }] }));
-    setStaffName(""); setStaffRole(""); setAddingStaff(false);
+    setStaffName(""); setStaffRole(""); setDrawer(null);
   }
   function addService(event: React.FormEvent) {
     event.preventDefault();
     const name = serviceName.trim(); const price = Number(servicePrice);
     if (!name || !price) return;
     setData(current => ({ ...current, services: [...current.services, { id: crypto.randomUUID(), name, duration: "45 min", price, live: true }] }));
-    setServiceName(""); setServicePrice(""); setAddingService(false);
+    setServiceName(""); setServicePrice(""); setDrawer(null);
   }
 
   return <div className="vd-layout">
@@ -97,7 +97,7 @@ export default function VendorDashboardPage() {
       <div className="vd-business-switch"><span className="vd-business-avatar">S</span><span><b>Serenity House</b><small>Business account</small></span><ChevronDown size={16}/></div>
       <p className="vd-nav-label">WORKSPACE</p>
       <nav className="vd-nav" aria-label="Vendor dashboard">
-        {([ ["Overview", "⌂"], ["Bookings", "▦"], ["Services", "◇"], ["Team", "♧"] ] as [View, string][]).map(([label, icon]) => <button key={label} type="button" className={view === label ? "is-active" : ""} onClick={() => setView(label)}><span className="vd-nav-icon">{icon}</span>{label}{label === "Bookings" && pendingCount > 0 && <i>{pendingCount}</i>}</button>)}
+        {([ ["Overview", "⌂"], ["Bookings", "▦"], ["Services", "◇"], ["Team", "♧"], ["Payments", "₦"], ["Insights", "↗"] ] as [View, string][]).map(([label, icon]) => <button key={label} type="button" className={view === label ? "is-active" : ""} onClick={() => setView(label)}><span className="vd-nav-icon">{icon}</span>{label}{label === "Bookings" && pendingCount > 0 && <i>{pendingCount}</i>}</button>)}
       </nav>
       <div className="vd-sidebar-bottom"><Link href="/business/register"><Settings2 size={18}/>Business settings</Link><div className="vd-user"><span className="vd-user-avatar">{session.name.slice(0,1).toUpperCase()}</span><span><b>{session.name}</b><small>Owner</small></span><button aria-label="Log out" onClick={() => { signOut(); router.push("/login"); }}>↗</button></div></div>
     </aside>
@@ -105,7 +105,7 @@ export default function VendorDashboardPage() {
     <main className="vd-main">
       <header className="vd-topbar"><div className="vd-mobile-brand">ede<span>booking</span></div><div className="vd-topbar-actions"><span className="vd-today"><CalendarDays size={16}/> Thursday, November 27</span><button className="vd-avatar-small" aria-label="Account menu">{session.name.slice(0,1).toUpperCase()}</button></div></header>
       <div className="vd-content">
-        <div className="vd-heading"><div><p className="vd-eyebrow">{view === "Overview" ? "THURSDAY, NOVEMBER 27" : "YOUR BUSINESS"}</p><h1>{view === "Overview" ? `Good morning, ${session.name.split(" ")[0]}` : view}</h1><p>{view === "Overview" ? "Here’s what’s happening with your business today." : view === "Bookings" ? "Keep every appointment running smoothly." : view === "Services" ? "Manage what customers can book with you." : "Your people make the experience."}</p></div>{view === "Team" ? <button className="vd-primary vd-compact" onClick={() => setAddingStaff(true)}><Plus size={17}/> Add team member</button> : view === "Services" ? <button className="vd-primary vd-compact" onClick={() => setAddingService(true)}><Plus size={17}/> Add service</button> : <button className="vd-outline vd-compact" onClick={() => setView("Bookings")}><CalendarDays size={17}/> View schedule</button>}</div>
+        <div className="vd-heading"><div><p className="vd-eyebrow">{view === "Overview" ? "THURSDAY, NOVEMBER 27" : "YOUR BUSINESS"}</p><h1>{view === "Overview" ? `Good morning, ${session.name.split(" ")[0]}` : view}</h1><p>{view === "Overview" ? "Here’s what’s happening with your business today." : view === "Bookings" ? "Keep every appointment running smoothly." : view === "Services" ? "Manage what customers can book with you." : view === "Team" ? "Your people make the experience." : view === "Payments" ? "Track your payouts and payment activity." : "Understand what is bringing customers through your door."}</p></div>{view === "Team" ? <button className="vd-primary vd-compact" onClick={() => setDrawer("staff")}><Plus size={17}/> Add team member</button> : view === "Services" ? <button className="vd-primary vd-compact" onClick={() => setDrawer("service")}><Plus size={17}/> Add service</button> : <button className="vd-outline vd-compact" onClick={() => setView("Bookings")}><CalendarDays size={17}/> View schedule</button>}</div>
 
         {view === "Overview" && <>
           <section className="vd-stats"><article className="vd-stat-highlight"><span className="vd-stat-icon"><CalendarDays size={19}/></span><small>Today’s appointments</small><strong>{data.bookings.filter(item => item.date === "Today" && item.status === "Confirmed").length + 2}</strong><p><span>↗ 2</span> compared to last week</p></article><article><span className="vd-stat-icon gold"><Clock3 size={19}/></span><small>Awaiting your response</small><strong>{pendingCount}</strong><p>Booking requests to review</p></article><article><span className="vd-stat-icon green"><CircleDollarSign size={19}/></span><small>Revenue this week</small><strong>{money(weeklyRevenue)}</strong><p><span>↗ 12%</span> from last week</p></article></section>
@@ -118,14 +118,19 @@ export default function VendorDashboardPage() {
 
         {view === "Bookings" && <section className="vd-card"><div className="vd-section-head"><div><h2>All bookings</h2><p>Review requests and keep your day on track</p></div><button className="vd-outline vd-compact"><ArrowDownToLine size={16}/> Export</button></div><div className="vd-booking-filters"><label><Search size={17}/><input aria-label="Search bookings" placeholder="Search clients or services" value={query} onChange={event => setQuery(event.target.value)}/></label><select aria-label="Filter bookings" value={filter} onChange={event => setFilter(event.target.value)}><option>All bookings</option><option>Pending</option><option>Confirmed</option><option>Completed</option><option>Declined</option></select></div><BookingList items={visibleBookings} updateBooking={updateBooking} empty="No bookings match this view." /></section>}
 
-        {view === "Services" && <section className="vd-card"><div className="vd-section-head"><div><h2>Service menu</h2><p>Set what you offer and keep your listing up to date</p></div><button className="vd-primary vd-compact" onClick={() => setAddingService(true)}><Plus size={17}/> Add service</button></div><div className="vd-service-list">{data.services.map(item => <article key={item.id}><span className="vd-service-mark"><Sparkles size={18}/></span><div className="vd-service-info"><b>{item.name}</b><small>{item.duration} · {money(item.price)}</small></div><span className={item.live ? "vd-live" : "vd-hidden"}>{item.live ? "Live" : "Hidden"}</span><button className={`vd-switch ${item.live ? "is-on" : ""}`} role="switch" aria-checked={item.live} aria-label={`${item.live ? "Hide" : "Publish"} ${item.name}`} onClick={() => setData(current => ({ ...current, services: current.services.map(service => service.id === item.id ? { ...service, live: !service.live } : service) }))}><i/></button></article>)}</div></section>}
+        {view === "Services" && <section className="vd-card"><div className="vd-section-head"><div><h2>Service menu</h2><p>Set what you offer and keep your listing up to date</p></div><button className="vd-primary vd-compact" onClick={() => setDrawer("service")}><Plus size={17}/> Add service</button></div><div className="vd-service-list">{data.services.map(item => <article key={item.id}><span className="vd-service-mark"><Sparkles size={18}/></span><div className="vd-service-info"><b>{item.name}</b><small>{item.duration} · {money(item.price)}</small></div><span className={item.live ? "vd-live" : "vd-hidden"}>{item.live ? "Live" : "Hidden"}</span><button className={`vd-switch ${item.live ? "is-on" : ""}`} role="switch" aria-checked={item.live} aria-label={`${item.live ? "Hide" : "Publish"} ${item.name}`} onClick={() => setData(current => ({ ...current, services: current.services.map(service => service.id === item.id ? { ...service, live: !service.live } : service) }))}><i/></button></article>)}</div></section>}
 
-        {view === "Team" && <section className="vd-card"><div className="vd-section-head"><div><h2>Your team</h2><p>Manage staff and who is available for appointments</p></div><button className="vd-primary vd-compact" onClick={() => setAddingStaff(true)}><Plus size={17}/> Add team member</button></div><div className="vd-team-grid">{data.staff.map(member => <article key={member.id}><span className={`vd-team-avatar ${member.color}`}>{member.initials}</span><div><b>{member.name}</b><p>{member.role}</p><small><i/> Available today</small></div><button className="vd-icon-button" aria-label={`Remove ${member.name}`} onClick={() => setData(current => ({ ...current, staff: current.staff.filter(item => item.id !== member.id) }))}><X size={17}/></button></article>)}</div></section>}
+        {view === "Team" && <section className="vd-card"><div className="vd-section-head"><div><h2>Your team</h2><p>Manage staff and who is available for appointments</p></div><button className="vd-primary vd-compact" onClick={() => setDrawer("staff")}><Plus size={17}/> Add team member</button></div><div className="vd-team-grid">{data.staff.map(member => <article key={member.id}><span className={`vd-team-avatar ${member.color}`}>{member.initials}</span><div><b>{member.name}</b><p>{member.role}</p><small><i/> Available today</small></div><button className="vd-icon-button" aria-label={`Remove ${member.name}`} onClick={() => setData(current => ({ ...current, staff: current.staff.filter(item => item.id !== member.id) }))}><X size={17}/></button></article>)}</div></section>}
+
+        {view === "Payments" && <section className="vd-card"><div className="vd-section-head"><div><h2>Payment activity</h2><p>Recent payments from confirmed appointments</p></div><button className="vd-outline vd-compact"><ArrowDownToLine size={16}/> Export</button></div><div className="vd-service-list">{data.bookings.filter(item => item.status === "Confirmed" || item.status === "Completed").map(item => <article key={item.id}><span className="vd-payment-check"><Check size={16}/></span><div className="vd-service-info"><b>{item.client}</b><small>{item.service} · {item.date}, {item.time}</small></div><strong className="vd-payment-amount">{money(item.amount)}</strong></article>)}</div></section>}
+
+        {view === "Insights" && <div className="vd-insights-grid"><section className="vd-card vd-insights-chart"><div className="vd-section-head"><div><h2>Revenue overview</h2><p>Confirmed booking value · this week</p></div><strong>{money(weeklyRevenue)}</strong></div><div className="vd-bars" aria-label="Weekly revenue chart">{[["Mon",44],["Tue",68],["Wed",52],["Thu",82],["Fri",58],["Sat",95],["Sun",32]].map(([day,height])=><div key={day as string}><i style={{height: `${height}%`}}/><small>{day}</small></div>)}</div></section><section className="vd-card"><div className="vd-section-head"><div><h2>At a glance</h2><p>What your activity is showing</p></div></div><div className="vd-insight-row"><span>Booking requests</span><b>{data.bookings.length}</b></div><div className="vd-insight-row"><span>Confirmed</span><b>{data.bookings.filter(item => item.status === "Confirmed").length}</b></div><div className="vd-insight-row"><span>Services listed</span><b>{data.services.filter(item => item.live).length}</b></div><div className="vd-insight-row"><span>Team members</span><b>{data.staff.length}</b></div></section></div>}
       </div>
       <footer className="vd-footer">EdeBooking for business <span>·</span> Making every appointment feel easy.</footer>
     </main>
 
-    {(addingStaff || addingService) && <div className="vd-modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) { setAddingStaff(false); setAddingService(false); } }}><section className="vd-modal" role="dialog" aria-modal="true" aria-labelledby="vd-modal-title"><button className="vd-modal-close" aria-label="Close" onClick={() => { setAddingStaff(false); setAddingService(false); }}><X size={19}/></button><p className="vd-eyebrow">{addingStaff ? "GROW YOUR TEAM" : "YOUR SERVICE MENU"}</p><h2 id="vd-modal-title">{addingStaff ? "Add a team member" : "Add a service"}</h2><p>{addingStaff ? "Add someone who helps deliver a great customer experience." : "Create a service customers can discover and book."}</p>{addingStaff ? <form onSubmit={addStaff}><label>Full name<input required autoFocus value={staffName} onChange={event => setStaffName(event.target.value)} placeholder="e.g. Ada Okafor"/></label><label>Role<input value={staffRole} onChange={event => setStaffRole(event.target.value)} placeholder="e.g. Senior therapist"/></label><button className="vd-primary">Add team member <Check size={17}/></button></form> : <form onSubmit={addService}><label>Service name<input required autoFocus value={serviceName} onChange={event => setServiceName(event.target.value)} placeholder="e.g. Relaxation massage"/></label><label>Price in naira<input required type="number" min="1" value={servicePrice} onChange={event => setServicePrice(event.target.value)} placeholder="25000"/></label><button className="vd-primary">Add service <Check size={17}/></button></form>}</section></div>}
+    <SideDrawer open={drawer === "staff"} onOpenChange={open => setDrawer(open ? "staff" : null)} trigger={null} title="Add a team member" description="Add someone who helps deliver a great customer experience."><form className="vd-drawer-form" onSubmit={addStaff}><label>Full name<input required autoFocus value={staffName} onChange={event => setStaffName(event.target.value)} placeholder="e.g. Ada Okafor"/></label><label>Role<input value={staffRole} onChange={event => setStaffRole(event.target.value)} placeholder="e.g. Senior therapist"/></label><button className="vd-primary">Add team member <Check size={17}/></button></form></SideDrawer>
+    <SideDrawer open={drawer === "service"} onOpenChange={open => setDrawer(open ? "service" : null)} trigger={null} title="Add a service" description="Create a service customers can discover and book."><form className="vd-drawer-form" onSubmit={addService}><label>Service name<input required autoFocus value={serviceName} onChange={event => setServiceName(event.target.value)} placeholder="e.g. Relaxation massage"/></label><label>Price in naira<input required type="number" min="1" value={servicePrice} onChange={event => setServicePrice(event.target.value)} placeholder="25000"/></label><button className="vd-primary">Add service <Check size={17}/></button></form></SideDrawer>
   </div>;
 }
 
