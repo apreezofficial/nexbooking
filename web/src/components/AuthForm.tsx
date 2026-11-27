@@ -14,6 +14,7 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
   const [pending, setPending] = useState(false);
   const [complete, setComplete] = useState(false);
   const [next, setNext] = useState("");
+  const [vendor, setVendor] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const submitButton = useRef<HTMLButtonElement>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
@@ -28,7 +29,9 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
     setPending(true);
     setNotice("");
     timer.current = setTimeout(() => {
-      signIn({ name, email });
+      const isVendor = email.trim().toLowerCase() === "vendor@vendor.com";
+      signIn({ name, email, role: isVendor ? "vendor" : "customer" });
+      setVendor(isVendor);
       setNext(new URLSearchParams(window.location.search).get("next") || "");
       setPending(false);
       setComplete(true);
@@ -56,7 +59,7 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
               <span className="auth-success-mark" aria-hidden="true">✓</span>
               <h1>{signup ? "You’re all set" : "Welcome back"}</h1>
               <p className="auth-description">Demo {signup ? "signup" : "login"} completed. Explore EdeBooking while account services are being connected.</p>
-              <Link href={next.startsWith("/") ? next : "/dashboard"} className="btn btn-gradient auth-submit">{next.startsWith("/") ? "Continue your booking" : "Go to your dashboard"}</Link>
+              <Link href={vendor ? "/business/dashboard" : next.startsWith("/") ? next : "/dashboard"} className="btn btn-gradient auth-submit">{vendor ? "Open vendor dashboard" : next.startsWith("/") ? "Continue your booking" : "Go to your dashboard"}</Link>
               <button className="auth-custom-reset" type="button" onClick={() => setComplete(false)}>Try again</button>
             </div>}
           ><>
@@ -78,7 +81,7 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
               <div className="password-meter" data-strength={strength} aria-hidden="true">{[1,2,3,4].map(level => <span key={level} className={level <= strength ? "filled" : ""} />)}</div>
               <p className="password-hint" data-strength={password ? strength : undefined} aria-live="polite">{password ? ["", "Weak", "Fair", "Good", "Strong"][strength] || "Weak" : "Use 8+ characters with a mix of letters, numbers and symbols."}</p>
               <label className="auth-terms"><input type="checkbox" required /> <span>I agree to the <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.</span></label>
-            </> : <Link href="/forgot-password" className="auth-forgot">Forgot password?</Link>}
+            </> : <><Link href="/forgot-password" className="auth-forgot">Forgot password?</Link><p className="auth-vendor-hint">Vendor demo account <strong>vendor@vendor.com</strong> · enter any password</p></>}
             <button ref={submitButton} className="btn btn-gradient auth-submit" type="submit" disabled={pending}>{pending && <span className="auth-spinner" aria-hidden="true" />}{pending ? (signup ? "Creating account…" : "Logging in…") : (signup ? "Create account" : "Log in")}</button>
           </fieldset></form>
           <div className="auth-divider"><span />or continue with<span /></div>

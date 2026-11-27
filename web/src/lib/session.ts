@@ -1,7 +1,7 @@
 "use client";
 import { useSyncExternalStore } from "react";
 
-export type Session = { name: string; email: string };
+export type Session = { name: string; email: string; role?: "customer" | "vendor" };
 export type Draft = { serviceId: string; date: string; time: string; guests: number; notes: string; method: string };
 export type BookingItem = {
   code: string;
