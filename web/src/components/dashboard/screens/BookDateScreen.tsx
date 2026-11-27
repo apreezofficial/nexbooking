@@ -1,11 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { CalendarClock } from "lucide-react";
 import { dayParts, naira, servicesByStudio, studioById } from "@/lib/dashboard/data";
 import { useFlow } from "@/lib/dashboard/hooks";
 import { addDays, formatDay, useToday } from "@/lib/dashboard/store";
 import { Page } from "../DashboardShell";
-import { Banner, Button, Card, Chip, PageHeader, Steps } from "../ui";
+import { Banner, Button, PageHeader, Steps } from "../ui";
 
 /** Sundays are closed, and a few slots are already taken, so the picker shows real availability states. */
 const slotTaken = (date: string, index: number) => (new Date(`${date}T12:00:00`).getDate() + index) % 7 === 3;
@@ -19,42 +21,58 @@ export default function BookDateScreen() {
   const days = today ? Array.from({ length: 14 }, (_, index) => addDays(today, index + 1)) : [];
   const selectedDay = flow.value.date;
   const closed = (date: string) => new Date(`${date}T12:00:00`).getDay() === 0;
-  const month = selectedDay ? formatDay(selectedDay, { month: "long", year: "numeric" }) : today ? formatDay(today, { month: "long", year: "numeric" }) : "";
   const ready = Boolean(selectedDay && flow.value.time);
+  let slotIndex = 0;
 
   return (
-    <Page>
+    <Page wide>
       <PageHeader title="Date & time" back="/dashboard/book/service" />
       <Steps n={2} label="Date & time" />
-      <div className="d-card d-card-tint">
-        <b className="d-h3">{service?.name}</b>
-        <p className="d-muted">{flow.value.staff} · {service?.minutes} min · {service ? naira(service.price) : ""}</p>
+
+      <div className="d-bookhead">
+        <span className="d-bookhead-photo"><Image src={studio.photo} alt="" fill sizes="64px" /></span>
+        <div>
+          <b>{service?.name}</b>
+          <small>{studio.name} · with {flow.value.staff} · {service?.minutes} min</small>
+        </div>
+        <b className="d-bookhead-price">{service ? naira(service.price) : ""}</b>
       </div>
 
-      <h2 className="d-h2">{month}</h2>
-      <div className="d-days" role="group" aria-label="Choose a date">
-        {days.map((date) => (
-          <button key={date} type="button" disabled={closed(date)} aria-pressed={date === selectedDay} className={`d-day${date === selectedDay ? " is-selected" : ""}`} onClick={() => flow.set({ ...flow.value, date })}>
-            <small>{formatDay(date, { weekday: "short" })}</small>
-            <b>{new Date(`${date}T12:00:00`).getDate()}</b>
-            {closed(date) ? <i>Closed</i> : null}
-          </button>
-        ))}
-      </div>
+      <section className="d-section">
+        <h2 className="d-h2">Pick a day</h2>
+        <div className="d-daystrip" role="group" aria-label="Choose a date">
+          {days.map((date) => (
+            <button key={date} type="button" disabled={closed(date)} aria-pressed={date === selectedDay} className={`d-dayitem${date === selectedDay ? " is-active" : ""}`} onClick={() => flow.set({ ...flow.value, date })}>
+              <small>{formatDay(date, { weekday: "short" })}</small>
+              <b>{new Date(`${date}T12:00:00`).getDate()}</b>
+              {closed(date) ? <i className="d-closed">Closed</i> : null}
+            </button>
+          ))}
+        </div>
+      </section>
 
       {selectedDay ? (
-        dayParts.map((group) => (
-          <div key={group.part} className="d-stack">
-            <h3 className="d-h3 d-muted">{group.part}</h3>
-            <div className="d-chips">
-              {group.times.map((time, index) => (
-                <Chip key={time} label={time} selected={flow.value.time === time} disabled={slotTaken(selectedDay, dayParts.indexOf(group) * 3 + index)} onClick={() => flow.set({ ...flow.value, time })} />
-              ))}
+        <section className="d-section">
+          <h2 className="d-h2">Choose a time</h2>
+          {dayParts.map((group) => (
+            <div key={group.part} className="d-timegroup">
+              <h3 className="d-overline">{group.part}</h3>
+              <div className="d-slots">
+                {group.times.map((time) => {
+                  const taken = slotTaken(selectedDay, slotIndex++);
+                  return (
+                    <button key={time} type="button" disabled={taken} aria-pressed={flow.value.time === time} className={`d-slot${flow.value.time === time ? " is-selected" : ""}`} onClick={() => flow.set({ ...flow.value, time })}>
+                      <b>{time}</b>
+                      <small>{taken ? "Taken" : "Free"}</small>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+        </section>
       ) : (
-        <Card tone="tint"><p className="d-muted">Choose a date to see the times that are free.</p></Card>
+        <div className="d-hint"><CalendarClock size={22} strokeWidth={1.8} aria-hidden="true" /><p>Choose a day to see the times that are free.</p></div>
       )}
 
       {ready ? <Banner /> : null}

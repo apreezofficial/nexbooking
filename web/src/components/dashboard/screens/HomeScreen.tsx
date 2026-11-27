@@ -6,7 +6,9 @@ import { api } from "@/lib/dashboard/api";
 import { homeCategories, servicesByStudio, studios } from "@/lib/dashboard/data";
 import { useNotifications, useProfile, useSaved } from "@/lib/dashboard/hooks";
 import { Page } from "../DashboardShell";
-import { Button, Chips, FeedCard, IconButton, SpotlightTile } from "../ui";
+import { Button, Chips, FeedCard, IconButton } from "../ui";
+import { StudioBubbles } from "../Bubbles";
+import Carousel from "../Carousel";
 import Link from "next/link";
 
 export default function HomeScreen() {
@@ -38,28 +40,28 @@ export default function HomeScreen() {
 
       <Chips scroll items={homeCategories} value={filter} onChange={setFilter} />
 
-      <div className="d-spots">
-        {studios.slice(0, 4).map((studio) => <SpotlightTile key={studio.id} studio={studio} href={`/dashboard/studios/${studio.id}`} />)}
-      </div>
+      <div className="d-section-head"><h2 className="d-h2">Studios near you</h2><Link href="/dashboard/explore" className="d-seeall">See all</Link></div>
+      <StudioBubbles items={studios.slice(0, 6)} hrefFor={(studio) => `/dashboard/studios/${studio.id}`} />
 
       {visible.length === 0 ? (
         <p className="d-muted">No studios in {filter} near you yet.</p>
       ) : (
-        <div className="d-feedgrid is-two">
-          {visible.slice(0, 4).map((studio) => {
+        <Carousel label="Studios to book">
+          {visible.slice(0, 5).map((studio) => {
             const first = servicesByStudio[studio.id]?.[0];
             return (
+              <div key={studio.id} className="d-carousel-item">
               <FeedCard
-                key={studio.id}
                 studio={studio}
                 saved={Boolean(saved[studio.id])}
                 onSave={() => void api.studio.toggleSaved(studio.id)}
                 serviceName={first?.name}
                 detail={first ? `${first.detail.split(" · ")[0]} · Next slot today` : undefined}
               />
+              </div>
             );
           })}
-        </div>
+        </Carousel>
       )}
     </Page>
   );

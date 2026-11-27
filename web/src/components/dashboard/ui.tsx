@@ -374,3 +374,13 @@ export function PageHeader({ title, back, action }: { title: string; back?: stri
     </header>
   );
 }
+
+/** Loading placeholder in the landing page's shimmer style. Use while content is being read. */
+export function Skeleton({ height = 96, radius = 22, className }: { height?: number; radius?: number; className?: string }) {
+  return <div className={cx("shimmer d-skel", className)} style={{ height, borderRadius: radius }} aria-hidden="true" />;
+}
+
+/** Shows real content once `ready`, otherwise shimmering placeholders. */
+export function SkeletonList({ count = 3, height = 110 }: { count?: number; height?: number }) {
+  return <div className="d-stack" aria-busy="true" aria-label="Loading">{Array.from({ length: count }, (_, i) => <Skeleton key={i} height={height} />)}</div>;
+}

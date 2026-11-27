@@ -7,7 +7,9 @@ import { api } from "@/lib/dashboard/api";
 import { categories, servicesByStudio, studios } from "@/lib/dashboard/data";
 import { useSaved } from "@/lib/dashboard/hooks";
 import { Page } from "../DashboardShell";
-import { Button, Chips, FeedCard, SpotlightTile, Title } from "../ui";
+import { Button, Chips, FeedCard, Title } from "../ui";
+import { StudioBubbles } from "../Bubbles";
+import Carousel from "../Carousel";
 
 export default function ExploreScreen() {
   const saved = useSaved();
@@ -29,23 +31,21 @@ export default function ExploreScreen() {
       {matching.length === 0 ? (
         <p className="d-muted">No studios in {filter} near you yet.</p>
       ) : (
-        <div className="d-spots">
-          {matching.slice(0, 4).map((studio) => <SpotlightTile key={studio.id} studio={studio} rating href={`/dashboard/studios/${studio.id}`} />)}
-        </div>
+        <StudioBubbles items={matching.slice(0, 8)} hrefFor={(studio) => `/dashboard/studios/${studio.id}`} />
       )}
 
       <div className="d-between">
         <h2 className="d-h2">Top rated</h2>
         <Button variant="text" href="/dashboard/search">See all</Button>
       </div>
-      <div className="d-feedgrid is-two">
+      <Carousel label="Top rated studios">
         {topRated.map((studio) => {
           const first = servicesByStudio[studio.id]?.[0];
           return (
-            <FeedCard key={studio.id} studio={studio} saved={Boolean(saved[studio.id])} onSave={() => void api.studio.toggleSaved(studio.id)} serviceName={first?.name} detail={first ? `${first.detail.split(" · ")[0]} · Next slot today` : undefined} />
+            <div key={studio.id} className="d-carousel-item"><FeedCard studio={studio} saved={Boolean(saved[studio.id])} onSave={() => void api.studio.toggleSaved(studio.id)} serviceName={first?.name} detail={first ? `${first.detail.split(" · ")[0]} · Next slot today` : undefined} /></div>
           );
         })}
-      </div>
+      </Carousel>
     </Page>
   );
 }
