@@ -6,8 +6,8 @@
  * Screens only compose these, so restyling the dashboard means editing this file and dashboard.css.
  */
 
-import Image from "next/image";
 import Link from "next/link";
+import { DashArt } from "./Media";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
 import {
@@ -245,35 +245,24 @@ export function SpotlightTile({ studio, rating, href }: { studio: Studio; rating
   );
 }
 
+/** A service post in the site's feed style: provider header, large photo, heart and gold Book now. */
 export function FeedCard({ studio, saved, onSave, serviceName = "Silk press & trim", detail = "90 min · Next slot today" }: { studio: Studio; saved: boolean; onSave: () => void; serviceName?: string; detail?: string }) {
   return (
-    <Card pad={false} as="article" className="d-feed">
-      <div className="d-feed-art">
-        <Image src={studio.photo} alt={`${studio.name} studio photo`} fill sizes="(max-width: 760px) 100vw, 480px" />
-        <div className="d-feed-top">
-          <Badge label={studio.category} />
-          <IconButton icon={Bookmark} label={saved ? "Remove saved studio" : "Save studio"} selected={saved} onClick={onSave} />
-        </div>
-        <span className="d-feed-count">Studio photo · 1/4</span>
+    <article>
+      <header>
+        <span className="service-avatar" aria-hidden="true">{studio.monogram}</span>
+        <Link href={`/dashboard/studios/${studio.id}`}><strong>{studio.name}</strong></Link>
+        <small>{studio.distance}</small>
+      </header>
+      <Link href={`/dashboard/studios/${studio.id}`} aria-label={`${studio.name} studio`}>
+        <DashArt src={studio.photo} className="service-post-image" />
+      </Link>
+      <div className="service-post-actions">
+        <button type="button" aria-pressed={saved} aria-label={saved ? `Remove ${studio.name} from saved` : `Save ${studio.name}`} onClick={onSave}>{saved ? "♥" : "♡"}</button>
+        <Link href={`/dashboard/studios/${studio.id}`} className="btn btn-gradient">Book now</Link>
       </div>
-      <div className="d-feed-body">
-        <div className="d-feed-head">
-          <BusinessLogo monogram={studio.monogram} name={studio.name} size={44} />
-          <div>
-            <b>{studio.name}{studio.verified ? <VerifiedMark /> : null}</b>
-            <small>{studio.area.split(",")[0]} · {studio.distance} away</small>
-          </div>
-          <Badge label={`★ ${studio.rating}`} />
-        </div>
-        <div className="d-feed-foot">
-          <div>
-            <b>{serviceName}</b>
-            <small>{detail}</small>
-          </div>
-          <Button size="small" href={`/dashboard/studios/${studio.id}`}>Book now</Button>
-        </div>
-      </div>
-    </Card>
+      <p><strong>{serviceName}</strong> · {studio.category} · {detail}</p>
+    </article>
   );
 }
 
@@ -366,6 +355,9 @@ export function useActiveTab(): string {
 /** The page title row used on every inner screen: a back button and a heading. */
 export function PageHeader({ title, back, action }: { title: string; back?: string; action?: ReactNode }) {
   const router = useRouter();
+  // Account pages get their title from the settings shell instead.
+  const path = usePathname() ?? "";
+  if (path.startsWith("/dashboard/account")) return null;
   return (
     <header className="d-header">
       {back ? <IconButton icon={ArrowLeft} label="Back" href={back} /> : <IconButton icon={ArrowLeft} label="Back" onClick={() => router.back()} />}

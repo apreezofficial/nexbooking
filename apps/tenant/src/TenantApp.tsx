@@ -11,6 +11,7 @@ import {
 import { Badge, Button, Card, Chip, Input, Text, type Status } from '../../../src/components/primitives';
 import { ThinkingOrbs } from '../../../src/components/ThinkingOrbs';
 import { PressScale, useCountUp } from '../../../src/components/motion';
+import { askPermission, ensurePermission } from '../../../src/lib/permissions';
 import { playSound } from '../../../src/lib/sound';
 import { StateView } from '../../../src/components/StateView';
 import { BusinessHubPage, StorefrontEditPage, WorksPage, ServicesPage, EditServicePage, WorkingHoursPage, StaffPage, InviteStaffPage, StaffProfilePage, ReviewsPage, PromoCodesPage, NewPromoPage, AnalyticsPage, SubscriptionPage, UpgradeCheckoutPage, BillingPage, BoostPage, IntegrationsPage } from './BusinessScreens';
@@ -352,6 +353,7 @@ function PlansPage({ onNext, onBack }: { onNext: () => void; onBack?: () => void
 function HomePage({ onNotifications, onSettings, onCreate, onBlock, onBooking, onEarnings }: {
   onNotifications: () => void; onSettings: () => void; onCreate: () => void; onBlock: () => void; onBooking: () => void; onEarnings: () => void;
 }) {
+  useEffect(() => { askPermission('notifications'); }, []);
   const [range, setRange] = useState('Day');
   return <View style={styles.page}>
     <View style={styles.rowBetween}>
@@ -556,6 +558,7 @@ function DeclineSheet({ onClose }: { onClose: () => void }) {
 }
 
 function VoiceSheet({ onClose }: { onClose: () => void }) {
+  useEffect(() => { ensurePermission('microphone'); }, []);
   return <View style={styles.overlay}>
     <Pressable style={styles.scrim} onPress={onClose} accessibilityLabel="Close" />
     <View style={styles.voiceWrap}>

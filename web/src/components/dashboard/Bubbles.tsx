@@ -1,25 +1,33 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import type { Studio } from "@/lib/dashboard/types";
+import { DashArt } from "./Media";
 
-/** Round studio bubbles with a gold ring, the same language as the landing page's discover bubbles. */
+/** The /services story row: round photo bubbles with a gold ring and a label. Uses the site's own classes. */
 export function StudioBubbles({ items, hrefFor }: { items: Studio[]; hrefFor: (studio: Studio) => string }) {
   return (
-    <ul className="d-bubbles" role="list">
-      {items.map((studio, index) => (
-        <li key={studio.id}>
-          <Link href={hrefFor(studio)} className="d-bubble" style={{ "--d": `${index * 70}ms` } as CSSProperties} aria-label={`${studio.name}, ${studio.rating} stars`}>
-            <span className="d-bubble-ring">
-              <Image src={studio.photo} alt="" fill sizes="96px" />
-            </span>
-            <span className="d-bubble-name">{studio.name}</span>
-            <span className="d-bubble-meta">★ {studio.rating}</span>
-          </Link>
-        </li>
+    <div className="service-stories" aria-label="Studios">
+      {items.map((studio) => (
+        <Link key={studio.id} href={hrefFor(studio)} aria-label={`${studio.name}, ${studio.rating} stars`}>
+          <DashArt src={studio.photo} />
+          <span>{studio.name}</span>
+        </Link>
       ))}
-    </ul>
+    </div>
+  );
+}
+
+/** Category row (All, Hair, Nails…) that filters a screen. Selected state is the site's `aria-pressed` ring. */
+export function CategoryStories({ items, value, onChange }: { items: { label: string; image: string }[]; value: string; onChange: (label: string) => void }) {
+  return (
+    <div className="service-stories" role="group" aria-label="Categories">
+      {items.map((item) => (
+        <button key={item.label} type="button" aria-pressed={value === item.label} onClick={() => onChange(item.label)}>
+          <DashArt src={item.image} />
+          <span>{item.label}</span>
+        </button>
+      ))}
+    </div>
   );
 }

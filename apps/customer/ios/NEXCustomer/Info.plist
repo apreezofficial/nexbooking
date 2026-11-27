@@ -33,10 +33,25 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>EdeBooking uses the camera to add photos to your works, notes and consultations.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>EdeBooking uses Face ID to unlock the app quickly and keep your account secure.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>EdeBooking uses your location to show businesses near you and to check their distance before you book.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>EdeBooking uses the microphone for voice notes, voice assistant and video consultations.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>EdeBooking uses your photo library to choose photos for your works, notes and receipts.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>PlusJakartaSans-Medium.ttf</string>
+		<string>PlusJakartaSans-SemiBold.ttf</string>
+		<string>PlusJakartaSans-Bold.ttf</string>
+		<string>PlusJakartaSans-ExtraBold.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -73,12 +88,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>PlusJakartaSans-Medium.ttf</string>
-		<string>PlusJakartaSans-SemiBold.ttf</string>
-		<string>PlusJakartaSans-Bold.ttf</string>
-		<string>PlusJakartaSans-ExtraBold.ttf</string>
-	</array>
 </dict>
 </plist>

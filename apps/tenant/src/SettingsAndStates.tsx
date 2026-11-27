@@ -9,6 +9,7 @@ import { Badge, Button, Card, Chip, Text } from '../../../src/components/primiti
 import { StateView } from '../../../src/components/StateView';
 import { colors, radii, spacing } from '../../../src/theme';
 import { isSoundEnabled, playSound, setSoundEnabled } from '../../../src/lib/sound';
+import { ensurePermission } from '../../../src/lib/permissions';
 
 type Nav = { onBack: () => void };
 
@@ -185,7 +186,7 @@ export function SecurityPage({ onBack }: Nav) {
     <Section label="ACCOUNT">
       <Row label="Change password" sub="Last changed 3 months ago" onPress={() => {}} />
       <Row label="Two-factor authentication" sub="Authenticator app" right={<Toggle value={twoFactor} onValueChange={setTwoFactor} />} />
-      <Row label="Face ID login" sub="Use Face ID to open the app" right={<Toggle value={face} onValueChange={setFace} />} />
+      <Row label="Face ID login" sub="Use Face ID to open the app" right={<Toggle value={face} onValueChange={async v => { if (!v) { setFace(false); return; } setFace(await ensurePermission('faceId')); }} />} />
       <Row label="Login alerts" sub="Email me on new sign-ins" right={<Toggle value={alerts} onValueChange={setAlerts} />} last />
     </Section>
     <Section label="SESSIONS">

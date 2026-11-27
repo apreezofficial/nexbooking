@@ -1,15 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { Bell, MapPin, Search } from "lucide-react";
 import { useState } from "react";
 import { api } from "@/lib/dashboard/api";
 import { homeCategories, servicesByStudio, studios } from "@/lib/dashboard/data";
 import { useNotifications, useProfile, useSaved } from "@/lib/dashboard/hooks";
 import { Page } from "../DashboardShell";
-import { Button, Chips, FeedCard, IconButton } from "../ui";
 import { StudioBubbles } from "../Bubbles";
-import Carousel from "../Carousel";
-import Link from "next/link";
+import { Button, Chips, FeedCard, IconButton } from "../ui";
 
 export default function HomeScreen() {
   const profile = useProfile();
@@ -41,27 +40,26 @@ export default function HomeScreen() {
       <Chips scroll items={homeCategories} value={filter} onChange={setFilter} />
 
       <div className="d-section-head"><h2 className="d-h2">Studios near you</h2><Link href="/dashboard/explore" className="d-seeall">See all</Link></div>
-      <StudioBubbles items={studios.slice(0, 6)} hrefFor={(studio) => `/dashboard/studios/${studio.id}`} />
+      <StudioBubbles items={studios} hrefFor={(studio) => `/dashboard/studios/${studio.id}`} />
 
       {visible.length === 0 ? (
         <p className="d-muted">No studios in {filter} near you yet.</p>
       ) : (
-        <Carousel label="Studios to book">
-          {visible.slice(0, 5).map((studio) => {
+        <div className="service-feed-grid">
+          {visible.slice(0, 6).map((studio) => {
             const first = servicesByStudio[studio.id]?.[0];
             return (
-              <div key={studio.id} className="d-carousel-item">
               <FeedCard
+                key={studio.id}
                 studio={studio}
                 saved={Boolean(saved[studio.id])}
                 onSave={() => void api.studio.toggleSaved(studio.id)}
                 serviceName={first?.name}
-                detail={first ? `${first.detail.split(" · ")[0]} · Next slot today` : undefined}
+                detail={first ? first.detail.split(" · ")[0] : undefined}
               />
-              </div>
             );
           })}
-        </Carousel>
+        </div>
       )}
     </Page>
   );

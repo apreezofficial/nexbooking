@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import AccountScreen from "@/components/dashboard/screens/AccountScreen";
+import ProfileScreen from "@/components/dashboard/screens/ProfileScreen";
 
-export const metadata: Metadata = { title: "Account" };
+export const metadata: Metadata = { title: "Profile" };
 
 export default function Page() {
-  return <AccountScreen />;
+  return <ProfileScreen />;
 }

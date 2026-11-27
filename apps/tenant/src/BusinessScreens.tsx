@@ -8,6 +8,7 @@ import {
 import { Button, Card, Chip, Input, Text } from '../../../src/components/primitives';
 import { colors, radii, spacing } from '../../../src/theme';
 import { Notice, Page, Row, Section, Toggle } from './SettingsAndStates';
+import { ensurePermission } from '../../../src/lib/permissions';
 
 type Nav = { onBack: () => void };
 type Go = { go: (page: string) => void };
@@ -108,7 +109,7 @@ export function WorksPage({ onBack, go }: Nav & Go) {
       <Text variant="caption" color={colors.muted}>6 of 20 photos</Text><Text variant="button" color={colors.goldDeep}>Select</Text>
     </View>
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-      <Pressable accessibilityRole="button" accessibilityLabel="Add photo" style={{ width: '31.5%', aspectRatio: 1, borderRadius: radii.input, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.gold, alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+      <Pressable onPress={() => ensurePermission('photos')} accessibilityRole="button" accessibilityLabel="Add photo" style={{ width: '31.5%', aspectRatio: 1, borderRadius: radii.input, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.gold, alignItems: 'center', justifyContent: 'center', gap: 4 }}>
         <Plus size={22} color={colors.ink900} /><Text variant="caption">Add</Text>
       </Pressable>
       {[true, false, false, false, false].map((cover, i) => <View key={i} style={{ width: '31.5%', aspectRatio: 1 }}><Photo cover={cover} size={0} /></View>)}

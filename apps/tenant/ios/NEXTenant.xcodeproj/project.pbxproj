@@ -302,7 +302,7 @@
 					"-ObjC",
 					"-lc++",
 					"-framework",
-					"AVFoundation",
+					AVFoundation,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.edebooking.tenant;
 				PRODUCT_NAME = NEXTenant;
@@ -333,7 +333,7 @@
 					"-ObjC",
 					"-lc++",
 					"-framework",
-					"AVFoundation",
+					AVFoundation,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.edebooking.tenant;
 				PRODUCT_NAME = NEXTenant;
