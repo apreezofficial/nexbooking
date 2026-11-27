@@ -1,3 +1,5 @@
+import { ChevronDown } from "lucide-react";
+import { documents } from "@/lib/legal-documents";
 import Link from "next/link";
 import NavActions from "./NavActions";
 import BrandLogo from "./BrandLogo";
@@ -29,6 +31,14 @@ export default function SiteNav({ current }: { current?: (typeof items)[number][
             </Link>
           ))}
         </div>
+        <details className="nav-legal">
+          <summary className="nav-item">Legal <ChevronDown size={13} aria-hidden="true" /></summary>
+          <ul aria-label="Legal">
+            {Object.values(documents).map(({ label, href }) => (
+              <li key={href}><Link href={href}>{label}</Link></li>
+            ))}
+          </ul>
+        </details>
         <NavActions />
       </nav>
     </header>

@@ -5,9 +5,10 @@ import SocialIcon from "./SocialIcon";
 import { useState, useRef, useEffect, type FormEvent } from "react";
 import { DistortionWave } from "distortion-waves";
 import { signIn } from "@/lib/session";
+import { documents } from "@/lib/legal-documents";
 import BrandLogo from "./BrandLogo";
 
-export default function AuthForm({ signup = false }: { signup?: boolean }) {
+export default function AuthForm({ signup = false, vendorSignup = false }: { signup?: boolean; vendorSignup?: boolean }) {
   const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [notice, setNotice] = useState("");
@@ -24,12 +25,16 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
     event.preventDefault();
     if (pending) return;
     const data = new FormData(event.currentTarget);
+    if (signup && data.get("legalAcknowledgement") !== "accepted") {
+      setNotice("Confirm that you have read and accepted the legal policies before registering.");
+      return;
+    }
     const email = String(data.get("email") || "");
     const name = String(data.get("name") || "") || email.split("@")[0];
     setPending(true);
     setNotice("");
     timer.current = setTimeout(() => {
-      const isVendor = email.trim().toLowerCase() === "vendor@vendor.com";
+      const isVendor = vendorSignup || email.trim().toLowerCase() === "vendor@vendor.com";
       signIn({ name, email, role: isVendor ? "vendor" : "customer" });
       setVendor(isVendor);
       setNext(new URLSearchParams(window.location.search).get("next") || "");
@@ -59,15 +64,15 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
               <span className="auth-success-mark" aria-hidden="true">✓</span>
               <h1>{signup ? "You’re all set" : "Welcome back"}</h1>
               <p className="auth-description">Demo {signup ? "signup" : "login"} completed. Explore EdeBooking while account services are being connected.</p>
-              <Link href={vendor ? "/business/dashboard" : next.startsWith("/") ? next : "/dashboard"} className="btn btn-gradient auth-submit">{vendor ? "Open vendor dashboard" : next.startsWith("/") ? "Continue your booking" : "Go to your dashboard"}</Link>
+              <Link href={vendor ? (signup ? "/business/register" : "/business/dashboard") : next.startsWith("/") ? next : "/dashboard"} className="btn btn-gradient auth-submit">{vendor ? (signup ? "Set up your business" : "Open vendor dashboard") : next.startsWith("/") ? "Continue your booking" : "Go to your dashboard"}</Link>
               <button className="auth-custom-reset" type="button" onClick={() => setComplete(false)}>Try again</button>
             </div>}
           ><>
-          <h1>{signup ? "Create your account" : "Welcome back"}</h1>
+          <h1>{signup ? (vendorSignup ? "Create your vendor account" : "Create your account") : "Welcome back"}</h1>
           <p className="auth-description">{signup ? "Book, pay and consult in one place." : "Log in to book, pay and manage appointments."}</p>
           <nav className="auth-switch" aria-label="Account access">
             <Link href="/login" aria-current={!signup ? "page" : undefined}>Login</Link>
-            <Link href="/signup" aria-current={signup ? "page" : undefined}>Sign up</Link>
+            <Link href={vendorSignup ? "/business/signup" : "/signup"} aria-current={signup ? "page" : undefined}>Sign up</Link>
           </nav>
           <form onSubmit={submit} aria-busy={pending}><fieldset disabled={pending} className="auth-fieldset">
             {signup && <div className="form-field"><label htmlFor="full-name">Full name</label><input id="full-name" name="name" autoComplete="name" placeholder="Your full name" required /></div>}
@@ -80,7 +85,19 @@ export default function AuthForm({ signup = false }: { signup?: boolean }) {
             {signup ? <>
               <div className="password-meter" data-strength={strength} aria-hidden="true">{[1,2,3,4].map(level => <span key={level} className={level <= strength ? "filled" : ""} />)}</div>
               <p className="password-hint" data-strength={password ? strength : undefined} aria-live="polite">{password ? ["", "Weak", "Fair", "Good", "Strong"][strength] || "Weak" : "Use 8+ characters with a mix of letters, numbers and symbols."}</p>
-              <label className="auth-terms"><input type="checkbox" required /> <span>I agree to the <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.</span></label>
+              <section className="auth-legal-review" aria-labelledby="signup-legal-heading">
+                <h2 id="signup-legal-heading">Read our legal policies</h2>
+                <p>Each policy opens in a new tab so you can keep your place in this form.</p>
+                <ul id="signup-legal-documents">
+                  {Object.values(documents).filter(({ href }) => href !== documents.cookies.href).map(({ label, href }) => (
+                    <li key={href}><Link href={href} target="_blank" rel="noopener noreferrer">{label}</Link></li>
+                  ))}
+                </ul>
+                <label className="auth-terms">
+                  <input type="checkbox" name="legalAcknowledgement" value="accepted" aria-describedby="signup-legal-documents" required />
+                  <span>I confirm that I have read and accept the legal policies listed above.</span>
+                </label>
+              </section>
             </> : <><Link href="/forgot-password" className="auth-forgot">Forgot password?</Link><p className="auth-vendor-hint">Vendor demo account <strong>vendor@vendor.com</strong> · enter any password</p></>}
             <button ref={submitButton} className="btn btn-gradient auth-submit" type="submit" disabled={pending}>{pending && <span className="auth-spinner" aria-hidden="true" />}{pending ? (signup ? "Creating account…" : "Logging in…") : (signup ? "Create account" : "Log in")}</button>
           </fieldset></form>

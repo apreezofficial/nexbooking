@@ -3209,3 +3209,31 @@ fieldset.payment-cards-grid legend { margin-bottom: 10px; }
 .service-card-rating small { font-weight: 500; color: var(--muted); }
 .service-post-actions .service-bookmark { display: grid; place-items: center; width: 44px; height: 44px; margin-left: auto; margin-right: 8px; border: 1px solid var(--line); border-radius: 50%; }
 .service-post-actions .service-bookmark[aria-pressed=true] { background: var(--gold-100); }
+
+.footer-legal-grid { grid-column: 1 / -1; border-top: 1px solid #ffffff24; padding-top: 20px; }
+.footer-legal-grid > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 6px 18px; }
+.footer-legal-grid a { margin: 0; padding-block: 6px; }
+
+.nav-legal { position: relative; flex-shrink: 0; }
+.nav-legal summary { display: flex; align-items: center; gap: 4px; cursor: pointer; list-style: none; font-size: 12px; min-height: 40px; }
+.nav-legal summary::-webkit-details-marker { display: none; }
+.nav-legal[open] summary svg { transform: rotate(180deg); }
+.nav-legal ul { position: absolute; top: calc(100% + 10px); right: 0; z-index: 2; width: max-content; max-width: calc(100vw - 32px); padding: 6px; border: 1px solid var(--line); border-radius: 14px; background: var(--pearl); color: var(--ink-900); box-shadow: 0 12px 26px #1c1a1426; }
+.nav-legal li a { display: block; padding: 10px 12px; border-radius: 8px; font-size: 13px; }
+.nav-legal li a:hover, .nav-legal li a:focus-visible { background: var(--gold-100); }
+@media (max-width: 860px) {
+  .nav-legal { margin-left: auto; }
+  .nav:has(.nav-legal) { gap: 6px; }
+}
+@media (max-width: 860px) {
+  .nav:has(.nav-legal) { position: relative; }
+  .nav-legal { position: static; }
+  .nav-legal ul { right: 0; }
+}
+
+.auth-legal-review { padding: 14px; border: 1px solid var(--line); border-radius: 14px; }
+.auth-legal-review h2 { font-size: 14px; }
+.auth-legal-review p { margin-top: 4px; color: var(--muted); font-size: 12px; }
+.auth-legal-review ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr)); gap: 4px 12px; margin-block: 10px; }
+.auth-legal-review a { display: inline-block; padding-block: 5px; color: var(--gold-deep); font-size: 12px; text-decoration: underline; }
+.auth-legal-review .auth-terms { margin: 8px 0 0; }

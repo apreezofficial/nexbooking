@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { documents, type LegalKey } from "@/lib/legal-documents";
 import Icon from "@/components/Icon";
 import RouteHero from "@/components/RouteHero";
 import RouteShell from "@/components/RouteShell";
@@ -10,14 +11,6 @@ export type LegalSection = {
   body: Array<string | { list: string[] }>;
 };
 
-type LegalKey = "privacy" | "terms" | "cookies";
-
-const documents: Record<LegalKey, { label: string; href: string; summary: string }> = {
-  privacy: { label: "Privacy Policy", href: "/privacy", summary: "How we handle your information." },
-  terms: { label: "Terms of Service", href: "/terms", summary: "The rules for using EdeBooking." },
-  cookies: { label: "Cookie Policy", href: "/cookies", summary: "What your browser stores, and why." },
-};
-
 export default function LegalPage({ doc, eyebrow, title, description, image, updated, sections }: {
   doc: LegalKey;
   eyebrow: string;
@@ -27,10 +20,11 @@ export default function LegalPage({ doc, eyebrow, title, description, image, upd
   updated: string;
   sections: LegalSection[];
 }) {
+  const current = documents[doc];
   const others = (Object.keys(documents) as LegalKey[]).filter((key) => key !== doc);
 
   return (
-    <RouteShell crumb={{ name: documents[doc].label, path: documents[doc].href }}>
+    <RouteShell crumb={current ? { name: current.label, path: current.href } : undefined}>
       <RouteHero compact hideCta eyebrow={eyebrow} title={title} description={description} image={image} />
       <section className="route-content legal-content">
         <div className="legal-layout">

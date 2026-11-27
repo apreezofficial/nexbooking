@@ -600,7 +600,7 @@ export default function VendorRegistrationWizard() {
             <Link href={createdSlug ? `/providers/${createdSlug}` : "/providers/spa-wellness-0"} className="btn btn-gradient">
               View Public Storefront <Icon name="arrow" />
             </Link>
-            <Link href="/dashboard" className="btn btn-dark">
+            <Link href="/business/dashboard" className="btn btn-dark">
               Open My Dashboard
             </Link>
             <Link href="/services" className="btn btn-ghost">

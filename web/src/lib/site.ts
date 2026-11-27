@@ -41,6 +41,9 @@ export const publicRoutes = [
   { path: "/privacy", label: "Privacy Policy", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "How information is collected, used, shared and protected." },
   { path: "/terms", label: "Terms of Service", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "The terms for customers and businesses using the platform." },
   { path: "/cookies", label: "Cookie Policy", group: "legal", priority: 0.3, changeFrequency: "yearly", summary: "What is stored in the browser and how to control it." },
+  { path: "/data-protection", label: "Data Protection", group: "legal", summary: "Your data rights and how to make a request.", priority: 0.3, changeFrequency: "yearly" },
+  { path: "/third-parties", label: "Third Parties We Use", group: "legal", summary: "External services used by EdeBooking.", priority: 0.3, changeFrequency: "yearly" },
+  { path: "/acceptable-use", label: "Acceptable Use & Guidelines", group: "legal", summary: "Standards for safe and fair use.", priority: 0.3, changeFrequency: "yearly" },
 ] as const;
 
 /**

@@ -6,6 +6,7 @@ import type { NextConfig } from "next";
 const noindexPaths = ["/login", "/signup", "/forgot-password", "/dashboard", "/dashboard/:path*"];
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   cacheComponents: true,
   partialPrefetching: true,
   async headers() {
