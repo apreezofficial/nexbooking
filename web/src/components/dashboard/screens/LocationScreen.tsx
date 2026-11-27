@@ -9,8 +9,7 @@ import { useProfile, useRun } from "@/lib/dashboard/hooks";
 import { Page } from "../DashboardShell";
 import { Button, Chip, Chips, Field, PageHeader } from "../ui";
 
-export default function LocationScreen() {
-  const router = useRouter();
+export function LocationForm({ onSaved }: { onSaved: () => void }) {
   const profile = useProfile();
   const { run, busy } = useRun();
   const [location, setLocation] = useState(profile.location || locations[0]);
@@ -21,9 +20,7 @@ export default function LocationScreen() {
   const typed = query.trim();
 
   return (
-    <Page>
-      <PageHeader title="Set your location" />
-      <p className="d-muted">We’ll show available booking services near you.</p>
+    <div className="d-stack">
       <div>
         <Button icon={MapPin} onClick={() => void run(api.profile.detectLocation())}>Use my current location</Button>
       </div>
@@ -44,8 +41,17 @@ export default function LocationScreen() {
 
       <Button size="large" block loading={busy} onClick={async () => {
         const saved = await run(api.profile.update({ location, interests: picked }), "Location and interests saved.");
-        if (saved) router.push("/dashboard");
+        if (saved) onSaved();
       }}>Continue</Button>
-    </Page>
+    </div>
   );
+}
+
+
+export default function LocationScreen() {
+  const router = useRouter();
+  return <Page>
+    <PageHeader title="Set your location" />
+    <LocationForm onSaved={() => router.push("/dashboard")} />
+  </Page>;
 }

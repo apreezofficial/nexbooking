@@ -3201,3 +3201,12 @@ fieldset.payment-cards-grid legend { margin-bottom: 10px; }
 .service-recommendation-heading { margin: 0 0 20px; }
 .service-recommendation-heading h2 { font-size: clamp(20px, 3vw, 28px); }
 .service-recommendation-heading p { margin-top: 6px; color: var(--muted); font-size: 14px; }
+
+.payment-method-card { position: relative; cursor: pointer; }
+.payment-method-card input[type="radio"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.payment-method-card:focus-within { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+
+.service-card-rating { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700; color: var(--gold-deep); }
+.service-card-rating small { font-weight: 500; color: var(--muted); }
+.service-post-actions .service-bookmark { display: grid; place-items: center; width: 44px; height: 44px; margin-left: auto; margin-right: 8px; border: 1px solid var(--line); border-radius: 50%; }
+.service-post-actions .service-bookmark[aria-pressed=true] { background: var(--gold-100); }

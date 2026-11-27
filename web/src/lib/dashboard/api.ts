@@ -256,10 +256,10 @@ export const reviews = {
     return load<Review[]>("reviews", seedReviews);
   },
   /** POST /reviews  { studioId, rating, tags, text } */
-  async create(input: Omit<Review, "id" | "date" | "studio">) {
+  async create(input: Omit<Review, "id" | "date" | "studio">, providerName?: string) {
     await latency();
     if (input.rating < 1) throw new ApiError("Choose a star rating.");
-    const review: Review = { ...input, id: uid("r"), studio: studioById(input.studioId).name, date: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short" }) };
+    const review: Review = { ...input, id: uid("r"), studio: providerName ?? studioById(input.studioId).name, date: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short" }) };
     save("reviews", [review, ...load<Review[]>("reviews", seedReviews)]);
     return review;
   },
@@ -412,8 +412,18 @@ export const settings = {
   },
   /** POST /me/data-export */
   async exportData() {
-    await latency();
-    return { queued: true };
+    const data = {
+      profile: load<Profile | null>("profile", null),
+      settings: load<Settings>("settings", defaultSettings),
+      bookings: readBookings(),
+      notes: load<Note[]>("notes", []),
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "edebooking-demo-data.json";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   },
   /** DELETE /me   (asks for a second confirmation first) */
   async deleteAccount(): Promise<never> {

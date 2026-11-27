@@ -9,7 +9,7 @@ import { Page } from "../DashboardShell";
 import { Button, Chip, PageHeader, TextArea } from "../ui";
 
 /** Write a review, or edit one when `reviewId` is given. `studioId` is the studio being reviewed. */
-export default function ReviewScreen({ studioId, reviewId, back }: { studioId: string; reviewId?: string; back: string }) {
+export default function ReviewScreen({ studioId, reviewId, back, providerName, onDone }: { studioId: string; reviewId?: string; back: string; providerName?: string; onDone?: () => void }) {
   const router = useRouter();
   const existing = useReviews().find((review) => review.id === reviewId);
   const studio = studioById(existing?.studioId ?? studioId);
@@ -23,14 +23,15 @@ export default function ReviewScreen({ studioId, reviewId, back }: { studioId: s
   const submit = async () => {
     const done = existing
       ? await run(api.reviews.update(existing.id, { rating, tags, text }).then(() => true), "Review updated.")
-      : await run(api.reviews.create({ studioId: studio.id, rating, tags, text }), "Thanks, your review is posted.");
-    if (done) router.push(back);
+      : await run(api.reviews.create({ studioId: providerName ? studioId : studio.id, rating, tags, text }, providerName), "Thanks, your review is posted.");
+    if (done && onDone) onDone();
+    else if (done) router.push(back);
   };
 
   return (
     <Page>
-      <PageHeader title={existing ? "Edit review" : "Submit review"} back={back} />
-      <h2 className="d-h1">How was {studio.name}?</h2>
+      {!onDone && <PageHeader title={existing ? "Edit review" : "Submit review"} back={back} />}
+      <h2 className="d-h1">How was {providerName ?? existing?.studio ?? studio.name}?</h2>
       <div className="d-stars" role="radiogroup" aria-label="Rating">
         {[1, 2, 3, 4, 5].map((value) => (
           <button key={value} type="button" role="radio" aria-checked={rating === value} aria-label={`${value} star${value > 1 ? "s" : ""}`} className={value <= rating ? "is-on" : undefined} onClick={() => setRating(value)}>★</button>

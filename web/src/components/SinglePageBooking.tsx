@@ -225,11 +225,12 @@ function BookingFlow({ service, provider, price, dashboard, today, session, draf
 
                   <fieldset className="payment-cards-grid"><legend className="section-label">How would you like to pay?</legend>
                     {methodList.map(m => (
-                      <button key={m.id} type="button" aria-pressed={method === m.id} className={`payment-method-card ${method === m.id ? "selected" : ""}`} onClick={() => setMethod(m.id)}>
+                      <label key={m.id} className={`payment-method-card ${method === m.id ? "selected" : ""}`}>
+                        <input type="radio" name="payment-method" value={m.id} checked={method === m.id} onChange={() => setMethod(m.id)} />
                         <span className="method-icon"><Icon name={m.icon} /></span>
                         <span className="method-info"><strong>{m.title}</strong><small>{m.note}</small></span>
-                        <span className="method-radio">{method === m.id && <Icon name="check" />}</span>
-                      </button>
+                        <span className="method-radio" aria-hidden="true">{method === m.id && <Icon name="check" />}</span>
+                      </label>
                     ))}
                   </fieldset>
 

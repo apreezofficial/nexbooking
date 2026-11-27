@@ -11,7 +11,10 @@ import { Page } from "../DashboardShell";
 import { Button, Card, Chips, Field, PageHeader, StateView } from "../ui";
 
 export default function CancelScreen({ params }: { params: Promise<{ code: string }> }) {
-  const { code } = use(params);
+  return <CancelForm code={use(params).code} />;
+}
+
+export function CancelForm({ code, onDone }: { code: string; onDone?: () => void }) {
   const router = useRouter();
   const booking = useBookings().find((item) => item.code === code);
   const today = useToday();
@@ -33,7 +36,7 @@ export default function CancelScreen({ params }: { params: Promise<{ code: strin
 
   return (
     <Page>
-      <PageHeader title="Cancel booking" back={`/dashboard/bookings/${booking.code}`} />
+      {!onDone && <PageHeader title="Cancel booking" back={`/dashboard/bookings/${booking.code}`} />}
       <Card>
         <b className="d-h3">{booking.title}</b>
         <p className="d-muted">{booking.provider} · {booking.time}</p>
@@ -50,10 +53,11 @@ export default function CancelScreen({ params }: { params: Promise<{ code: strin
       <h2 className="d-h2">Why are you cancelling?</h2>
       <Chips items={cancelReasons} value={reason} onChange={setReason} />
       <Field placeholder="Add a note (optional)" value={note} onChange={(event) => setNote(event.target.value)} />
-      <Button variant="outline" block href={`/dashboard/bookings/${booking.code}`}>Keep booking</Button>
+      {onDone ? <Button variant="outline" block onClick={onDone}>Keep booking</Button> : <Button variant="outline" block href={`/dashboard/bookings/${booking.code}`}>Keep booking</Button>}
       <Button variant="dark" block loading={busy} onClick={async () => {
         const result = await run(api.bookings.cancel(booking.code, reason, note));
-        if (result) router.push(`/dashboard/bookings/${booking.code}/cancelled`);
+        if (result && onDone) onDone();
+        else if (result) router.push(`/dashboard/bookings/${booking.code}/cancelled`);
       }}>Cancel booking</Button>
     </Page>
   );

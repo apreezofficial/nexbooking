@@ -7,9 +7,10 @@
  */
 
 import Link from "next/link";
+import { AlertDialog } from "@base-ui/react/alert-dialog";
 import { DashArt } from "./Media";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useId, useRef, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
+import { useEffect, useId, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
 import {
   ArrowLeft, Aperture, Bookmark, Check, ChevronRight, Clock3, Compass, CalendarDays, Home, Lock, MessageCircle, Scissors, Sparkles, UserRound,
   type LucideIcon,
@@ -308,27 +309,23 @@ export function Banner({ premium, onUpgrade, minutes = 10 }: { premium?: boolean
 export function ConfirmDialog({ open, icon: Icon, title, body, confirm, cancel, onConfirm, onCancel, tone }: {
   open: boolean; icon: LucideIcon; title: string; body: string; confirm: string; cancel: string; onConfirm: () => void; onCancel: () => void; tone?: "error";
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && onCancel();
-    document.addEventListener("keydown", onKey);
-    ref.current?.querySelector<HTMLElement>("button")?.focus();
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, onCancel]);
-  if (!open) return null;
   return (
-    <div className="d-scrim" onMouseDown={(event) => event.target === event.currentTarget && onCancel()}>
-      <div className="d-dialog" role="dialog" aria-modal="true" aria-labelledby="d-dialog-title" ref={ref}>
-        <span className={cx("d-dialog-icon", tone === "error" && "is-error")}><Icon size={22} strokeWidth={1.8} aria-hidden="true" /></span>
-        <h2 id="d-dialog-title">{title}</h2>
-        <p>{body}</p>
-        <div>
-          <Button variant="outline" onClick={onCancel}>{cancel}</Button>
-          <Button variant="dark" onClick={onConfirm}>{confirm}</Button>
-        </div>
-      </div>
-    </div>
+    <AlertDialog.Root open={open} onOpenChange={next => { if (!next) onCancel(); }}>
+      <AlertDialog.Portal>
+        <AlertDialog.Backdrop className="d-drawer-backdrop" />
+        <AlertDialog.Viewport className="d-confirm-viewport">
+          <AlertDialog.Popup className="d-dialog">
+            <span className={cx("d-dialog-icon", tone === "error" && "is-error")}><Icon size={22} strokeWidth={1.8} aria-hidden="true" /></span>
+            <AlertDialog.Title>{title}</AlertDialog.Title>
+            <AlertDialog.Description>{body}</AlertDialog.Description>
+            <div>
+              <Button variant="outline" onClick={onCancel}>{cancel}</Button>
+              <Button variant="dark" onClick={onConfirm}>{confirm}</Button>
+            </div>
+          </AlertDialog.Popup>
+        </AlertDialog.Viewport>
+      </AlertDialog.Portal>
+    </AlertDialog.Root>
   );
 }
 

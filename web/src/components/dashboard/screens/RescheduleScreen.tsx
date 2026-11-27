@@ -26,7 +26,10 @@ function dayStatus(day: number, dateKey: string) {
  * confirmed at once; closer than that it goes to the studio for approval.
  */
 export default function RescheduleScreen({ params }: { params: Promise<{ code: string }> }) {
-  const { code } = use(params);
+  return <RescheduleForm code={use(params).code} />;
+}
+
+export function RescheduleForm({ code, onDone }: { code: string; onDone?: () => void }) {
   const router = useRouter();
   const today = useToday();
   const booking = useBookings().find((item) => item.code === code);
@@ -60,12 +63,13 @@ export default function RescheduleScreen({ params }: { params: Promise<{ code: s
         ? `Your booking has been moved to ${formatDay(date, { weekday: "short", day: "numeric", month: "short" })} at ${time}.`
         : `Reschedule request sent to ${booking.provider}. They’ll confirm whether it works.`),
     );
-    if (result) router.push(`/dashboard/bookings/${booking.code}`);
+    if (result && onDone) onDone();
+    else if (result) router.push(`/dashboard/bookings/${booking.code}`);
   };
 
   return (
     <Page>
-      <PageHeader title="Reschedule" back={`/dashboard/bookings/${booking.code}`} />
+      {!onDone && <PageHeader title="Reschedule" back={`/dashboard/bookings/${booking.code}`} />}
       <Card tone="tint">
         <b className="d-h3">{booking.title}</b>
         <p className="d-muted">{booking.provider} · now {formatDay(booking.date, { weekday: "short", day: "numeric", month: "short" })} at {booking.time}</p>
