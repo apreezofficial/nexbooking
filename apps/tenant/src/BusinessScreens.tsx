@@ -84,7 +84,7 @@ export function StorefrontEditPage({ onBack }: Nav) {
   const [showReviews, setShowReviews] = useState(true);
   const [swatch, setSwatch] = useState(0);
   const swatches = [colors.gold, colors.crayolaGold, '#B08D3C', colors.ink900, '#4E8B5A'];
-  return <Page title="Storefront" onBack={onBack} footer={<Button label="Save changes" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="Storefront" onBack={onBack} footer={<Button sound="success" label="Save changes" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <LinearGradient colors={gold} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ height: 120, borderRadius: radii.card, justifyContent: 'flex-end', padding: spacing.md }}>
       <Avatar initials="GS" size={56} />
     </LinearGradient>
@@ -146,7 +146,7 @@ export function ServicesPage({ onBack, go }: Nav & Go) {
 export function EditServicePage({ onBack }: Nav) {
   const [instant, setInstant] = useState(true);
   const [video, setVideo] = useState(true);
-  return <Page title="Edit service" onBack={onBack} footer={<Button label="Save service" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="Edit service" onBack={onBack} footer={<Button sound="success" label="Save service" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <Input label="Service name" defaultValue="Silk press & trim" />
     <Input label="Description" defaultValue="Wash, deep condition, silk press and trim. Heat protection included." multiline />
     <View style={{ flexDirection: 'row', gap: 12 }}>
@@ -170,7 +170,7 @@ export function EditServicePage({ onBack }: Nav) {
 export function WorkingHoursPage({ onBack }: Nav) {
   const [days, setDays] = useState([true, true, true, true, true, true, false]);
   const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  return <Page title="Working hours" onBack={onBack} footer={<Button label="Save hours" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="Working hours" onBack={onBack} footer={<Button sound="success" label="Save hours" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <Card style={{ padding: 0 }}>
       {names.map((d, i) => <View key={d} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: spacing.md, minHeight: 52, borderTopWidth: i ? 1 : 0, borderColor: colors.line }}>
         <Text variant="button" style={{ width: 40 }}>{d}</Text>
@@ -221,7 +221,7 @@ export function InviteStaffPage({ onBack }: Nav) {
   const [accept, setAccept] = useState(true);
   const [picked, setPicked] = useState<string[]>(['Silk press', 'Wash & style']);
   const services = ['Silk press', 'Wash & style', 'Braids', 'Conditioning'];
-  return <Page title="Invite staff member" onBack={onBack} footer={<Button label="Send invite" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="Invite staff member" onBack={onBack} footer={<Button sound="success" label="Send invite" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <Input label="Name" defaultValue="Chidi N." />
     <Input label="Email or phone" defaultValue="chidi@glowstudio.com" autoCapitalize="none" />
     <Text variant="button">Role</Text>
@@ -288,7 +288,7 @@ export function ReviewsPage({ onBack }: Nav) {
 
 export function PromoCodesPage({ onBack, go }: Nav & Go) {
   const [on, setOn] = useState<Record<string, boolean>>({ WELCOME20: true, FRIDAY10: true });
-  return <Page title="Promo codes" onBack={onBack} footer={<Button label="Create promo code" size="large" icon={Plus} style={{ alignSelf: 'stretch' }} onPress={() => go('NewPromo')} />}>
+  return <Page title="Promo codes" onBack={onBack} footer={<Button sound="success" label="Create promo code" size="large" icon={Plus} style={{ alignSelf: 'stretch' }} onPress={() => go('NewPromo')} />}>
     <View style={{ flexDirection: 'row', gap: spacing.sm }}><Stat label="Redemptions" value="38" note="▲ 9 this week" /><Stat label="Revenue driven" value="₦412k" /></View>
     <Text variant="h3">Active</Text>
     {[['WELCOME20', '20% off first booking', '12 used · Ends 30 Nov'], ['FRIDAY10', '10% off Friday slots', '26 used · Ends 31 Dec']].map(([code, desc, meta]) => <Card key={code} style={{ padding: spacing.md, gap: 4 }}>
@@ -309,7 +309,7 @@ export function PromoCodesPage({ onBack, go }: Nav & Go) {
 export function NewPromoPage({ onBack }: Nav) {
   const [kind, setKind] = useState('Percentage');
   const [newOnly, setNewOnly] = useState(true);
-  return <Page title="New promo code" onBack={onBack} footer={<Button label="Create promo code" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="New promo code" onBack={onBack} footer={<Button sound="success" label="Create promo code" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <Input label="Code" defaultValue="GLOW20" autoCapitalize="characters" trailing={<Text variant="button" color={colors.goldDeep}>Generate</Text>} />
     <Text variant="button">Discount</Text>
     <View style={{ flexDirection: 'row', gap: 8 }}>{['Percentage', 'Fixed amount'].map(k => <Chip key={k} label={k} selected={kind === k} onPress={() => setKind(k)} />)}</View>
@@ -358,7 +358,7 @@ export function AnalyticsPage({ onBack }: Nav) {
 /* ---------- Subscription and billing ---------- */
 
 export function SubscriptionPage({ onBack, go }: Nav & Go) {
-  return <Page title="Subscription" onBack={onBack} footer={<Button label="Upgrade to Premium" size="large" icon={Star} style={{ alignSelf: 'stretch' }} onPress={() => go('UpgradeCheckout')} />}>
+  return <Page title="Subscription" onBack={onBack} footer={<Button sound="success" label="Upgrade to Premium" size="large" icon={Star} style={{ alignSelf: 'stretch' }} onPress={() => go('UpgradeCheckout')} />}>
     <View style={{ backgroundColor: colors.ink900, borderRadius: radii.card, padding: spacing.lg, gap: spacing.sm }}>
       <Text variant="caption" color={colors.line}>Current plan</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
@@ -380,7 +380,7 @@ export function SubscriptionPage({ onBack, go }: Nav & Go) {
 
 export function UpgradeCheckoutPage({ onBack }: Nav) {
   const [period, setPeriod] = useState('Monthly');
-  return <Page title="Upgrade to Premium" onBack={onBack} footer={<Button label="Upgrade now · $86.75" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="Upgrade to Premium" onBack={onBack} footer={<Button sound="success" label="Upgrade now · $86.75" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <View style={{ flexDirection: 'row', gap: 8 }}>{['Monthly', 'Annual · save 20%'].map(p => <Chip key={p} label={p} selected={period === p} onPress={() => setPeriod(p)} />)}</View>
     <Card style={{ padding: spacing.lg, gap: spacing.sm, backgroundColor: colors.goldTint, borderColor: colors.gold, borderWidth: 2 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}><Text variant="h2">Premium</Text><Text variant="h2">$99/mo</Text></View>
@@ -420,7 +420,7 @@ export function BoostPage({ onBack }: Nav) {
   const [days, setDays] = useState('7 days');
   return <Page title="Boost" onBack={onBack} footer={<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
     <View><Text variant="h2">₦35,000</Text><Text variant="caption" color={colors.muted}>7 days · ₦5,000 / day</Text></View>
-    <Button label="Pay and boost" onPress={onBack} />
+    <Button sound="success" label="Pay and boost" onPress={onBack} />
   </View>}>
     <Text variant="h3">What do you want to promote?</Text>
     <View style={{ flexDirection: 'row', gap: 8 }}>

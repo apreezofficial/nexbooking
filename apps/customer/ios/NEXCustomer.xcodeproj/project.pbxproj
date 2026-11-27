@@ -301,6 +301,8 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-framework",
+					"AVFoundation",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.nexbooking.customer;
 				PRODUCT_NAME = NEXCustomer;
@@ -330,6 +332,8 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-framework",
+					"AVFoundation",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.nexbooking.customer;
 				PRODUCT_NAME = NEXCustomer;

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { Animated, Easing } from 'react-native';
 import {
   ActivityIndicator, Pressable, StyleSheet, Text as NativeText, TextInput, View,
   type PressableProps, type StyleProp, type TextInputProps, type TextProps,
@@ -6,6 +7,8 @@ import {
 } from 'react-native';
 import { Check, type LucideIcon } from 'lucide-react-native';
 import { colors, layout, radii, typography } from '../theme';
+import { PressScale } from './motion';
+import type { SoundName } from '../lib/sound';
 
 export function Text({ variant = 'body', color = colors.ink900, style, ...props }: TextProps & {
   variant?: keyof typeof typography; color?: string;
@@ -15,41 +18,41 @@ export function Text({ variant = 'body', color = colors.ink900, style, ...props 
 
 type ButtonProps = Omit<PressableProps, 'style' | 'children'> & {
   label: string; variant?: 'primary' | 'dark' | 'outline' | 'text';
-  size?: 'small' | 'default' | 'large'; loading?: boolean; icon?: LucideIcon;
+  size?: 'small' | 'default' | 'large'; loading?: boolean; icon?: LucideIcon; sound?: SoundName | null;
   style?: StyleProp<ViewStyle>;
 };
 
-export function Button({ label, variant = 'primary', size = 'default', loading = false, disabled, icon: Icon, style, ...props }: ButtonProps) {
+export function Button({ label, variant = 'primary', size = 'default', loading = false, disabled, icon: Icon, sound, style, ...props }: ButtonProps) {
   const inactive = disabled || loading;
   const foreground = disabled ? colors.muted : variant === 'dark' ? colors.pearl : variant === 'text' ? colors.goldDeep : colors.ink900;
   return (
-    <Pressable {...props} accessibilityRole="button" accessibilityState={{ disabled: !!inactive, busy: loading }}
-      disabled={inactive} style={({ pressed }) => [styles.button, {
+    <PressScale {...props} sound={sound} accessibilityRole="button" accessibilityState={{ disabled: !!inactive, busy: loading }}
+      disabled={inactive} style={[styles.button, {
         minHeight: size === 'large' ? 52 : layout.minimumTouchTarget,
         paddingVertical: size === 'large' ? 16 : 12,
         backgroundColor: disabled ? colors.line : variant === 'primary' ? colors.gold : variant === 'dark' ? colors.ink900 : variant === 'outline' ? colors.daisy : 'transparent',
-        borderWidth: variant === 'outline' ? 1 : 0, opacity: pressed ? 0.75 : 1,
+        borderWidth: variant === 'outline' ? 1 : 0,
         paddingHorizontal: size === 'small' ? 16 : 24,
       }, style]}>
       {loading ? <ActivityIndicator size="small" color={foreground} /> : Icon ? <Icon size={22} strokeWidth={1.8} color={foreground} /> : null}
       <Text variant="button" color={foreground}>{label}</Text>
-    </Pressable>
+    </PressScale>
   );
 }
 
 export function IconButton({ icon: Icon, label, dot, selected, ...props }: Omit<ButtonProps, 'label' | 'icon'> & { icon: LucideIcon; label: string; dot?: boolean; selected?: boolean }) {
-  return <Pressable {...props} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: !!props.disabled, selected }}
-    style={({ pressed }) => [styles.iconButton, { opacity: props.disabled ? 0.4 : pressed ? 0.65 : 1, backgroundColor: selected ? colors.goldTint : colors.daisy }, props.style]}>
+  return <PressScale {...props} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: !!props.disabled, selected }}
+    style={[styles.iconButton, { opacity: props.disabled ? 0.4 : 1, backgroundColor: selected ? colors.goldTint : colors.daisy }, props.style]}>
     <Icon size={24} color={colors.ink900} strokeWidth={1.8} fill={selected && label.toLowerCase().includes('saved') ? colors.gold : 'none'} />
     {dot && <View style={styles.notificationDot} />}
-  </Pressable>;
+  </PressScale>;
 }
 
 export function Chip({ label, selected = false, disabled = false, onPress }: { label: string; selected?: boolean; disabled?: boolean; onPress?: () => void }) {
-  return <Pressable onPress={onPress} disabled={disabled} accessibilityRole="button" accessibilityState={{ selected, disabled }}
-    style={({ pressed }) => [styles.chip, { backgroundColor: disabled ? colors.line : selected ? colors.gold : colors.daisy, borderColor: selected ? colors.gold : colors.line, opacity: pressed ? 0.7 : 1 }]}>
+  return <PressScale onPress={onPress} disabled={disabled} accessibilityRole="button" accessibilityState={{ selected, disabled }}
+    style={[styles.chip, { backgroundColor: disabled ? colors.line : selected ? colors.gold : colors.daisy, borderColor: selected ? colors.gold : colors.line }]}>
     <Text variant="button" color={disabled ? colors.muted : colors.ink900}>{label}</Text>
-  </Pressable>;
+  </PressScale>;
 }
 
 export type Status = 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled' | 'Rescheduled' | 'Refunded' | 'In progress';
@@ -89,8 +92,15 @@ export function Input({ label, error, leading: Leading, trailing, style, ...prop
   </View>;
 }
 
+// Cards rise in as a screen appears. Cards that mount in the same render are staggered automatically.
+let mountOrder = 0;
+function nextDelay() { const delay = Math.min(mountOrder, 9) * 45; mountOrder += 1; setTimeout(() => { mountOrder = 0; }, 0); return delay; }
+
 export function Card({ style, ...props }: ViewProps) {
-  return <View {...props} style={[styles.card, style]} />;
+  const [delay] = useState(nextDelay);
+  const progress = useRef(new Animated.Value(0)).current;
+  useState(() => { Animated.timing(progress, { toValue: 1, duration: 320, delay, easing: Easing.out(Easing.cubic), useNativeDriver: true }).start(); return null; });
+  return <Animated.View {...props} style={[styles.card, style, { opacity: progress, transform: [{ translateY: progress.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }] }]} />;
 }
 
 const styles = StyleSheet.create({

@@ -10,6 +10,8 @@ import {
 } from 'lucide-react-native';
 import { Badge, Button, Card, Chip, Input, Text, type Status } from '../../../src/components/primitives';
 import { ThinkingOrbs } from '../../../src/components/ThinkingOrbs';
+import { PressScale, useCountUp } from '../../../src/components/motion';
+import { playSound } from '../../../src/lib/sound';
 import { StateView } from '../../../src/components/StateView';
 import { BusinessHubPage, StorefrontEditPage, WorksPage, ServicesPage, EditServicePage, WorkingHoursPage, StaffPage, InviteStaffPage, StaffProfilePage, ReviewsPage, PromoCodesPage, NewPromoPage, AnalyticsPage, SubscriptionPage, UpgradeCheckoutPage, BillingPage, BoostPage, IntegrationsPage } from './BusinessScreens';
 import { SettingsPage, BusinessInfoPage, BookingPoliciesPage, NotificationSettingsPage, RolesPage, SecurityPage, LockedStaffPage, EmptyPage, OfflinePage, PayoutFailedPage, SubscriptionFailedPage, UploadFailedPage, BookingConflictPage, StripeLostPage } from './SettingsAndStates';
@@ -60,6 +62,11 @@ const transactions = [
 
 /* ---------- Small shared pieces ---------- */
 
+function Money({ value, style }: { value: number; style?: object }) {
+  const shown = useCountUp(value);
+  return <Text variant="display" color={colors.gold} style={style}>{'₦' + String(shown).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>;
+}
+
 function Avatar({ initials, size = 44 }: { initials: string; size?: number }) {
   return <View style={[styles.avatar, { width: size, height: size, borderRadius: size * 0.3 }]}>
     <Text variant="h3" style={{ fontSize: size * 0.34 }}>{initials}</Text>
@@ -75,11 +82,11 @@ function Header({ title, onBack, right }: { title?: string; onBack?: () => void;
 }
 
 function IconSquare({ icon: Icon, label, onPress, dot, badge }: { icon: LucideIcon; label: string; onPress?: () => void; dot?: boolean; badge?: number }) {
-  return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={({ pressed }) => [styles.iconSquare, { opacity: pressed ? 0.7 : 1 }]}>
+  return <PressScale accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={styles.iconSquare}>
     <Icon size={22} strokeWidth={1.8} color={colors.ink900} />
     {dot && <View style={styles.dot} />}
     {!!badge && <View style={styles.badge}><Text variant="overline" color={colors.pearl} style={{ fontSize: 10 }}>{badge}</Text></View>}
-  </Pressable>;
+  </PressScale>;
 }
 
 function Tone({ label, tone }: { label: string; tone: 'gold' | 'success' | 'warning' | 'error' | 'muted' }) {
@@ -154,7 +161,7 @@ function BottomNav({ value, onChange }: { value: Tab | null; onChange: (tab: Tab
     {activeLayout && <Animated.View pointerEvents="none" style={[styles.pill, { left: pillX, width: pillWidth }]} />}
     {items.map(({ tab, icon: Icon, label }) => {
       const active = value === tab;
-      return <Pressable key={tab} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active }}
+      return <PressScale key={tab} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active }}
         onLayout={event => {
           const { x, width } = event.nativeEvent.layout;
           setLayouts(previous => ({ ...previous, [tab]: { x, width } }));
@@ -162,7 +169,7 @@ function BottomNav({ value, onChange }: { value: Tab | null; onChange: (tab: Tab
         onPress={() => onChange(tab)} style={styles.navItem}>
         <Icon size={22} strokeWidth={1.8} color={active ? colors.ink900 : colors.pearl} />
         {active && <Text variant="button">{label}</Text>}
-      </Pressable>;
+      </PressScale>;
     })}
   </View>;
 }
@@ -180,6 +187,7 @@ export function TenantApp() {
   const go = (next: Page) => { setHistory(v => [...v, page]); setPage(next); setSheet(null); };
   const back = () => { setPage(history.at(-1) ?? 'Home'); setHistory(v => v.slice(0, -1)); setSheet(null); };
   const tab = tabOf(page);
+  useEffect(() => { if (sheet) playSound('pop'); }, [sheet]);
   const openTab = (next: Tab) => { setHistory([]); setPage(tabPages[next]); setSheet(null); };
 
   let body: ReactNode;
@@ -276,7 +284,7 @@ function SignupPage({ onNext }: { onNext: () => void }) {
       <Text variant="body">I agree to the Terms and Vendor Agreement</Text>
     </Pressable>
     <View style={{ flex: 1 }} />
-    <Button label="Create business account" size="large" style={styles.full} onPress={onNext} />
+    <Button sound="success" label="Create business account" size="large" style={styles.full} onPress={onNext} />
   </View>;
 }
 
@@ -335,7 +343,7 @@ function PlansPage({ onNext, onBack }: { onNext: () => void; onBack?: () => void
     </Card>)}
     <Text variant="caption" color={colors.muted} style={{ textAlign: 'center' }}>All plans include a 14-day free trial.</Text>
     <View style={{ flex: 1 }} />
-    <Button label="Start free trial" size="large" style={styles.full} onPress={onNext} />
+    <Button sound="success" label="Start free trial" size="large" style={styles.full} onPress={onNext} />
   </View>;
 }
 
@@ -362,7 +370,7 @@ function HomePage({ onNotifications, onSettings, onCreate, onBlock, onBooking, o
         <Text variant="caption" color={colors.line}>Today's revenue</Text>
         <View style={{ width: 150 }}><Segmented options={['Day', 'Week']} value={range} onChange={setRange} /></View>
       </View>
-      <Text variant="display" color={colors.gold} style={{ fontSize: 34, lineHeight: 42 }}>₦84,500</Text>
+      <Money value={84500} style={{ fontSize: 34, lineHeight: 42 }} />
       <View style={styles.trend}><Text variant="caption" color={colors.ink900}>↗ 12% vs last Tue</Text></View>
     </Gold>
 
@@ -480,7 +488,7 @@ function BookingsPage({ tab, onTab, onOpen, onDecline, onAdd, onVoice }: {
         <View><Text variant="caption" color={colors.muted}>Total</Text><Text variant="h3">{r.total}</Text></View>
         <View style={{ flexDirection: 'row', gap: 8 }}>
           <Button label="Decline" variant="outline" size="small" onPress={onDecline} style={{ borderColor: colors.line }} />
-          <Button label="Accept" size="small" onPress={onOpen} />
+          <Button sound="success" label="Accept" size="small" onPress={onOpen} />
         </View>
       </View>
     </Card>)}
@@ -541,7 +549,7 @@ function DeclineSheet({ onClose }: { onClose: () => void }) {
       <Input label="Message (optional)" placeholder="Add a message" multiline />
       <View style={{ flexDirection: 'row', gap: 12 }}>
         <Button label="Keep request" variant="outline" style={{ flex: 1, justifyContent: 'center' }} onPress={onClose} />
-        <Pressable onPress={onClose} accessibilityRole="button" style={[styles.destructive, { flex: 1 }]}><Text variant="button" color={colors.pearl}>Decline request</Text></Pressable>
+        <Pressable onPress={() => { playSound('error'); onClose(); }} accessibilityRole="button" style={[styles.destructive, { flex: 1 }]}><Text variant="button" color={colors.pearl}>Decline request</Text></Pressable>
       </View>
     </View>
   </View>;
@@ -583,7 +591,7 @@ function BookingDetailPage({ onBack, onChat, onNotes, onRoom }: { onBack: () => 
       <Button label="Reschedule" variant="outline" style={{ flex: 1, justifyContent: 'center' }} onPress={onNotes} />
       <Pressable onPress={onBack} accessibilityRole="button" style={[styles.outlineDanger, { flex: 1 }]}><Text variant="button" color={colors.error}>Cancel</Text></Pressable>
     </View>
-    <Button label="Mark as completed" size="large" icon={Check} style={styles.full} onPress={onNotes} />
+    <Button sound="success" label="Mark as completed" size="large" icon={Check} style={styles.full} onPress={onNotes} />
   </View>;
 }
 
@@ -606,7 +614,7 @@ function NewBookingPage({ onBack, onDone }: { onBack: () => void; onDone: () => 
     <Segmented options={['Unpaid', 'Cash', 'Transfer']} value={payment} onChange={setPayment} />
     <Input label="Note (optional)" placeholder="Add a note" multiline />
     <View style={{ flex: 1 }} />
-    <Button label="Create booking" size="large" style={styles.full} onPress={onDone} />
+    <Button sound="success" label="Create booking" size="large" style={styles.full} onPress={onDone} />
   </View>;
 }
 
@@ -620,7 +628,7 @@ function BlockTimePage({ onBack, onDone }: { onBack: () => void; onDone: () => v
     <Card>
       <Field label="From" value="Fri 20 Nov" />
       <Field label="To" value="Fri 20 Nov" />
-      <Pressable onPress={() => setAllDay(v => !v)} accessibilityRole="switch" accessibilityState={{ checked: allDay }} style={styles.fieldRow}>
+      <Pressable onPress={() => { playSound('toggle'); setAllDay(v => !v); }} accessibilityRole="switch" accessibilityState={{ checked: allDay }} style={styles.fieldRow}>
         <Text variant="button">All day</Text>
         <View style={[styles.switch, allDay && { backgroundColor: colors.gold }]}><View style={[styles.switchKnob, allDay && { alignSelf: 'flex-end' }]} /></View>
       </Pressable>
@@ -642,7 +650,7 @@ function BlockTimePage({ onBack, onDone }: { onBack: () => void; onDone: () => v
       <Text variant="button" color={colors.goldDeep}>Review</Text>
     </View>
     <View style={{ flex: 1 }} />
-    <Button label="Block time" size="large" style={styles.full} onPress={onDone} />
+    <Button sound="success" label="Block time" size="large" style={styles.full} onPress={onDone} />
   </View>;
 }
 
@@ -700,7 +708,7 @@ function ChatPage({ onBack, onCall, onBooking }: { onBack: () => void; onCall: (
     <View style={styles.composer}>
       <Paperclip size={20} color={colors.muted} />
       <Input label="Message" placeholder="Message…" value={draft} onChangeText={setDraft} style={{ paddingVertical: 10 }} />
-      <Pressable accessibilityRole="button" accessibilityLabel="Send" style={styles.sendBtn}><Send size={18} color={colors.ink900} /></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel="Send" onPress={() => playSound('send')} style={styles.sendBtn}><Send size={18} color={colors.ink900} /></Pressable>
     </View>
   </View>;
 }
@@ -748,12 +756,12 @@ function SessionNotesPage({ onBack, shared, onShared }: { onBack: () => void; sh
       {['Aftercare', 'Follow-up', 'Products used'].map(t => <Chip key={t} label={t} />)}
     </View>
     <Card style={[styles.rowBetween, { padding: spacing.md }]}><View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}><Download size={18} color={colors.ink900} /><Text variant="button">Aftercare-notes.pdf</Text></View><Text variant="caption" color={colors.muted}>PDF · 124 KB</Text></Card>
-    <Pressable onPress={() => onShared(!shared)} accessibilityRole="switch" accessibilityState={{ checked: shared }} style={styles.fieldRow}>
+    <Pressable onPress={() => { playSound('toggle'); onShared(!shared); }} accessibilityRole="switch" accessibilityState={{ checked: shared }} style={styles.fieldRow}>
       <Text variant="button">Share with Ada</Text>
       <View style={[styles.switch, shared && { backgroundColor: colors.gold }]}><View style={[styles.switchKnob, shared && { alignSelf: 'flex-end' }]} /></View>
     </Pressable>
     <View style={{ flex: 1 }} />
-    <Button label="Save notes" size="large" style={styles.full} onPress={onBack} />
+    <Button sound="success" label="Save notes" size="large" style={styles.full} onPress={onBack} />
   </View>;
 }
 
@@ -765,10 +773,10 @@ function EarningsPage({ onPayout, onHistory, onTransactions, onNotifications }: 
     <View style={styles.rowBetween}><Text variant="h1">Earnings</Text><IconSquare icon={Bell} label="Notifications" onPress={onNotifications} /></View>
     <Gold>
       <Text variant="caption" color={colors.line}>Available balance</Text>
-      <Text variant="display" color={colors.gold} style={{ fontSize: 34, lineHeight: 42 }}>₦312,000</Text>
+      <Money value={312000} style={{ fontSize: 34, lineHeight: 42 }} />
       <Text variant="caption" color={colors.line}>Next auto payout · Fri 20 Nov</Text>
       <View style={{ flexDirection: 'row', gap: 12, marginTop: spacing.sm }}>
-        <Button label="Request payout" size="small" onPress={onPayout} />
+        <Button sound="success" label="Request payout" size="small" onPress={onPayout} />
         <Pressable onPress={onHistory} accessibilityRole="button" style={styles.darkBtn}><Text variant="button" color={colors.pearl}>History</Text></Pressable>
       </View>
     </Gold>
@@ -868,7 +876,7 @@ function RequestPayoutPage({ onBack, amount, onAmount, onAccount }: { onBack: ()
     </Card>
     <View style={styles.infoBox}><Info size={18} color={colors.ink900} /><Text variant="caption">Minimum payout is ₦10,000.</Text></View>
     <View style={{ flex: 1 }} />
-    <Button label={`Request ₦${amount}`} size="large" style={styles.full} onPress={onBack} />
+    <Button sound="success" label={`Request ₦${amount}`} size="large" style={styles.full} onPress={onBack} />
   </View>;
 }
 
@@ -896,7 +904,7 @@ function PayoutsPage({ onBack, onRequest, onChange }: { onBack: () => void; onRe
         : <Tone label={h.status} tone={h.tone} />}
     </Card>)}
     <View style={{ flex: 1 }} />
-    <Button label="Request payout" size="large" style={styles.full} onPress={onRequest} />
+    <Button sound="success" label="Request payout" size="large" style={styles.full} onPress={onRequest} />
   </View>;
 }
 
@@ -908,7 +916,7 @@ function PayoutAccountPage({ onBack }: { onBack: () => void }) {
     <Input label="Account number" defaultValue="0123456789" keyboardType="number-pad" />
     <Input label="Account name" defaultValue="Amaka Eze" trailing={<Check size={20} color={colors.success} />} />
     <Tone label="Name verified" tone="success" />
-    <Pressable onPress={() => setDefaultAcc(v => !v)} accessibilityRole="switch" accessibilityState={{ checked: defaultAcc }} style={styles.fieldRow}>
+    <Pressable onPress={() => { playSound('toggle'); setDefaultAcc(v => !v); }} accessibilityRole="switch" accessibilityState={{ checked: defaultAcc }} style={styles.fieldRow}>
       <Text variant="button">Set as default account</Text>
       <View style={[styles.switch, defaultAcc && { backgroundColor: colors.gold }]}><View style={[styles.switchKnob, defaultAcc && { alignSelf: 'flex-end' }]} /></View>
     </Pressable>
@@ -917,7 +925,7 @@ function PayoutAccountPage({ onBack }: { onBack: () => void }) {
       <View style={{ flex: 1 }}><Text variant="button">We verify your account name with your bank.</Text><Text variant="caption" color={colors.muted}>Payouts only go to accounts in your name.</Text></View>
     </View>
     <View style={{ flex: 1 }} />
-    <Button label="Save account" size="large" style={styles.full} onPress={onBack} />
+    <Button sound="success" label="Save account" size="large" style={styles.full} onPress={onBack} />
   </View>;
 }
 

@@ -3,11 +3,12 @@ import { Pressable, Switch, View } from 'react-native';
 import {
   Bell, Building2, Check, ChevronRight, CreditCard, Globe, HelpCircle, Landmark, Link2, Lock,
   LogOut, Shield, Star, Tag, TriangleAlert, Image as ImageIcon, WifiOff, FileText, RefreshCw,
-  Users, type LucideIcon,
+  Users, Volume2, type LucideIcon,
 } from 'lucide-react-native';
 import { Badge, Button, Card, Chip, Text } from '../../../src/components/primitives';
 import { StateView } from '../../../src/components/StateView';
 import { colors, radii, spacing } from '../../../src/theme';
+import { isSoundEnabled, playSound, setSoundEnabled } from '../../../src/lib/sound';
 
 type Nav = { onBack: () => void };
 
@@ -49,7 +50,7 @@ export function Row({ icon: Icon, label, sub, value, onPress, right, danger, las
 }
 
 export function Toggle({ value, onValueChange }: { value: boolean; onValueChange: (v: boolean) => void }) {
-  return <Switch value={value} onValueChange={onValueChange} trackColor={{ false: colors.line, true: colors.gold }} thumbColor={colors.pearl} />;
+  return <Switch value={value} onValueChange={v => { playSound('toggle'); onValueChange(v); }} trackColor={{ false: colors.line, true: colors.gold }} thumbColor={colors.pearl} />;
 }
 
 export function Notice({ icon: Icon, text, tone = 'gold' }: { icon: LucideIcon; text: string; tone?: 'gold' | 'error' }) {
@@ -60,6 +61,11 @@ export function Notice({ icon: Icon, text, tone = 'gold' }: { icon: LucideIcon; 
 }
 
 /* ---------- Settings ---------- */
+
+function SoundToggle() {
+  const [on, setOn] = useState(isSoundEnabled());
+  return <Toggle value={on} onValueChange={v => { setSoundEnabled(v); setOn(v); }} />;
+}
 
 export function SettingsPage({ onBack, go }: Nav & { go: (page: string) => void }) {
   return <Page title="Settings" onBack={onBack}>
@@ -72,7 +78,8 @@ export function SettingsPage({ onBack, go }: Nav & { go: (page: string) => void 
     <Section label="APP">
       <Row icon={Bell} label="Notifications" onPress={() => go('NotificationSettings')} />
       <Row icon={Globe} label="Language" value="English" onPress={() => {}} />
-      <Row icon={Shield} label="Security" onPress={() => go('Security')} last />
+      <Row icon={Shield} label="Security" onPress={() => go('Security')} />
+      <Row icon={Volume2} label="Sound effects" right={<SoundToggle />} last />
     </Section>
     <Section label="SUPPORT">
       <Row icon={HelpCircle} label="Help & support" onPress={() => {}} />
@@ -101,7 +108,7 @@ export function BookingPoliciesPage({ onBack }: Nav) {
   const [mode, setMode] = useState<'Instant booking' | 'Request approval'>('Instant booking');
   const [deposit, setDeposit] = useState(true);
   const [messages, setMessages] = useState(true);
-  return <Page title="Booking policies" onBack={onBack} footer={<Button label="Save policies" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="Booking policies" onBack={onBack} footer={<Button sound="success" label="Save policies" size="large" style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <Text variant="caption" color={colors.muted}>New bookings are accepted</Text>
     <View style={{ flexDirection: 'row', gap: 8 }}>
       {(['Instant booking', 'Request approval'] as const).map(option => <Chip key={option} label={option} selected={mode === option} onPress={() => setMode(option)} />)}
@@ -194,7 +201,7 @@ export function SecurityPage({ onBack }: Nav) {
 /* ---------- Locked feature (Premium) ---------- */
 
 export function LockedStaffPage({ onBack }: Nav) {
-  return <Page title="Staff" onBack={onBack} footer={<Button label="Upgrade to Premium" size="large" icon={Star} style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
+  return <Page title="Staff" onBack={onBack} footer={<Button sound="success" label="Upgrade to Premium" size="large" icon={Star} style={{ alignSelf: 'stretch' }} onPress={onBack} />}>
     <StateView icon={Lock} title="Manage your team with Premium" body="Add staff, assign bookings to each person and set their schedules." />
     <Card style={{ padding: spacing.lg, gap: spacing.sm }}>
       {['Invite managers and staff', 'Assign bookings to each person', 'Individual schedules and permissions'].map(item => <View key={item} style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>

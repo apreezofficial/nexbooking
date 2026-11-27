@@ -132,6 +132,7 @@ export const seedThreads: Record<string, ChatMessage[]> = {
   "zara-nails": [{ id: "m5", from: "studio", text: "Of course, send it here.", at: "Today" }],
   "lagos-lens": [{ id: "m6", from: "studio", text: "Of course, send it here.", at: "Today" }],
   fitlab: [{ id: "m7", from: "studio", text: "Of course, send it here.", at: "Today" }],
+  support: [{ id: "m8", from: "studio", text: "Hi, you’ve reached EdeBooking Support. How can we help?", at: "Today" }],
 };
 export const inboxThreads = [
   { id: "glow-studio", name: "Glow Studio" },
@@ -140,6 +141,9 @@ export const inboxThreads = [
   { id: "lagos-lens", name: "Lagos Lens" },
   { id: "fitlab", name: "FitLab" },
 ];
+
+/** Name shown above a conversation. Support is a thread too, but is opened from Help rather than listed in the inbox. */
+export const threadName = (id: string) => (id === "support" ? "EdeBooking Support" : inboxThreads.find((thread) => thread.id === id)?.name ?? studioById(id).name);
 
 export const seedNotes: Note[] = [];
 

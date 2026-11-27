@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Bell, Search, MapPin, ChevronRight, MessageCircle, Plus, Check, Mic, Send, Eye, EyeOff, Clock3, Star, Compass, UserRound, CreditCard, LockKeyhole, Heart, Settings, CircleHelp, LogOut, FileText, Globe, Shield, Download, Share2, CalendarDays } from 'lucide-react-native';
 import { Badge, Banner, Button, Card, Chip, FeedCard, IconButton, Input, SpotlightTile, TabBar, Text, VerifiedMark, BusinessLogo, type TabName } from '../../../src/components';
 import { colors } from '../../../src/theme';
+import { PopIn } from '../../../src/components/motion';
+import { playSound } from '../../../src/lib/sound';
 import { BlurView } from '@react-native-community/blur';
 import LinearGradient from 'react-native-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
@@ -18,6 +20,7 @@ export function ProductScreen(){
  const [showLogout,setShowLogout]=useState(false),[invoiceTab,setInvoiceTab]=useState('Receipts'),[invoiceFilter,setInvoiceFilter]=useState('All'),[language,setLanguage]=useState('English'),[twoFactor,setTwoFactor]=useState(false),[faceId,setFaceId]=useState(true),[expandedFaq,setExpandedFaq]=useState('How do I reschedule a booking?'),[notifPrefs,setNotifPrefs]=useState<Record<string,boolean>>({'Booking updates':true,Reminders:true,Messages:true,Promotions:false,'Receipts and invoices':true,Newsletter:false,'Appointment reminders':true});
  const fade=useRef(new Animated.Value(1)).current;
  useEffect(()=>{fade.setValue(0.96);Animated.timing(fade,{toValue:1,duration:220,useNativeDriver:true}).start()},[page]);
+ useEffect(()=>{if(page==='Confirmation')playSound('success')},[page]);
  useEffect(()=>{if(page!=='Splash')return;const timeout=setTimeout(()=>setPage('Onboarding'),1800);return()=>clearTimeout(timeout)},[page]);
  const go=(next:Page)=>{setHistory(v=>[...v,page]);setPage(next);setNotice('')},back=()=>{setPage(history.at(-1)??'Home');setHistory(v=>v.slice(0,-1))};
  const amount=services.find(s=>s[0]===selected)?.[2]??'₦25,000';
@@ -94,7 +97,7 @@ export function ProductScreen(){
 
 function SplashScreen(){
  return <View style={{flex:1,minHeight:640,alignItems:'center',justifyContent:'center',backgroundColor:'#000000'}}>
-  <Image source={require('../../../assets/brand/edebooking-logo.png')} accessibilityLabel="EdeBooking" resizeMode="contain" style={{width:260,height:218}}/>
+  <PopIn><Image source={require('../../../assets/brand/edebooking-logo.png')} accessibilityLabel="EdeBooking" resizeMode="contain" style={{width:260,height:218}}/></PopIn>
   <Text variant="bodyLarge" color={colors.line} style={{marginTop:12}}>Book. Pay. Consult.</Text>
   <View style={{position:'absolute',bottom:48,flexDirection:'row',alignItems:'center',gap:15}}>{[0,1,2].map(i=><View key={i} style={{width:10,height:i===1?10:8,borderRadius:5,backgroundColor:i===1?colors.gold:'rgba(212,175,55,0.35)'}}/>)}</View>
  </View>;

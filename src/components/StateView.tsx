@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { type LucideIcon } from 'lucide-react-native';
 import { colors, spacing } from '../theme';
 import { Button, Text } from './primitives';
+import { playSound } from '../lib/sound';
 
 /**
  * Empty, error and offline states: a soft ring around an icon, a title, a short line, and up to two actions.
@@ -13,6 +15,7 @@ export function StateView({ icon: Icon, title, body, primary, secondary, tone = 
   secondary?: { label: string; onPress: () => void };
   tone?: 'empty' | 'error';
 }) {
+  useEffect(() => { if (tone === 'error') playSound('error'); }, [tone]);
   const ring = tone === 'error' ? colors.errorTint : colors.goldTint;
   const iconColor = tone === 'error' ? colors.error : colors.ink900;
   return <View accessibilityRole="summary" style={{ alignItems: 'center', gap: spacing.md, paddingVertical: spacing.xxl }}>

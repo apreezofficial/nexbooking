@@ -1,9 +1,8 @@
-import RouteShell from "@/components/RouteShell";
-import DashboardView from "@/components/DashboardView";
-import { pageMetadata } from "@/lib/site";
+import type { Metadata } from "next";
+import HomeScreen from "@/components/dashboard/screens/HomeScreen";
 
-export const metadata = pageMetadata({ title: "Dashboard", description: "Your EdeBooking bookings and saved details.", path: "/dashboard" });
+export const metadata: Metadata = { title: "Home" };
 
-export default function DashboardPage() {
-  return <RouteShell><DashboardView /></RouteShell>;
+export default function Page() {
+  return <HomeScreen />;
 }

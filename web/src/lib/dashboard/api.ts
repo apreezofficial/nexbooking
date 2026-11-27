@@ -190,7 +190,7 @@ export const booking = {
     };
     replaceBookings([newBooking, ...bookings]);
     const receipt: Receipt = {
-      ref, studioId: flow.studioId, studio: studioRecord.name, date: flow.date, paidAt: `Paid ${new Date().toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" })}`,
+      ref, studioId: flow.studioId, studio: studioRecord.name, date: new Date(`${flow.date}T12:00:00`).toLocaleDateString("en-GB", { day: "numeric", month: "short" }), paidAt: `Paid ${new Date().toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" })}`,
       service: quote.service.name, staff: flow.staff, appointment: `${flow.date} · ${flow.time}`, paidWith, transaction: `txn_••••${uid("").slice(0, 4).toUpperCase()}`,
       subtotal: quote.subtotal, vat: quote.vat, total: quote.total, status: "Paid",
     };
@@ -300,6 +300,16 @@ export const billing = {
     const link = document.createElement("a");
     link.href = url;
     link.download = `${receipt.ref}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  },
+  /** GET /me/receipts/export  → one PDF of every receipt */
+  async downloadAll(list: Receipt[]) {
+    const body = list.map((r) => `${r.ref} · ${r.studio} · ${r.date} · ${naira(r.total)} · ${r.status}`).join("\n");
+    const url = URL.createObjectURL(new Blob([`EdeBooking receipts\n\n${body}\n`], { type: "text/plain" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "edebooking-receipts.txt";
     link.click();
     URL.revokeObjectURL(url);
   },

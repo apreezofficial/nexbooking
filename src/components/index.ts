@@ -3,3 +3,4 @@ export * from './patterns';
 export * from './BusinessLogo';
 export * from './ThinkingOrbs';
 export * from './StateView';
+export * from './motion';
