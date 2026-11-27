@@ -94,7 +94,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
               return (
                 <Link key={label} href={href} role="tab" aria-selected={on} aria-label={label} className={on ? "is-active" : undefined}>
                   <Icon size={22} strokeWidth={1.8} fill={on && label === "Home" ? "currentColor" : "none"} aria-hidden="true" />
-                  {on ? <span>{label}</span> : null}
+                  {on && <span>{label}</span>}
                 </Link>
               );
             })}

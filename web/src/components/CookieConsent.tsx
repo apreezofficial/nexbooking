@@ -5,16 +5,13 @@ import { useState, useSyncExternalStore } from "react";
 import { CONSENT_EVENT, CONSENT_KEY, readConsent, subscribeConsent } from "@/lib/cookie-consent";
 
 export default function CookieConsent() {
-  const saved = useSyncExternalStore(subscribeConsent, readConsent, () => null);
+  const saved = useSyncExternalStore(subscribeConsent, readConsent, () => undefined);
   const [sessionChoice, setSessionChoice] = useState<boolean | null>(null);
-  const [editing, setEditing] = useState(false);
   const [preferences, setPreferences] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const visible = editing || (sessionChoice === null && saved === null);
 
   function save(allowPreferences: boolean) {
     setSessionChoice(allowPreferences);
-    setEditing(false);
     try {
       localStorage.setItem(CONSENT_KEY, allowPreferences ? "preferences" : "essential");
       if (!allowPreferences) localStorage.removeItem("nexbooking-currency");
@@ -24,13 +21,7 @@ export default function CookieConsent() {
     window.dispatchEvent(new Event(CONSENT_EVENT));
   }
 
-  if (!visible) {
-    return <button type="button" className="cookie-reopen" onClick={() => {
-      setPreferences(sessionChoice ?? saved ?? false);
-      setExpanded(true);
-      setEditing(true);
-    }} aria-label="Open cookie preferences">Cookie settings</button>;
-  }
+  if (sessionChoice !== null || saved !== null) return null;
 
   return (
     <section className="cookie-popup" aria-labelledby="cookie-heading">

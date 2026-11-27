@@ -1,3 +1,4 @@
+import CookieConsent from "@/components/CookieConsent";
 import { HeroServices } from "@/components/ServicesExperience";
 import Image from "next/image";
 import type { CSSProperties } from "react";
@@ -159,4 +160,5 @@ export default function Home(){return <main className="page">
  <section className="app-banner" id="download"><Art file="feature-booking-scene.png" className="app-background"/><div className="app-rays"/><div className="app-copy" data-reveal><Eyebrow icon="phone">ONE APP. SO MANY POSSIBILITIES.</Eyebrow><h2>Your business. Your people.<br/>Your EdeBooking.</h2><p>Make a little more room for what you love.</p></div><Mascot className="app-mascot"/></section>
 
  <SiteFooter/>
+ <CookieConsent />
  </main>}

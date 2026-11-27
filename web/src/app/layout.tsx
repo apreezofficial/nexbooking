@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Serif_Display, Kalam, Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
-import CookieConsent from "@/components/CookieConsent";
 import DomTranslationGuard from "@/components/DomTranslationGuard";
 import LocationPrompt from "@/components/LocationPrompt";
 import NavigationScrollHandler from "@/components/NavigationScrollHandler";
@@ -64,7 +63,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <LocationPrompt />
         <PwaInstallPrompt />
-        <CookieConsent />
       </body>
     </html>
   );

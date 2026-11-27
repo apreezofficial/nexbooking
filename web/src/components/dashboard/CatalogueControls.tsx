@@ -45,7 +45,7 @@ export default function CatalogueControls({ params, category }: { params: string
           onInputValueChange={setQuery} onValueChange={value => {
             if (value) navigate({ q: value === "Fitness" ? "" : value, ...(value === "Fitness" ? { category: "fitness", type: null } : {}) });
           }}>
-          <Combobox.Input id="dashboard-service-query" type="search" placeholder="Try massage, braids or yoga" />
+          <Combobox.Input id="dashboard-service-query" type="search" placeholder="Massage, braids, yoga…" />
           <Combobox.Portal>
             <Combobox.Positioner sideOffset={6} className="d-search-positioner">
               {items.length > 0 && <Combobox.Popup className="d-search-suggestions">
@@ -64,7 +64,7 @@ export default function CatalogueControls({ params, category }: { params: string
         }
         setOpen(next);
       }} title="Explore filters"
-        trigger={<SideDrawerTrigger className="btn dashboard-location-trigger"><SlidersHorizontal size={16} aria-hidden="true" />Filters</SideDrawerTrigger>}>
+        trigger={<SideDrawerTrigger className="btn dashboard-location-trigger" aria-label="Filters"><SlidersHorizontal size={18} aria-hidden="true" /><span>Filters</span></SideDrawerTrigger>}>
         <form className="d-stack provider-modal-form" onSubmit={event => {
           event.preventDefault();
           navigate({ category: draftCategory, sort, budget, type: null });

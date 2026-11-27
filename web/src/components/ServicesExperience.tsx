@@ -43,6 +43,30 @@ export function HeroServices() {
   );
 }
 const noBookmarks: string[] = [];
+function CategoryRail({ children }: { children: React.ReactNode }) {
+  const track = useRef<HTMLDivElement>(null);
+  const paused = useRef(false);
+  function slide(direction: number) {
+    const node = track.current;
+    if (!node) return;
+    const atEnd = node.scrollLeft + node.clientWidth >= node.scrollWidth - 2;
+    if (direction > 0 && atEnd) node.scrollTo({ left: 0, behavior: "smooth" });
+    else node.scrollBy({ left: direction * node.clientWidth * 0.8, behavior: "smooth" });
+  }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!paused.current) slide(1);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, []);
+  return <div className="category-rail" onMouseEnter={() => { paused.current = true; }} onMouseLeave={() => { paused.current = false; }}
+    onFocus={() => { paused.current = true; }} onBlur={() => { paused.current = false; }}>
+    <button type="button" className="category-rail-arrow" aria-label="Scroll categories left" onClick={() => slide(-1)}>‹</button>
+    <div className="service-stories category-rail-track" ref={track}>{children}</div>
+    <button type="button" className="category-rail-arrow" aria-label="Scroll categories right" onClick={() => slide(1)}>›</button>
+  </div>;
+}
+
 type FeedProps = { categorySlug?: string; dashboard?: boolean; bookmarksOnly?: boolean };
 
 function ServicesFeedContent({ categorySlug = "", dashboard = false, bookmarksOnly = false }: FeedProps) {
@@ -133,7 +157,10 @@ function ServicesFeedContent({ categorySlug = "", dashboard = false, bookmarksOn
     <p>{language === "fr" ? "Catalogue de démonstration. Les prestataires seront disponibles au lancement." : "Explore our demo service catalogue. Provider profiles and availability are coming at launch."}</p>
     {(query || search.get("date") || selectedProvider) && <p className="search-results-summary">{matches.length} matching services{query ? ` for “${query}”` : ""}{selectedProvider ? ` · From ${providers.find(item => item.id === selectedProvider)?.business || "selected provider"}` : ""}{search.get("date") ? ` · Requested date: ${search.get("date")}` : ""}{search.get("people") ? ` · ${search.get("people")}` : ""}. Availability is confirmed by the provider.</p>}
     {dashboard && !bookmarksOnly && <CatalogueControls key={search.toString()} params={search.toString()} category={selectedCategory} />}
-    {!bookmarksOnly && <div className="service-stories">{categories.map(item => <Link key={item.en} href={categoryHref(item.slug)} aria-current={selectedCategory === item.slug ? "page" : undefined}><SiteArt file={item.image}/><span>{item[language]}</span></Link>)}</div>}
+    {!bookmarksOnly && (() => {
+      const items = categories.map(item => <Link key={item.en} href={categoryHref(item.slug)} aria-current={selectedCategory === item.slug ? "page" : undefined}><SiteArt file={item.image}/><span>{item[language]}</span></Link>);
+      return dashboard ? <CategoryRail>{items}</CategoryRail> : <div className="service-stories">{items}</div>;
+    })()}
     {isRecommendation && <div className="service-recommendation-heading">
       <h2>{related.length ? "Recommended fitness services" : "Other services to explore"}</h2>
       <p>We couldn’t find “{query}” in the demo catalogue. Here are {related.length ? "some related services" : "some alternatives"} you can browse.</p>

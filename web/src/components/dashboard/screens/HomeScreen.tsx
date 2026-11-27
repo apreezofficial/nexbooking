@@ -27,9 +27,9 @@ export default function HomeScreen() {
         </div>
       </section>
 
-      <div className="d-between">
+      <div className="d-between d-home-tools">
         <SideDrawer open={locationOpen} onOpenChange={setLocationOpen} title="Location and interests"
-          trigger={<SideDrawerTrigger className="btn dashboard-location-trigger"><MapPin size={17} aria-hidden="true" />{profile.location || "Set location"}</SideDrawerTrigger>}>
+          trigger={<SideDrawerTrigger className="btn dashboard-location-trigger"><MapPin size={17} aria-hidden="true" /><span>{profile.location || "Set location"}</span></SideDrawerTrigger>}>
           {locationOpen && <LocationForm onSaved={() => setLocationOpen(false)} />}
         </SideDrawer>
         <Link href="/dashboard/bookmarks" className="btn dashboard-location-trigger"><Bookmark size={17} aria-hidden="true" />Bookmarks</Link>

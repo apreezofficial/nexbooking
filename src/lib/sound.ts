@@ -1,14 +1,23 @@
 import Sound from 'react-native-sound';
 
-const files = {
-  tap: require('../../assets/sounds/tap.wav'),
-  toggle: require('../../assets/sounds/toggle.wav'),
-  success: require('../../assets/sounds/success.wav'),
-  error: require('../../assets/sounds/error.wav'),
-  send: require('../../assets/sounds/send.wav'),
-  pop: require('../../assets/sounds/pop.wav'),
-};
-export type SoundName = keyof typeof files;
+type Source = number | null;
+// Files are required lazily, and a missing file just means silence, so a bad asset can never stop the app from starting.
+function sourceFor(name: SoundName): Source {
+  try {
+    switch (name) {
+      case 'tap': return require('../../assets/sounds/tap.wav');
+      case 'toggle': return require('../../assets/sounds/toggle.wav');
+      case 'success': return require('../../assets/sounds/success.wav');
+      case 'error': return require('../../assets/sounds/error.wav');
+      case 'send': return require('../../assets/sounds/send.wav');
+      case 'pop': return require('../../assets/sounds/pop.wav');
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+export type SoundName = 'tap' | 'toggle' | 'success' | 'error' | 'send' | 'pop';
 
 // Ambient: respects the silent switch and mixes with the user's music instead of stopping it.
 Sound.setCategory('Ambient', true);
@@ -21,7 +30,9 @@ export const isSoundEnabled = () => enabled;
 export function setSoundEnabled(value: boolean) { enabled = value; }
 
 function load(name: SoundName, then?: (sound: Sound) => void) {
-  const sound: Sound = new Sound(files[name], error => {
+  const source = sourceFor(name);
+  if (source == null) return;
+  const sound: Sound = new Sound(source as never, error => {
     if (error) return;
     sound.setVolume(volume[name]);
     cache[name] = sound;
@@ -31,7 +42,7 @@ function load(name: SoundName, then?: (sound: Sound) => void) {
 
 /** Load the sounds once at start so the first tap is not silent. */
 export function preloadSounds() {
-  (Object.keys(files) as SoundName[]).forEach(name => { if (!cache[name]) load(name); });
+  (['tap', 'toggle', 'success', 'error', 'send', 'pop'] as SoundName[]).forEach(name => { if (!cache[name]) load(name); });
 }
 
 export function playSound(name: SoundName) {

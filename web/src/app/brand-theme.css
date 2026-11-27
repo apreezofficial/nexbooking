@@ -287,7 +287,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .cookie-options small { margin-top: 4px; font-size: 11px; color: var(--muted); line-height: 1.5; }
 .cookie-options input { width: 21px; height: 21px; accent-color: var(--gold-deep); flex-shrink: 0; }
 .cookie-always { white-space: nowrap; color: var(--gold-deep); font-size: 10px; }
-.cookie-reopen { position: fixed; bottom: 14px; left: 18px; z-index: 60; padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; background: var(--pearl); color: var(--gold-deep); font-size: 11px; box-shadow: 0 3px 14px #1c1a1410; }
 @media(max-width:600px) {
   .cookie-popup { left: 12px; bottom: 12px; width: calc(100vw - 24px); padding: 20px; max-height: calc(100svh - 24px); }
 }

@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "../../assets/fonts/PlusJakartaSans-Bold.ttf",
+      "sha1": "606f1b32433c9b6902d97c657f9b3a2f89bab582"
+    },
+    {
+      "path": "../../assets/fonts/PlusJakartaSans-ExtraBold.ttf",
+      "sha1": "1f1ff730addefdfe324657b5db5056fb05b4b43b"
+    },
+    {
+      "path": "../../assets/fonts/PlusJakartaSans-Medium.ttf",
+      "sha1": "c328c76cab7078b89d925d73809f03c12a00143a"
+    },
+    {
+      "path": "../../assets/fonts/PlusJakartaSans-SemiBold.ttf",
+      "sha1": "576ccf10be11652fc309f3682a327a98847c596e"
+    },
+    {
+      "path": "../../assets/sounds/error.wav",
+      "sha1": "97876005f6873a4b438081fdae2cfa2fd36ccd82"
+    },
+    {
+      "path": "../../assets/sounds/pop.wav",
+      "sha1": "6bd3eb6277383660dc2daafb20b60ffb489d4cea"
+    },
+    {
+      "path": "../../assets/sounds/send.wav",
+      "sha1": "0c167e75fe34d4e82dcf9f946b10d03bb8e69d13"
+    },
+    {
+      "path": "../../assets/sounds/success.wav",
+      "sha1": "1181213c8fc20b1376ca208748e8b1322c3daa2c"
+    },
+    {
+      "path": "../../assets/sounds/tap.wav",
+      "sha1": "e6293c09c83e6466d653a478d6d0f82b7abfad71"
+    },
+    {
+      "path": "../../assets/sounds/toggle.wav",
+      "sha1": "7fa98dc69bfad1883d8fc6b8d68bcc932c3abc98"
+    }
+  ]
+}
