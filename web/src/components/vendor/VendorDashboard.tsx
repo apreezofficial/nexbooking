@@ -9,6 +9,9 @@ import { parseSession, signOut, useSessionRaw } from "@/lib/session";
 import BrandLogo from "@/components/BrandLogo";
 import ServicesIcon from "@/components/icons/ServicesIcon";
 import VendorNotes from "./VendorNotes";
+import VendorNoteForm from "./VendorNoteForm";
+import VendorInsights from "./VendorInsights";
+import { CountUp } from "./motion";
 import VendorBilling from "./VendorBilling";
 import VendorStudio, { type StudioPage } from "./VendorStudio";
 import BusinessSettings from "./BusinessSettings";
@@ -81,7 +84,7 @@ function loadData(): VendorData {
   return defaults;
 }
 
-export default function VendorDashboard({ view = "Overview", studio, bookingId }: { view?: View; bookingId?: string; studio?: StudioPage | "Subscription" | "Billing" | "Notes" }) {
+export default function VendorDashboard({ view = "Overview", studio, bookingId, noteId }: { view?: View; bookingId?: string; studio?: StudioPage | "Subscription" | "Billing" | "Notes" | "NewNote"; noteId?: string }) {
   const router = useRouter();
   const raw = useSessionRaw();
   const session = parseSession(raw);
@@ -203,7 +206,7 @@ export default function VendorDashboard({ view = "Overview", studio, bookingId }
     <main className="vd-main">
       <header className="vd-topbar"><BrandLogo className="vd-mobile-brand" /><div className="vd-topbar-actions"><button className="vd-avatar-small" aria-label="Business settings" onClick={() => navigate("Settings")}>{session.name.slice(0,1).toUpperCase()}</button></div></header>
       <div className="vd-content" data-view={view}>
-        <div className="vd-heading"><div><p className="vd-eyebrow">{businessName}</p><h1>{studio ?? view}</h1><p>{view === "Overview" ? "Bookings, services and team activity" : view === "Bookings" ? "Keep every appointment running smoothly." : view === "Services" ? "Manage what customers can book with you." : view === "Team" ? "Your people make the experience." : view === "Payments" ? "Track your payouts and payment activity." : view === "More" ? "Your workspace tools and business preferences." : view === "Settings" ? "" : "Understand what is bringing customers through your door."}</p></div>{view === "Team" ? <button className="vd-primary vd-compact" onClick={() => openStaff()}><Plus size={17}/> Add team member</button> : view === "Services" ? <button className="vd-primary vd-compact" onClick={() => openService()}><Plus size={17}/> Add service</button> : view === "More" ? null : view === "Settings" ? <Link className="vd-text-link" href="/business/dashboard/more">All tools <ArrowUpRight size={15}/></Link> : <button className="vd-outline vd-compact" onClick={() => navigate("Bookings")}><CalendarDays size={17}/> View schedule</button>}</div>
+        <div className="vd-heading"><div><p className="vd-eyebrow">{businessName}</p><h1>{studio === "NewNote" ? "New note" : studio ?? view}</h1><p>{view === "Overview" ? "Bookings, services and team activity" : view === "Bookings" ? "Keep every appointment running smoothly." : view === "Services" ? "Manage what customers can book with you." : view === "Team" ? "Your people make the experience." : view === "Payments" ? "Track your payouts and payment activity." : view === "More" ? "Your workspace tools and business preferences." : view === "Settings" ? "" : "Understand what is bringing customers through your door."}</p></div>{view === "Team" ? <button className="vd-primary vd-compact" onClick={() => openStaff()}><Plus size={17}/> Add team member</button> : view === "Services" ? <button className="vd-primary vd-compact" onClick={() => openService()}><Plus size={17}/> Add service</button> : view === "More" ? null : view === "Settings" ? <Link className="vd-text-link" href="/business/dashboard/more">All tools <ArrowUpRight size={15}/></Link> : <button className="vd-outline vd-compact" onClick={() => navigate("Bookings")}><CalendarDays size={17}/> View schedule</button>}</div>
 
         {view === "Overview" && <>
           <div className="vd-overview-controls"><Link className="vd-outline" href="/business/dashboard/notes">Workspace notes</Link>
@@ -237,7 +240,7 @@ export default function VendorDashboard({ view = "Overview", studio, bookingId }
             ["Business settings", "settings", Settings2, "Manage your workspace"],
           ] as const).map(([label, path, Icon, description]) => <Link key={path} href={`/business/dashboard/${path}`}><span className="vendor-tool-icon"><Icon size={23}/></span><span><strong>{label}</strong><small>{description}</small></span><ArrowUpRight size={17} aria-hidden="true"/></Link>)}
         </nav>}
-        {studio === "Notes" ? <VendorNotes key={session.email} owner={session.email} staff={data.staff} bookings={data.bookings} bookingId={bookingId}/> : studio === "Subscription" || studio === "Billing" ? <VendorBilling key={session.email} owner={session.email} billing={studio === "Billing"} /> : studio ? <VendorStudio key={session.email + studio} page={studio} owner={session.email} services={data.services.map(s => s.name)} /> : view === "Settings" && <>
+        {studio === "NewNote" ? <VendorNoteForm key={session.email} owner={session.email} noteId={noteId} bookingId={bookingId}/> : studio === "Notes" ? <VendorNotes key={session.email} owner={session.email} staff={data.staff} bookings={data.bookings} bookingId={bookingId}/> : studio === "Subscription" || studio === "Billing" ? <VendorBilling key={session.email} owner={session.email} billing={studio === "Billing"} /> : studio ? <VendorStudio key={session.email + studio} page={studio} owner={session.email} services={data.services.map(s => s.name)} /> : view === "Settings" && <>
           <BusinessSettings />
           <nav className="vd-card vendor-tools" aria-label="Storefront management">
             <Link href="/business/dashboard/notes">Notes ↗</Link>
@@ -277,7 +280,7 @@ export default function VendorDashboard({ view = "Overview", studio, bookingId }
 
         {view === "Payments" && <section className="vd-card"><div className="vd-section-head"><div><h2>Payment activity</h2><p>Booking values for confirmed and completed appointments</p></div><button className="vd-outline vd-compact" onClick={() => exportBookings("booking-values.csv", data.bookings.filter(b => b.status === "Confirmed" || b.status === "Completed"))}><ArrowDownToLine size={16}/> Export</button></div><div className="vd-service-list">{data.bookings.filter(item => item.status === "Confirmed" || item.status === "Completed").map(item => <article key={item.id}><span className="vd-payment-check"><Check size={16}/></span><div className="vd-service-info"><b>{item.client}</b><small>{item.service} · {item.date}, {item.time}</small></div><strong className="vd-payment-amount">{money(item.amount)}</strong></article>)}</div></section>}
 
-        {view === "Insights" && <div className="vd-insights-grid"><section className="vd-card vd-insights-chart"><div className="vd-section-head"><div><h2>Revenue overview</h2><p>Confirmed booking value · this week</p></div><strong>{money(weeklyRevenue)}</strong></div><div className="vd-bars" aria-label="Weekly revenue chart">{data.services.map(service => [service.name, Math.round(data.bookings.filter(item => item.service === service.name && (item.status === "Confirmed" || item.status === "Completed")).reduce((sum, item) => sum + item.amount, 0) / Math.max(1, weeklyRevenue) * 100)]).map(([day,height])=><div key={day as string}><i style={{height: `${height}%`}}/><small>{day}</small></div>)}</div></section><section className="vd-card"><div className="vd-section-head"><div><h2>At a glance</h2><p>What your activity is showing</p></div></div><div className="vd-insight-row"><span>Booking requests</span><b>{data.bookings.length}</b></div><div className="vd-insight-row"><span>Confirmed</span><b>{data.bookings.filter(item => item.status === "Confirmed").length}</b></div><div className="vd-insight-row"><span>Services listed</span><b>{data.services.filter(item => item.live).length}</b></div><div className="vd-insight-row"><span>Team members</span><b>{data.staff.length}</b></div></section></div>}
+        {view === "Insights" && <VendorInsights bookings={data.bookings} services={data.services} staff={data.staff} />}
       </div>
       <footer className="vd-footer">EdeBooking for business <span>·</span> Making every appointment feel easy.</footer>
     </main>
@@ -423,10 +426,10 @@ function OverviewAnalytics({ bookings, staffCount, openBookings, openPayments, o
   return <div className="vd-analytics">
     <section className="vd-card vd-activity">
       <div className="vd-section-head"><h2>Booking activity</h2><button className="vd-icon-button" type="button" onClick={openBookings} aria-label="Open bookings"><ArrowUpRight size={18} /></button></div>
-      <p className="vd-display-number">{bookings.length} <small>appointments</small></p>
+      <p className="vd-display-number"><CountUp value={bookings.length} /> <small>appointments</small></p>
       <ul className="vd-status-chart" aria-label="Appointments by status">
         {statuses.map(({ label, count }) => <li key={label}>
-          <strong>{count}</strong>
+          <strong><CountUp value={count} duration={700} /></strong>
           <div aria-hidden="true"><i style={{ "--bar-size": `${count / max * 100}%`, "--bar-depth": count ? "block" : "none" } as React.CSSProperties} /></div>
           <span>{label}</span>
         </li>)}
@@ -434,14 +437,14 @@ function OverviewAnalytics({ bookings, staffCount, openBookings, openPayments, o
     </section>
     <section className="vd-card vd-volume">
       <div className="vd-section-head"><h2>Confirmed booking value</h2><button className="vd-icon-button" type="button" onClick={openPayments} aria-label="Open payments"><ArrowUpRight size={18} /></button></div>
-      <p className="vd-display-number">{money(value)}</p>
+      <p className="vd-display-number"><CountUp value={value} format={money} /></p>
       {services.length ? <ul className="vd-breakdown">{services.map(({ name, amount }) => <li key={name}>
         <div><span>{name}</span><strong>{money(amount)}</strong></div>
-        <progress value={amount} max={value || 1} aria-label={name} />
+        <span className="vd-meter" role="meter" aria-label={name} aria-valuenow={amount} aria-valuemin={0} aria-valuemax={value || 1}><i style={{ width: `${Math.round(amount / (value || 1) * 100)}%` }} /></span>
       </li>)}</ul> : <p className="vd-muted">No confirmed bookings in this period.</p>}
     </section>
-    <section className="vd-card vd-mini-metric"><h2>Clients</h2><strong>{new Set(bookings.map(item => item.client)).size}</strong><p>Unique names in this period</p></section>
-    <section className="vd-card vd-mini-metric"><h2>Team members</h2><strong>{staffCount}</strong><button className="vd-text-link" type="button" onClick={openTeam}>Manage team <ArrowUpRight size={15} /></button></section>
-    <section className="vd-card vd-mini-metric vd-coverage"><h2>Staff coverage</h2><strong>{rate}%</strong><p>{assigned} of {confirmed.length} confirmed or completed appointments assigned</p></section>
+    <section className="vd-card vd-mini-metric"><h2>Clients</h2><strong><CountUp value={new Set(bookings.map(item => item.client)).size} /></strong><p>Unique names in this period</p></section>
+    <section className="vd-card vd-mini-metric"><h2>Team members</h2><strong><CountUp value={staffCount} /></strong><button className="vd-text-link" type="button" onClick={openTeam}>Manage team <ArrowUpRight size={15} /></button></section>
+    <section className="vd-card vd-mini-metric vd-coverage"><h2>Staff coverage</h2><strong><CountUp value={rate} format={(n) => `${n}%`} /></strong><p>{assigned} of {confirmed.length} confirmed or completed appointments assigned</p></section>
   </div>;
 }
