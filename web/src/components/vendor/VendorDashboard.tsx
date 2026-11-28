@@ -246,14 +246,6 @@ export default function VendorDashboard({ view = "Overview", studio, bookingId, 
         </nav>}
         {studio === "NewNote" ? <VendorNoteForm key={session.email} owner={session.email} noteId={noteId} bookingId={bookingId}/> : studio === "Notes" ? <VendorNotes key={session.email} owner={session.email} staff={data.staff} bookings={data.bookings} bookingId={bookingId}/> : studio === "Subscription" || studio === "Billing" ? <VendorBilling key={session.email} owner={session.email} billing={studio === "Billing"} /> : studio ? <VendorStudio key={session.email + studio} page={studio} owner={session.email} services={data.services.map(s => s.name)} /> : view === "Settings" && <>
           <BusinessSettings />
-          <nav className="vd-card vendor-tools" aria-label="Storefront management">
-            <Link href="/business/dashboard/notes">Notes ↗</Link>
-            <Link href="/business/dashboard/subscription">Subscription ↗</Link>
-            <Link href="/business/dashboard/billing">Billing ↗</Link>
-            <Link href="/business/dashboard/portfolio">Portfolio ↗</Link>
-            <Link href="/business/dashboard/reviews">Reviews ↗</Link>
-            <Link href="/business/dashboard/promo-codes">Promo codes ↗</Link>
-          </nav>
         </>}
         {view !== "Overview" && view !== "Settings" && view !== "More" && <section className="vd-workspace-summary" aria-label={`${view} summary`}>
           <div className="vd-summary-art" aria-hidden="true">
