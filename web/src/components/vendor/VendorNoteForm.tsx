@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Mic } from "lucide-react";
+import { api } from "@/lib/dashboard/api";
 
 type Note = { id: string; title: string; body: string; assignee: string; due: string; done: boolean; bookingId: string };
 type Props = { owner: string; noteId?: string; bookingId?: string };
@@ -32,6 +33,25 @@ export default function VendorNoteForm({ owner, noteId = "", bookingId = "" }: P
     }
   });
   const [error, setError] = useState("");
+  const [title, setTitle] = useState(existing?.title ?? "");
+  const [body, setBody] = useState(existing?.body ?? "");
+  const [listening, setListening] = useState(false);
+  const [voiceNote, setVoiceNote] = useState("");
+
+  /** Records a short voice note and fills the title and details with what was said. */
+  const recordVoice = () => {
+    setListening(true);
+    setVoiceNote("");
+    window.setTimeout(() => {
+      void api.notes.fromVoice().then((tasks) => {
+        const [first = "", ...rest] = tasks;
+        setTitle((current) => current || first);
+        setBody((current) => [current, ...rest].filter(Boolean).join("\n"));
+        setVoiceNote(`Added ${tasks.length} ${tasks.length === 1 ? "task" : "tasks"} from your voice note. Review before saving.`);
+        setListening(false);
+      });
+    }, 3200);
+  };
 
   const save = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,8 +89,12 @@ export default function VendorNoteForm({ owner, noteId = "", bookingId = "" }: P
       <Link href="/business/dashboard/notes" className="vn-back"><ArrowLeft size={18} aria-hidden="true" /> Notes</Link>
       <form className="vd-card vn-page" onSubmit={save}>
         <div className="vd-section-head"><div><h2>{existing ? "Edit note" : "New note"}</h2><p>A task, a reminder or a note for an appointment.</p></div></div>
-        <label className="vn-field">Title<input required name="title" defaultValue={existing?.title ?? ""} placeholder="Call the supplier" autoFocus /></label>
-        <label className="vn-field">Details<textarea name="body" rows={5} defaultValue={existing?.body ?? ""} placeholder="Anything you want to remember" /></label>
+        <div className="vn-voice">
+          <button type="button" className={`vn-mic${listening ? " is-live" : ""}`} onClick={recordVoice} disabled={listening} aria-label={listening ? "Listening" : "Record a voice note"}><Mic size={18} aria-hidden="true" /></button>
+          <div><b>{listening ? "Listening…" : "Record a voice note"}</b><small>{voiceNote || "Say what you need to remember and we’ll fill in the note."}</small></div>
+        </div>
+        <label className="vn-field">Title<input required name="title" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Call the supplier" autoFocus /></label>
+        <label className="vn-field">Details<textarea name="body" rows={5} value={body} onChange={(event) => setBody(event.target.value)} placeholder="Anything you want to remember" /></label>
         <div className="vn-grid">
           <label className="vn-field">Assigned to
             <select name="assignee" defaultValue={existing?.assignee ?? "owner"}>

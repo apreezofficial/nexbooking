@@ -10,9 +10,10 @@ type Cycle = "Monthly" | "Annual";
 type Invoice = { id: string; date: string; plan: Plan; cycle: Cycle; cents: number };
 type Account = { plan: Plan; cycle: Cycle; active: boolean; invoices: Invoice[] };
 const initial: Account = { plan: "Pro", cycle: "Monthly", active: true, invoices: [] };
-const usd = (cents: number) => (cents / 100).toLocaleString("en-US", { style: "currency", currency: "USD" });
+/** Plan prices are stored in naira, so they are shown as naira. */
+const usd = (naira: number) => `₦${naira.toLocaleString("en-NG")}`;
 function price(plan: Plan, cycle: Cycle) {
-  const monthly = plan === "Pro" ? 4900 : 9900;
+  const monthly = plan === "Pro" ? 15000 : 35000;
   return cycle === "Monthly" ? monthly : Math.round(monthly * 12 * 0.8);
 }
 function download(invoice: Invoice) {
