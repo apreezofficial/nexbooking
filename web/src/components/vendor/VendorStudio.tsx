@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Images, TicketPercent, Plus, Star, MessageSquare, Trash2, Check, ImagePlus } from "lucide-react";
+import { Images, TicketPercent, Plus, Star, MessageSquare, Trash2, Check, ImagePlus, Pencil, ChevronLeft, ChevronRight } from "lucide-react";
 import SideDrawer from "@/components/dashboard/SideDrawer";
 
 export type StudioPage = "Portfolio" | "Reviews" | "Promo codes";
@@ -9,6 +9,7 @@ type Promo = { code: string; kind: string; value: number; start: string; end: st
 type Photo = { id: string; title: string; image: string };
 type Studio = { promos: Promo[]; photos: Photo[]; replies: Record<string, string> };
 const initial: Studio = { promos: [], photos: [], replies: {} };
+const swap = (list: Photo[], a: number, b: number) => { const next = [...list]; [next[a], next[b]] = [next[b], next[a]]; return next; };
 const reviews = [
   { name: "Ada O.", stars: 5, body: "The studio was spotless and my appointment started right on time." },
   { name: "Tolu B.", stars: 4, body: "Great service. I would have liked a reminder before my visit." },
@@ -20,6 +21,8 @@ export default function VendorStudio({ page, owner, services }: {page: StudioPag
     try { return { ...initial, ...JSON.parse(localStorage.getItem(key) ?? "{}") }; } catch { return initial; }
   });
   const [drawer, setDrawer] = useState("");
+  const [editId, setEditId] = useState<string | null>(null);
+  const editingPhoto = data.photos.find(p => p.id === editId);
   const [error, setError] = useState("");
   const [kind, setKind] = useState("Percentage");
   const [filter, setFilter] = useState("All");
@@ -28,7 +31,7 @@ export default function VendorStudio({ page, owner, services }: {page: StudioPag
     try { localStorage.setItem(key, JSON.stringify(next)); setData(next); setError(""); return true; }
     catch { setError("Browser storage is full or unavailable. Try a smaller photo."); return false; }
   }
-  function open(title: string) { setDrawer(title); setError(""); setKind("Percentage"); }
+  function open(title: string) { setDrawer(title); setEditId(null); setError(""); setKind("Percentage"); }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const fields = new FormData(event.currentTarget);
@@ -44,18 +47,25 @@ export default function VendorStudio({ page, owner, services }: {page: StudioPag
       next = { ...data, replies: { ...data.replies, [drawer]: field("reply") } };
     } else {
       const file = fields.get("photo");
-      if (!(file instanceof File) || !["image/jpeg","image/webp","image/png"].includes(file.type) || file.size > 1024 * 1024)
-        return setError("Choose a JPEG, PNG or WebP under 1 MB.");
-      setBusy(true);
-      try {
-        const image = await new Promise<string>((resolve,reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(String(reader.result));
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-        next = { ...data, photos: [...data.photos, { id: crypto.randomUUID(), title: field("title"), image }] };
-      } catch { setError("This file could not be opened."); return; } finally { setBusy(false); }
+      // When editing, a photo is only replaced if a new file is chosen; otherwise the current image is kept.
+      const keepImage = Boolean(editingPhoto) && !(file instanceof File && file.size > 0);
+      let image = editingPhoto?.image ?? "";
+      if (!keepImage) {
+        if (!(file instanceof File) || !["image/jpeg","image/webp","image/png"].includes(file.type) || file.size > 1024 * 1024)
+          return setError("Choose a JPEG, PNG or WebP under 1 MB.");
+        setBusy(true);
+        try {
+          image = await new Promise<string>((resolve,reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result));
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        } catch { setError("This file could not be opened."); return; } finally { setBusy(false); }
+      }
+      next = editingPhoto
+        ? { ...data, photos: data.photos.map(p => p.id === editingPhoto.id ? { ...p, title: field("title"), image } : p) }
+        : { ...data, photos: [...data.photos, { id: crypto.randomUUID(), title: field("title"), image }] };
     }
     if (save(next)) setDrawer("");
   }
@@ -66,6 +76,9 @@ export default function VendorStudio({ page, owner, services }: {page: StudioPag
       <div className="vendor-gallery">{data.photos.map((photo,i) => <figure className="vendor-photo" key={photo.id}>
         <div className="vendor-photo-image"><img src={photo.image} alt={photo.title}/>{i === 0 && <span className="vendor-cover"><Check size={13}/> Cover photo</span>}</div>
         <figcaption><strong>{photo.title}</strong><div className="vendor-photo-actions">
+          <button onClick={() => { open("Edit photo"); setEditId(photo.id); }}><Pencil size={14}/> Edit</button>
+          {i > 0 && <button aria-label={"Move " + photo.title + " earlier"} onClick={() => save({ ...data, photos: swap(data.photos, i, i - 1) })}><ChevronLeft size={15}/> Earlier</button>}
+          {i < data.photos.length - 1 && <button aria-label={"Move " + photo.title + " later"} onClick={() => save({ ...data, photos: swap(data.photos, i, i + 1) })}>Later <ChevronRight size={15}/></button>}
           {i !== 0 && <button onClick={() => save({ ...data, photos: [photo,...data.photos.filter(p => p.id !== photo.id)] })}>Set as cover</button>}
           <button className="vendor-remove" aria-label={"Remove " + photo.title} onClick={() => { if (window.confirm("Remove this portfolio photo?")) save({ ...data, photos: data.photos.filter(p => p.id !== photo.id) }); }}><Trash2 size={16}/> Remove</button>
         </div></figcaption>
@@ -92,7 +105,7 @@ export default function VendorStudio({ page, owner, services }: {page: StudioPag
     <SideDrawer title={page === "Reviews" ? "Reply to " + drawer : drawer} trigger={null} open={Boolean(drawer)} onOpenChange={v => { if (!v) setDrawer(""); }}>
       <form className="vd-drawer-form" onSubmit={submit}>
         {page === "Reviews" && <label>Your reply<textarea required name="reply" defaultValue={data.replies[drawer]}/></label>}
-        {page === "Portfolio" && <><label>Photo<input type="file" name="photo" accept="image/png,image/jpeg,image/webp" required/></label><label>Caption<input name="title" required/></label></>}
+        {page === "Portfolio" && <><label>{editingPhoto ? "Replace photo (optional)" : "Photo"}<input type="file" name="photo" accept="image/png,image/jpeg,image/webp" required={!editingPhoto}/></label><label>Caption<input name="title" required defaultValue={editingPhoto?.title}/></label></>}
         {page === "Promo codes" && <>
           <label>Code<input name="code" required pattern="[a-zA-Z0-9_-]+" maxLength={32}/></label>
           <label>Discount type<select value={kind} onChange={e => setKind(e.target.value)}><option>Percentage</option><option>Fixed amount</option></select></label>
