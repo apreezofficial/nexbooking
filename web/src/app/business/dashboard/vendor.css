@@ -665,3 +665,47 @@ fieldset:has(input[value="selected"]:checked) .vd-service-choices { display: blo
   .vendor-tools strong { font-size: 15px; }
   .vendor-tools small { font-size: 12px; }
 }
+
+/* ───────── Vendor redesign: the customer dashboard's sidebar, cards and rhythm ───────── */
+@media (min-width: 1000px) {
+  .vd-app { padding: 0; background: var(--pearl); }
+  .vd-layout { max-width: none; min-height: 100vh; padding: 0; border: 0; border-radius: 0; background: var(--pearl); box-shadow: none; }
+  .vd-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 20; width: 268px; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 28px; padding: 26px 18px 18px; border: 0; border-right: 1px solid var(--line); background: var(--surface); }
+  .vd-sidebar > .brand-lockup { margin: 0 0 4px; }
+  .vd-business-switch, .vd-user { display: flex; }
+  .vd-business-switch { padding: 12px; border-radius: 18px; background: #fff; }
+  .vd-nav-label { display: block; margin: 6px 10px 4px; }
+  .vd-nav { display: flex; flex-direction: column; gap: 4px; }
+  .vd-nav :is(button, a) { width: 100%; min-height: 46px; padding: 0 14px; border-radius: 16px; font-size: 14px; font-weight: 700; white-space: normal; }
+  .vd-nav :is(button, a):hover { background: var(--gold-100); }
+  .vd-nav :is(button, a).is-active { background: var(--gold-500); color: var(--ink-900); box-shadow: 0 6px 16px rgb(212 175 55 / 28%); }
+  .vd-nav :is(button, a) > i { background: var(--ink-900); color: var(--gold-500); }
+  .vd-sidebar-bottom { gap: 10px; }
+  .vd-sidebar-bottom > a { min-height: 42px; border-radius: 14px; }
+  .vd-user { align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+  .vd-main { margin-left: 268px; min-height: 100vh; background: var(--pearl); }
+  .vd-topbar { justify-content: space-between; height: 72px; padding: 0 clamp(24px, 3vw, 44px); border-bottom: 1px solid var(--line); background: rgb(251 252 248 / 92%); backdrop-filter: blur(14px); }
+  .vd-content { width: 100%; max-width: 1180px; padding: 32px clamp(24px, 3vw, 44px) 64px; }
+  .vd-content > .vd-card, .vd-content > section.vd-card { border-radius: 24px; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 28px rgb(28 26 20 / 5%); }
+}
+.vd-app .vd-card { border-radius: 22px; }
+.vd-app .vd-heading h1 { font-size: 30px; font-weight: 800; letter-spacing: -.6px; }
+.vd-app .vd-eyebrow { color: var(--gold-deep); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.vd-app .vd-section-head h2 { font-size: 17px; font-weight: 800; letter-spacing: -.2px; }
+.vd-app .vd-section-head p { color: var(--muted); font-size: 13px; }
+.vd-app .vendor-tools a, .vd-app .vd-outline { transition: transform .2s var(--ease, ease), box-shadow .2s, background-color .2s; }
+.vd-app .vendor-tools a:hover, .vd-app .vd-outline:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgb(28 26 20 / 8%); }
+.vd-app .vd-content > section, .vd-app .vd-content > nav { animation: d-rise .5s var(--ease, ease) both; }
+@keyframes d-rise { from { opacity: 0; transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) { .vd-app * { animation: none !important; transition: none !important; } }
+@media (min-width: 1000px) { .vd-sidebar { transform: none; translate: none; left: 0; } }
+
+/* Booking activity chart: fixed plot height so each bar's percentage has something to measure against. */
+.vd-status-chart { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; height: 250px; margin: 22px 0 0; padding: 0; list-style: none; }
+.vd-status-chart li { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 8px; }
+.vd-status-chart strong { font-size: 20px; font-weight: 800; letter-spacing: -.4px; }
+.vd-status-chart li > div { display: flex; flex: 1; width: 100%; min-height: 0; align-items: flex-end; justify-content: center; border-bottom: 1px dashed var(--line); }
+.vd-status-chart i { display: block; width: min(40px, 62%); height: var(--bar-size); min-height: 0; border-radius: 14px 14px 6px 6px; background: linear-gradient(180deg, var(--gold-secondary), var(--gold-500)); box-shadow: 0 8px 18px rgb(212 175 55 / 25%); transition: height .9s var(--ease, ease); }
+.vd-status-chart i[style*="none"] { display: none; }
+.vd-status-chart li > span { color: var(--muted); font-size: 12px; font-weight: 700; }
+.vd-app a { text-decoration: none; }
